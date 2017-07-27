@@ -3,6 +3,7 @@
 #include <readline/history.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 
 
 //function prototypes
@@ -11,6 +12,56 @@ int custom_key_bindings_emacs(void);
 int initialize_readline();
 char *_readline();
 int change_editing_mode(int count, int key);
+char **command_completion(const char *, int, int);
+char *command_completion_generator(const char *, int);
+
+
+char *command_list[] =
+{
+	"entryA",
+	"entryB",
+	"entryC",
+	"comA",
+	"comB",
+	"comC",
+	NULL
+}; // end command_list
+
+
+
+
+char ** command_completion(const char *partial_text, int start, int end)
+{
+	//in case no matches are found, do not fall back to pathname completion
+	rl_attempted_completion_over = 1;
+	return rl_completion_matches(partial_text, command_completion_generator);
+} // end command_completion
+
+char *command_completion_generator(const char *partial_text, int state)
+{
+
+	static int list_index, partial_text_len;
+	char *command;
+	
+	if (!state)
+	{
+		list_index = 0;
+		partial_text_len = strlen(partial_text);
+	} // end if
+	
+	while (command = command_list[list_index++])
+	{
+		if (strncmp(command, partial_text, partial_text_len) == 0)
+		{
+			return strdup(command);
+		} // end if
+	} // end while
+	
+	return NULL;
+
+} // end command_completion_generator
+
+
 
 int change_editing_mode(int count, int key)
 {
@@ -81,6 +132,7 @@ int custom_key_bindings_emacs(void)
 	//Keymap emacs_ = rl_get_keymap_by_name("emacs_standard");
 	//rl_bind_keyseq_in_map("\M-i", invert_case, emacs_);
 	//rl_bind_keyseq("k", invert_case);
+	//rl_bind_key('\t', rl_complete);
 	rl_bind_key('k', invert_case);
 	rl_bind_key('j', change_editing_mode);
 
@@ -97,6 +149,25 @@ int initialize_readline()
 	// set the keymap
 	//rl_set_keymap(emacs_);
 	
+	
+	// --------------------------------------------
+	// assign completion function
+	rl_attempted_completion_function = command_completion;
+	// assign delimiters for quoted strings
+	rl_completer_quote_characters = "\"'";
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// --------------------------------------------
 	
 	// register custom binable functions
 	rl_add_funmap_entry("invert-case", &invert_case);
