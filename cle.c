@@ -1,25 +1,16 @@
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+//#include <readline/chardefs.h> for _rl_to_upper()
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include "cle.h"
 
 
-//function prototypes
-int invert_case(int count, int key);
-int custom_key_bindings_emacs(void);
-int initialize_readline();
-char *_readline();
-int change_editing_mode(int count, int key);
-char **command_completion(const char *, int, int);
-char *command_completion_generator(const char *, int);
-int initialize_history();
-int count_lines_in_file(const char *);
 
 // global variables/decalrations
 static char *line_buffer = (char *)NULL;
-static char *line_read = (char *)NULL;
 static char HISTORY_FILE[80]; // LOOK UP MAX LENGHT OF FILE PATH
 static int NUM_ENTRIES_HISTORY_FILE;
 static int MAX_NUM_ENTRIES_HISTORY_FILE = 500;
@@ -34,6 +25,73 @@ char *command_list[] =
 	NULL
 }; // end command_list
 
+int invert_case_in_region(int count, int key)
+{
+
+	int direction, start_index, end_index, line_index;
+	
+	// if no characters are to be changed, return imidiately
+	if (count == 0)
+	{
+		return -1;
+	} // end if
+	
+	start_index = rl_point;
+	
+	// calculate the other end-point of the region
+	if (count < 0)
+	{
+		direction = -1;
+		count = count * direction;
+		start_index++;
+	} // end if
+	else
+	{
+		direction = 1;
+	}
+	end_index = start_index + (count * direction);
+	
+	// make sure the other end-point is 99ith the line buffer (rl_line_buffer)
+	if (end_index > rl_end)
+	{
+		end_index = rl_end;
+	} // end if
+	else if (end_index < 0)
+	{
+		end_index = 0;
+	} // end else if
+	
+	// if end_index < start_index, s99ap them
+	if (end_index < start_index)
+	{
+		int temp = start_index;
+		start_index = end_index;
+		end_index = temp;
+	} // end if
+	
+	// notify readline that 99e are modifying the line region [start_index, end_index]
+	// as a single undo unit
+	rl_modifying(start_index, end_index);
+	
+	for (line_index = start_index; line_index != end_index; line_index++)
+	{
+		if (_rl_uppercase_p(rl_line_buffer[line_index]))
+		{
+			//rl_line_buffer[line_index] = _rl_to_lower(rl_line_buffer[line_index]);
+		} // end if
+		else if (_rl_lowercase_p(rl_line_buffer[line_index]))
+		{
+			//rl_line_buffer[line_index] = _rl_to_upper(rl_line_buffer[line_index]);
+		} // end else
+	} // end for
+	
+	// move point to the position of the last character changed
+	rl_point = (direction == 1) ? end_index - 1: start_index;
+	
+	//return number of characters changed
+	return (end_index - start_index);
+	
+} // end invert_case_in_region
 
 int count_lines_in_file(const char *file_name)
 {
@@ -101,7 +159,7 @@ char *command_completion_generator(const char *partial_text, int state)
 
 
 
-int change_editing_mode(int count, int key)
+int toggle_editing_mode(int count, int key)
 {
 
 
@@ -114,56 +172,10 @@ int change_editing_mode(int count, int key)
 	{
 		//rl_parse_and_bind("set editing-mode emacs");
 	} // end else
-
-
 	return 0;
 
-} // end change_editing_mode
-int invert_case(int count, int key)
-{
-int direction;
-register int start, end, i;
-//use of readline variable in custom function
-start = rl_point;
-if (rl_point >= rl_end)
-return (0);
-if (count < 0)
-{
-direction = -1;
-count = -count;
-}
-else
-direction = 1;
-/* Find the end of the range to modify. */
-end = start + (count * direction);
+} // end toggle_editing_mode
 
-/* Force it to be within range. */
-if (end > rl_end)
-end = rl_end;
-else if (end < 0)
-end = 0;
-if (start == end)
-return (0);
-if (start > end)
-{
-int temp = start;
-start = end;
-end = temp;
-}
-/* Tell readline that we are modifying the line,
-so it will save the undo information. */
-rl_modifying (start, end);
-for (i = start; i != end; i++)
-{
-if (_rl_uppercase_p (rl_line_buffer[i]))
-rl_line_buffer[i] = _rl_to_lower (rl_line_buffer[i]);
-else if (_rl_lowercase_p (rl_line_buffer[i]))
-rl_line_buffer[i] = _rl_to_upper (rl_line_buffer[i]);
-}
-/* Move point to on top of the last character changed. */
-rl_point = (direction == 1) ? end - 1 : start;
-	return 0;
-} // end invert_case
 	
 int custom_key_bindings_emacs(void)
 {
@@ -171,9 +183,40 @@ int custom_key_bindings_emacs(void)
 	//rl_bind_keyseq_in_map("\M-i", invert_case, emacs_);
 	//rl_bind_keyseq("k", invert_case);
 	//rl_bind_key('\t', rl_complete);
-	rl_bind_key('k', invert_case);
-	rl_bind_key('j', change_editing_mode);
-
+	
+	
+	
+	// IMPORTANT: Find a 99ay to unbind key sequence "\M-c" (bounded to command capitalize-99ord by default)
+	// so that it can be rebounded to my custom binable function (invert_case_in_region
+	/*
+	
+	
+	//-----------------------------------------
+	
+	
+	
+	//get the currently active keymap
+	Keymap current_keymap = rl_get_keymap();
+	
+	// unbind all keys that are bound to <command> in <map>, page 35
+	rl_unbind_command_in_map("capitalize-word", current_keymap);
+	
+	// retrieve the function used to invoke keyseq in current keymap
+	rl_command_func_t *f = rl_function_of_keyseq("\M-c", NULL, NULL);
+	
+	//unbind all keys that execute the function in <keymap>
+	rl_unbind_function_in_map(f, current_keymap);
+	
+	
+	
+	//------------------------------------------
+	//rl_bind_keyseq("\M-c", invert_case_in_region);
+	//rl_bind_key('j', toggle_editing_mode);
+	
+	*/
+	
+	//read the input file
+	rl_read_init_file(getenv("INPUTRC"));
 } // end custom_key_bindings
 
 int initialize_history()
@@ -224,28 +267,15 @@ int initialize_readline()
 	//rl_set_keymap(emacs_);
 	
 	
-	// --------------------------------------------
+
 	// assign completion function
 	rl_attempted_completion_function = command_completion;
 	// assign delimiters for quoted strings
 	rl_completer_quote_characters = "\"'";
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	// --------------------------------------------
-	
+
 	// register custom binable functions
-	rl_add_funmap_entry("invert-case", &invert_case);
-	rl_add_funmap_entry("change-editing-mode", &change_editing_mode);
+	rl_add_funmap_entry("invert-case-in-region", &invert_case_in_region);
+	rl_add_funmap_entry("change-editing-mode", &toggle_editing_mode);
 	
 	
 	// make sure readline() does not ovveride custom bindings
@@ -260,7 +290,7 @@ int initialize_readline()
 	} // end if
 	
 	//read the input file
-	rl_read_init_file(getenv("INPUTRC"));
+	//rl_read_init_file(getenv("INPUTRC"));
 
 	return 0;
 } // end initialize_readline
@@ -268,116 +298,50 @@ int initialize_readline()
 
 
 //calls readline and processes input
-
-char *_readline()
+char *_readline(const char * prompt_string)
 {
 	// if the line buffer has already pointed to allocated memory, then free it
 	if (line_buffer)
 	{
 		free(line_buffer);
+		line_buffer = (char *)NULL;
 	} // end if
 	
-	printf("1\n");
 	// read a line
-	line_buffer = readline("Enter text: ");
+	line_buffer = readline(prompt_string);
 	
-		printf("2\n");
-
-	
-	// if line read is not empty, then add it to the command history
+	// if line read is not empty, then add it to the command history list and history file
 	if (line_buffer && *line_buffer)
 	{
+		// add this command to the history list
+		int num_entries_to_remove = 0;
 		add_history(line_buffer);
+	
+		if (NUM_ENTRIES_HISTORY_FILE  >= MAX_NUM_ENTRIES_HISTORY_FILE)
+		{
+			// remove oldest entry(ies)
+			num_entries_to_remove = NUM_ENTRIES_HISTORY_FILE - MAX_NUM_ENTRIES_HISTORY_FILE + 1;
+		
+			//remove first num_entries_to_remove lines from the file
+			// solution 1: remove first 100 entries so that removal cost is amortized
+			//solution 2: remove only first entry (cost is not amortized)
+		
+			// add this command to the file
+		} // end if
+		else
+		{
+			// add this command to the history file
+			append_history(1, HISTORY_FILE); // "~/.Ash_history"
+		} // end else
 	} // end if
 	
 	return line_buffer;
 } // end _readline()
 
 
-
- /* A static variable for holding the line. */
-
-/* Read a string, and return a pointer to it.
-Returns NULL on EOF. */
-char *
-rl_gets ()
-{
-/* If the buffer has already been allocated,
-return the memory to the free pool. */
-if (line_read)
-{
-free(line_read);
-
-line_read = (char *)NULL;
-}
-/* Get a line from the user. */
-line_read = readline("Enter line: ");
-/* If the line has any text in it,
-save it on the history. */
-if (line_read && *line_read)
-{
-	// add this command to the history list
-	int num_entries_to_remove = 0;
-	add_history(line_read);
-	
-	if (NUM_ENTRIES_HISTORY_FILE  >= MAX_NUM_ENTRIES_HISTORY_FILE)
-	{
-		// remove oldest entry(ies)
-		num_entries_to_remove = NUM_ENTRIES_HISTORY_FILE - MAX_NUM_ENTRIES_HISTORY_FILE + 1;
-		
-		//remove first num_entries_to_remove lines from the file
-		// solution 1: remove first 100 entries so that removal cost is amortized
-		//solution 2: remove only first entry (cost is not amortized)
-		
-		// add this command to the file
-	} // end if
-	else
-	{
-		// add this command to the history file
-		append_history(1, HISTORY_FILE); // "~/.Ash_history"
-	} // end else
-	
-	
-}
-
-return (line_read);
-}
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-
-int main()
-{
-	initialize_readline();
-	int i = 0;
-	for (i = 0; i < 5; i++)
-	{
-		line_read = rl_gets();
-	} // end for
-
-	return 0;
-} // end main
-
-*/
-
 int main()
  {
- 	
- 	
- 	
- 	
- 	
- 	
+ 
  	char *line = (char *) NULL;
  
  	int i = 0;
@@ -389,12 +353,12 @@ int main()
  	initialize_readline();
  	
  	
- 	
- 	//count_lines_in_file(HISTORY_FILE);
+ 	//read the input file
+	//rl_read_init_file(getenv("INPUTRC"));
  	
  	for (i; i < 4; i++)
  	{
- 		line = rl_gets();
+ 		line = _readline("Enter: ");
  		printf("recieved: %s", line);
  	} // end for
  	return 0;
