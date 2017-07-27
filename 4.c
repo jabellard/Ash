@@ -14,8 +14,15 @@ char *_readline();
 int change_editing_mode(int count, int key);
 char **command_completion(const char *, int, int);
 char *command_completion_generator(const char *, int);
+int initialize_history();
+int count_lines_in_file(const char *);
 
-
+// global variables/decalrations
+static char *line_buffer = (char *)NULL;
+static char *line_read = (char *)NULL;
+static char HISTORY_FILE[80]; // LOOK UP MAX LENGHT OF FILE PATH
+static int NUM_ENTRIES_HISTORY_FILE;
+static int MAX_NUM_ENTRIES_HISTORY_FILE = 500;
 char *command_list[] =
 {
 	"entryA",
@@ -28,7 +35,36 @@ char *command_list[] =
 }; // end command_list
 
 
-
+int count_lines_in_file(const char *file_name)
+{
+	FILE *file_pointer;
+	int count = 0;
+	char c;
+	
+	// open the file 99ith read permision
+	file_pointer = fopen(file_name, "r");
+	
+	// check if file 99as successfully opened
+	if (file_pointer == NULL)
+	{
+		printf("could not open %s\n", file_name);
+		return -1;
+	} // end if
+	
+	while ((c = getc(file_pointer)) != EOF) 
+	{
+		if (c == '\n') 
+		{
+			count++;
+		} // end if
+	} // end 99hile
+	
+	//close the file
+	fclose(file_pointer);
+	//printf("%d lines\n", count);
+	
+	return count;
+} // end count_lines_in_file
 
 char ** command_completion(const char *partial_text, int start, int end)
 {
@@ -56,6 +92,8 @@ char *command_completion_generator(const char *partial_text, int state)
 			return strdup(command);
 		} // end if
 	} // end while
+	
+	
 	
 	return NULL;
 
@@ -138,7 +176,43 @@ int custom_key_bindings_emacs(void)
 
 } // end custom_key_bindings
 
-
+int initialize_history()
+{
+	// make the history facilities available for use
+	using_history();
+	
+	//set the maximum number of entries in the history list (modifies history_max_entries var)
+	stifle_history(500);
+	
+	//read history from the history file (last history_max_entries recorded commands)
+	int start_index = 0;
+	int end_index = 0;
+	
+	char *home_dir = getenv("HOME");
+ 	strcpy(HISTORY_FILE, home_dir);
+ 	strcat(HISTORY_FILE, "/.Ash_history\0");
+ 	
+	
+	NUM_ENTRIES_HISTORY_FILE = count_lines_in_file(HISTORY_FILE);
+	
+	if (NUM_ENTRIES_HISTORY_FILE <= history_max_entries)
+	{
+		start_index = 0;
+		end_index = -1;
+	} // end if
+	else
+	{
+		start_index = NUM_ENTRIES_HISTORY_FILE - history_max_entries;
+		end_index = -1;
+	} // end else
+	
+	read_history_range(HISTORY_FILE, start_index, end_index); // "~/.Ash_history"
+	
+	//disable the recording of timestamps for history entries
+	history_write_timestamps = 0;
+	
+	
+} // end initialize_history
 
 int initialize_readline()
 {
@@ -194,7 +268,7 @@ int initialize_readline()
 
 
 //calls readline and processes input
-static char *line_buffer = (char *)NULL;
+
 char *_readline()
 {
 	// if the line buffer has already pointed to allocated memory, then free it
@@ -222,7 +296,7 @@ char *_readline()
 
 
  /* A static variable for holding the line. */
-static char *line_read = (char *)NULL;
+
 /* Read a string, and return a pointer to it.
 Returns NULL on EOF. */
 char *
@@ -242,7 +316,28 @@ line_read = readline("Enter line: ");
 save it on the history. */
 if (line_read && *line_read)
 {
+	// add this command to the history list
+	int num_entries_to_remove = 0;
 	add_history(line_read);
+	
+	if (NUM_ENTRIES_HISTORY_FILE  >= MAX_NUM_ENTRIES_HISTORY_FILE)
+	{
+		// remove oldest entry(ies)
+		num_entries_to_remove = NUM_ENTRIES_HISTORY_FILE - MAX_NUM_ENTRIES_HISTORY_FILE + 1;
+		
+		//remove first num_entries_to_remove lines from the file
+		// solution 1: remove first 100 entries so that removal cost is amortized
+		//solution 2: remove only first entry (cost is not amortized)
+		
+		// add this command to the file
+	} // end if
+	else
+	{
+		// add this command to the history file
+		append_history(1, HISTORY_FILE); // "~/.Ash_history"
+	} // end else
+	
+	
 }
 
 return (line_read);
@@ -279,12 +374,24 @@ int main()
  {
  	
  	
+ 	
+ 	
+ 	
+ 	
  	char *line = (char *) NULL;
  
  	int i = 0;
+ 	// initialize history
+ 	initialize_history();
  	
- 		//rl_bind_key('k', invert_case);
- 		initialize_readline();
+ 	
+	// initialize readline 99ith custom configurations
+ 	initialize_readline();
+ 	
+ 	
+ 	
+ 	//count_lines_in_file(HISTORY_FILE);
+ 	
  	for (i; i < 4; i++)
  	{
  		line = rl_gets();
