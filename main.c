@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "cle.h"
 
 
 /*
@@ -56,32 +57,27 @@ int main(int argc, char **argv)
 
 void loop(void)
 {
-	char *command;
+	char *command = (char *)NULL;
 	char **args;
 	int status = 1;
 	
 	do{
-		printf("> ");
-		command = get_command();
-		//printf("after get_command");
+	
+		command = _readline("> ");
+		printf("recieved: %s\n", command);
 		args = parse_command(command);
-		int i = 0;
 		
 		/*
+		int i = 0;
 		while (args[i] != NULL)
 		{
-			printf("%s ", args[i]);
+			printf("-->>> %s \n", args[i]);
 			i++;
-		} // end 
+		} // end
+		
 		*/
-		
-		   //  printf("hhhh   ");
-		
-		
-		
 		status = execute_command(args);
 		
-		free(command);
 		free(args);
 	}while (status);
 } // end loop

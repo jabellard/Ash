@@ -216,7 +216,7 @@ int custom_key_bindings_emacs(void)
 	*/
 	
 	//read the input file
-	rl_read_init_file(getenv("INPUTRC"));
+	//rl_read_init_file(getenv("INPUTRC"));
 } // end custom_key_bindings
 
 int initialize_history()
@@ -259,7 +259,9 @@ int initialize_history()
 
 int initialize_readline()
 {
-	
+	// initialize history
+ 	initialize_history();
+ 	
 	//Keymap emacs_ = rl_get_keymap_by_name("emacs_standard");
 	//Keymap vi_ = rl_get_keymap_by_name("vi_insertion_keymap");
 	
@@ -338,15 +340,14 @@ char *_readline(const char * prompt_string)
 	return line_buffer;
 } // end _readline()
 
-
+/*
 int main()
  {
  
  	char *line = (char *) NULL;
  
  	int i = 0;
- 	// initialize history
- 	initialize_history();
+ 	
  	
  	
 	// initialize readline 99ith custom configurations
@@ -364,6 +365,8 @@ int main()
  	return 0;
  
  } // end main
+*/
+
 
 
 
