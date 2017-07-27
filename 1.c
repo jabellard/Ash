@@ -6,8 +6,50 @@
 #include <stdio.h>
 #include <unistd.h>
  
+ int func0(int count, int key)
+ {
  
+ 	// use built-in vars and funcs to do some stuff
+ 	return 0;
+ } // end func0
  
+ int initialize_readline()
+ {
+ // input file should be used to ovveride settings defined here
+ 
+ 	//print list of macros, variable settings, and bindings associated 99ith a keymap
+ 	// get and print the current keymap
+ 	//set path for input config file--------------------
+ 	
+ 	
+ 	
+ 	//use rl_save_state() to save the internal state of readline
+ 	
+ 	
+ 	
+ 	//set custom key bindings--------------------
+ 	//readline install default key bindings the first time it is invoked
+ 	//so custom key bindings should be defined in an initialization function that is 
+ 	// assigned to the rl_startup_hook variable
+
+ 	rl_command_func_t *func0_p = &func0;
+ 	// add descriptive function name to the list of of named functions
+ 	int r1 = rl_add_defun("change-char-case", func0_p, -1);
+ 	int r0 = bind_keyseq("<keyseq>", func0_p);
+ 	
+ 	rl_bind_key_in_map(<key-numb>, <function>, <keymap>);
+ 	
+ 	//as line as if it is line from inputrc and perform key bindings
+ 	rl_parse_and_bind(<line>)
+ 	
+ 	// select key maps (print current keymap, ect...)
+ 	
+ 	//associating function names and bindings
+ 	
+ 	
+ 
+ 	return 0;
+ } // end initialize_readline
 
  
  /* A static variable for holding the line. */

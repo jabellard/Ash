@@ -46,6 +46,7 @@ int count, key;
 {
 int direction;
 register int start, end, i;
+//use of readline variable in custom function
 start = rl_point;
 if (rl_point >= rl_end)
 return (0);
