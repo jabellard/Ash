@@ -67,12 +67,13 @@ void loop(void)
 		args = parse_command(command);
 		int i = 0;
 		
-		
+		/*
 		while (args[i] != NULL)
 		{
 			printf("%s ", args[i]);
 			i++;
 		} // end 
+		*/
 		
 		   //  printf("hhhh   ");
 		
@@ -198,11 +199,33 @@ int _execute(char **args)
   if (pid == 0) {
     // Child process
    // printf("before error");
-    if (execvp(args[0], args) == -1) {
+   
+   /* 
+   
+   if (execvp(args[0], args) == -1) {
     	//printf("error...... ");
       //perror("lshhhhh");
       exit(EXIT_FAILURE);
     }
+   
+   
+   */
+    
+		// create array of strings (argument list)
+	
+	 char **argss = (char *[]){"ls", "-i", "-l"};
+	 int i;
+	 for (i = 0; i <= 2; i++)
+	 {
+	 	printf("%d: %s \n", i, argss[i]);
+	 }
+	 
+	 //char *argv[] = args;
+	
+	
+	// execute ls 99ith the arguments list
+	execvp(argss[0], argss);
+		printf("after");
 
   } else if (pid < 0) {
     // Error forking
