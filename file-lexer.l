@@ -1,23 +1,20 @@
-
 %{
-#include "file-lexer.h"
+#include "y.tab.h"
 %}
 
-
+%%
+"mode"			{yylval.id = yytext; return identifier;}
+"keymap"		{yylval.id = yytext; return identifier;}
+"history_size"		{yylval.id = yytext; return identifier;}
+[0-9]+			{yylval.num = atoi(yytext); return number;}		
+[a-zA-Z][_a-zA-Z0-9]*	{yylval.id = yytext; return identifier;}
+[ \t\n]			;
+[=;]			{return yytext[0];}
+.			{ECHO, yyerror("unexpected input");}
 %%
 
-"mode"			return MODE;
-"keymap"		return KEYMAP;
-"history_size"		return HISTORY_SIZE;
-:			return COLON;
-
-[a-zA-Z][_a-zA-Z0-9]*	return STRINGG;
-[1-9][0-9]*		return INTT;
-[ \n\t]			;
-.			printf("unexpted input\n");
-%% 
-// define this function so that the lexer can be used in another program
-int yywrap(void)
+int yywrap()
 {
+
 	return 1;
 }
