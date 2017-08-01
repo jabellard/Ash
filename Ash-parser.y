@@ -41,8 +41,8 @@
 %%
 
 // rules
-pipeline_list: pipeline pipeline_terminator // verify the recursion logic
-|	pipeline pipeline_terminator pipeline_list
+pipeline_list: pipeline PIPELINE_TERMINATOR // verify the recursion logic
+|	PIPELINE_TERMINATOR pipeline_list
 ;
 
 pipeline_terminator: '\n'
