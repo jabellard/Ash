@@ -1,0 +1,10 @@
+total 44
+drwxrwxr-x  3 joenatech7 joenatech7 4096 Aug  2 19:51 .
+drwxrwxr-x 13 joenatech7 joenatech7 4096 Aug  2 12:28 ..
+drwxrwxr-x  8 joenatech7 joenatech7 4096 Aug  2 19:42 .git
+-rw-rw-r--  1 joenatech7 joenatech7    0 Aug  2 19:52 log
+-rwxrwxr-x  1 joenatech7 joenatech7 8768 Aug  2 19:51 ls-redir
+-rw-rw-r--  1 joenatech7 joenatech7  298 Aug  2 18:49 out
+-rw-rw-r--  1 joenatech7 joenatech7 5692 Aug  2 18:36 p2.c
+-rw-rw-r--  1 joenatech7 joenatech7  568 Aug  2 19:51 redir.c
+-rw-rw-r--  1 joenatech7 joenatech7  567 Aug  2 19:50 redir.c~
