@@ -1,55 +1,38 @@
-// options
+
 %option 
 
-// c code block
+
 %{
 
 // include token declarations header file
+#include "y.tab.h"
 %}
 
 
 %%
 
 
-/*
-// tokens
-%token WORD
-%token WHITESPACE
-%token DIGIT
-%token PIPE
-%token AMPERSAND
-%token PIPELINE_TERMINATOR
-%token REDIRECTION0 // ">"
-%token REDIRECTION1 // "<"
-%token REDIRECTION2 // ">>"
-%token REDIRECTION3 // "<<"
-%token REDIRECTION4 // "<&"
-%token REDIRECTION5 // ">&"
-%token REDIRECTION6 // "<<-"
-%token REDIRECTION7 // "&>"
-%token REDIRECTION8 // "<>"
-%token REDIRECTION9 // ">|"
-*/
 
-// patterns and actions
-[a-zA-Z_][a-zA-Z0-9_-]		{return WORD;}
-[0-9]+				{return NUMBER;}
-"|"				{return PIPE;} // possibly incorrect
-"&"				{return AMPERSAND;}
-";"|"\n"			{return PIPELINE_TERMINATOR;}
-">"				{return REDIRECTION0;}
-"<"				{return REDIRECTION1;}
-">>"				{return REDIRECTION2;}
-"<<"				{return REDIRECTION3;}
-"<&"				{return REDIRECTION4;}
-">&"				{return REDIRECTION5;}
-"<<-"				{return REDIRECTION6;}
-"&>"				{return REDIRECTION7;}
-"<>"				{return REDIRECTION8;}
-">|"				{return REDIRECTION9;}
-[ \t]+				{return WHITESPACE;}
-.				; // for anything else
+[a-zA-Z_][a-zA-Z0-9_-]		{yylval.s = yytext; return WORD;}
+[0-9]+				{yylval.s = yytext; return NUMBER;}
+"|"				{yylval.s = yytext; return PIPE;} // possibly incorrect
+"&"				{yylval.s = yytext; return AMPERSAND;}
+[;\n]				{yylval.s = yytext; return PIPELINE_TERMINATOR;}
+">"				{yylval.s = yytext; return REDIRECTION0;}
+"<"				{yylval.s = yytext; return REDIRECTION1;}
+">>"				{yylval.s = yytext; return REDIRECTION2;}
+"<<"				{yylval.s = yytext; return REDIRECTION3;}
+"<&"				{yylval.s = yytext; return REDIRECTION4;}
+">&"				{yylval.s = yytext; return REDIRECTION5;}
+"<<-"				{yylval.s = yytext; return REDIRECTION6;}
+"&>"				{yylval.s = yytext; return REDIRECTION7;}
+"<>"				{yylval.s = yytext; return REDIRECTION8;}
+">|"				{yylval.s = yytext; return REDIRECTION9;}
+[ \t]+				{yylval.s = yytext; return WHITESPACE;}
+.				{yyerror("unexpected input");} // for anything else, report error
 
 %%
 
 // empty
+
+int yywrap() {return 1;};
