@@ -1,3 +1,4 @@
+//_SVID_SOURCE
 #include "exec.h"
 #include <stdio.h>
 #include <string.h>
@@ -5,13 +6,14 @@
 
 // -----------------------simple_command functions
 
-simple_command * create_simple_command(void)
+struct simple_command * create_simple_command(void)
 {
-	//dynamically create a simple command (not not be right)
-	struct simple_command_sp *sc = malloc(sizeof(struct sc));
+	//dynamically create a simple command (not not be right, double check)
+	struct simple_command *sc =  (struct simple_command*) malloc(sizeof(struct simple_command));
 	
 	// make sure all pointers in the simple_command_ars array initially point to NULL
-	for (int i = 0; i < MAX_ARGS; i++)
+	int i = 0;
+	for (i; i < MAX_ARGS; i++)
 	{
 		sc->simple_command_args[i] = NULL;
 	} // end for
@@ -23,31 +25,32 @@ simple_command * create_simple_command(void)
 	return sc;
 } // end create_simple_command()
 
-int destroy_simple_command(simple_command *sc)
+int destroy_simple_command(struct simple_command *sc)
 {
 	// free the space allocated to store the arguments in the commmand
-	for (int i = 0; i < simple_command_num_args; i++)
+	int i = 0;
+	for (i; i < sc->simple_command_num_args; i++)
 	{
 		// check for de-allocation error here
 		free(sc->simple_command_args[i]);
 	} // end for
 	
 	// free the simple_command struture
-	free(sc)
+	free(sc);
 	
 	return 0;
 	
 } // end destroy_simple_command()
 
-int insert_arg_in_simple_command(simple_command *sc, char *arg)
+int insert_arg_in_simple_command(struct simple_command *sc, const char *arg)
 {
 	// check if there is available space for the insertion
-	if (simple_command_num_args < (MAX_ARGS - 1))
+	if (sc->simple_command_num_args < (MAX_ARGS - 1))
 	{
-		simple_command_args[simple_command_num_args] = strdup(arg);
+		sc->simple_command_args[sc->simple_command_num_args] = strdup(arg);
 		
 		// increase the number of arguments currently stored in the command
-		simple_command_num_args++;
+		sc->simple_command_num_args++;
 		
 		return 0;
 	} // end if
@@ -61,9 +64,10 @@ int insert_arg_in_simple_command(simple_command *sc, char *arg)
 
 
 
-void print_simple_command(const simple_command *sc)
+void print_simple_command(const struct simple_command *sc)
 {
-	for (int i = 0; i < sc->simple_command_num_args; i++)
+	int i = 0;
+	for (i; i < sc->simple_command_num_args; i++)
 	{
 		printf("%s ", sc->simple_command_args[i]);
 	} // end for
@@ -71,16 +75,17 @@ void print_simple_command(const simple_command *sc)
 
 } // end print_simple_command()
 
-simple_command * simple_command_dup(const simple_command * sc)
+struct simple_command * simple_command_dup(const struct simple_command * sc)
 {
 	// create a ne99 simple command
-	simple_command *new_sc = create_simple_command();
+	struct simple_command *new_sc = create_simple_command();
 	
 	// copy value of current arguments member
 	new_sc->simple_command_num_args = sc->simple_command_num_args;
 	
 	// copy data pointed to by pointer array
-	for (int i = 0; i < sc->simple_command_num_args; i++)
+	int i = 0;
+	for (i; i < sc->simple_command_num_args; i++)
 	{
 		new_sc->simple_command_args[i] = strdup(sc->simple_command_args[i]);
 	
@@ -93,14 +98,13 @@ simple_command * simple_command_dup(const simple_command * sc)
 
 // ---------------------------------shell_pipeline functions
 
-shell_pipeline * create_shell_pipeline(void)
+struct shell_pipeline * create_shell_pipeline(void)
 {
-
-	// dynamically create the structure
-	struct shell_pipeline *sp = malloc(sizeof(struct sp));
+	struct shell_pipeline *sp = (struct shell_pipeline*) malloc(sizeof(struct shell_pipeline));
 	
 	// make sure all pointers in the simple_commands array initially point to NULL
-	for (int i = 0; i < MAX_COMMANDS; i++)
+	int i = 0;
+	for (i; i < MAX_COMMANDS; i++)
 	{
 		sp->simple_commands[i] = NULL;
 	} // end for
@@ -121,10 +125,11 @@ shell_pipeline * create_shell_pipeline(void)
 
 } // end create_shell_pipeline()
 
-int destroy_shell_pipeline(shell_pipeline *sp)
+int destroy_shell_pipeline(struct shell_pipeline *sp)
 {
 	// free the space allocated to store the commands in the pipeline
-	for (int i = 0; i < shell_pipeline_num_commands; i++)
+	int i = 0;
+	for (i; i < sp->shell_pipeline_num_commands; i++)
 	{
 		destroy_simple_command(sp->simple_commands[i]);
 	} // end for
@@ -138,16 +143,17 @@ int destroy_shell_pipeline(shell_pipeline *sp)
 
 
 
-int insert_simple_command_in_shell_pipeline(shell_pipeline *sp, simple_command *sc)
+int insert_simple_command_in_shell_pipeline(struct shell_pipeline *sp, const struct simple_command *sc)
 {
 	// check if there is available space for the insertion
-	if (int i = 0; i < (MAX_COMMANDS - 1); i++)
+
+	if (sp->shell_pipeline_num_commands < (MAX_COMMANDS - 1))
 	{
 		// duplicate the simple_command structure
-		simple_command *sc_dup = simple_command_dup(sc);
+		struct simple_command *sc_dup = simple_command_dup(sc);
 		
 		// make the insertion
-		sp->simple_commands[shell_pipeline_num_commands] = sc_dup;
+		sp->simple_commands[sp->shell_pipeline_num_commands] = sc_dup;
 		
 		return 0;
 	} // end if
@@ -160,17 +166,18 @@ int insert_simple_command_in_shell_pipeline(shell_pipeline *sp, simple_command *
 } // end insert_simple_command_in_shell_pipeline()
 
 
-void print_shell_pipeline(const shell_pipeline *sp)
+void print_shell_pipeline(const struct shell_pipeline *sp)
 {
-	for (int i = 0; i < sp->shell_pipeline_num_commands; i++)
+	int i = 0;
+	for (i; i < sp->shell_pipeline_num_commands; i++)
 	{
-		printf("command %d: " (i + 1));
+		printf("command %d: ", (i + 1));
 		print_simple_command(sp->simple_commands[i]);
 	} // end for
 
 } // end print_shell_pipeline()
 
-int execute_shell_pipeline(shell_pipeline *sp)
+int execute_shell_pipeline(const struct shell_pipeline *sp)
 {
 	// save stdin, stdout, and stderr
 	
