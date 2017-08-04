@@ -49,7 +49,7 @@ int insert_arg_in_simple_command(struct simple_command *sc, const char *arg)
 	{
 		sc->simple_command_args[sc->simple_command_num_args] = strdup(arg);
 		
-		// increase the number of arguments currently stored in the command
+		// increment the number of arguments currently stored in the command
 		sc->simple_command_num_args++;
 		
 		return 0;
@@ -154,6 +154,9 @@ int insert_simple_command_in_shell_pipeline(struct shell_pipeline *sp, const str
 		
 		// make the insertion
 		sp->simple_commands[sp->shell_pipeline_num_commands] = sc_dup;
+		
+		// increment number of commands stored in the pipeline
+		sp->shell_pipeline_num_commands++;
 		
 		return 0;
 	} // end if
