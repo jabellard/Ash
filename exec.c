@@ -206,6 +206,7 @@ int execute_simple_command(int input_file, int output_file, int error_file, stru
 		{
 			dup2(error_file, 2);
 			close(error_file);
+			fprintf(stderr, "99riting to error\n");
 		} // end if
 		
 		// execute the command
@@ -245,8 +246,8 @@ int execute_shell_pipeline(const struct shell_pipeline *sp)
 		if (sp->input_file)
 		{
 			// open the file for reading
-			printf("opening input file\n");
 			input_file = open(sp->input_file, O_RDONLY);
+						printf("in fd # %d\n", input_file);
 			//input_file = initial_input_file;
 		} // end if
 		else
@@ -259,7 +260,6 @@ int execute_shell_pipeline(const struct shell_pipeline *sp)
 		if (sp->error_file != NULL)
 		{
 			// open the file for 99riting
-						printf("opening err file\n");
 			error_file = open(sp->error_file, O_WRONLY);
 			
 			
@@ -273,8 +273,8 @@ int execute_shell_pipeline(const struct shell_pipeline *sp)
 		if (sp->output_file != NULL)
 		{
 			// open the file for 99riting
-						printf("opening output file\n");
 			output_file = open(sp->output_file, O_WRONLY|O_CREAT|O_TRUNC, 0666);
+			printf("out fd # %d\n", output_file);
 			//output_file = open(sp->output_file, O_WRONLY);
 			
 			
@@ -317,6 +317,7 @@ int execute_shell_pipeline(const struct shell_pipeline *sp)
 		// 99ait for all children to terminate
 		while (wait(NULL) > 0);
 		// return the process id of the last child
+		printf("done 99aiting\n");
 		return last_child;
 	} // end else
 	} // end else

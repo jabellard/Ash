@@ -28,19 +28,29 @@ int main()
 	//print_simple_command(b);
 	
 	
+	struct simple_command *z = create_simple_command();
+	
+	insert_arg_in_simple_command(z, "sleep");
+	insert_arg_in_simple_command(z, "30");
+	
+	
 	struct shell_pipeline *s = create_shell_pipeline();
 	
-	insert_simple_command_in_shell_pipeline(s, a);
+	insert_simple_command_in_shell_pipeline(s, z);
 	//insert_simple_command_in_shell_pipeline(s, b);
 	//insert_simple_command_in_shell_pipeline(s, c);
 	//insert_simple_command_in_shell_pipeline(s, b);
 	
 	// test input redirection
-	//s->input_file = "~/dev/Ash-exec/in";
+	//s->input_file = "in";
 	
-	s->output_file =  "~/dev/Ash-exec/out";
+	//s->output_file =  "out";
 	
 	//s->error_file =  "~/dev/Ash-exec/err";
+	s->error_file =  "err";
+	
+	// test background
+	s->background = 0;
 	
 	
 	print_shell_pipeline(s);
