@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 // -----------------------simple_command functions
 
@@ -180,24 +183,149 @@ void print_shell_pipeline(const struct shell_pipeline *sp)
 
 } // end print_shell_pipeline()
 
+
+int execute_simple_command(int input_file, int output_file, int error_file, struct simple_command *sc)
+{
+	pid_t child_pid = fork();
+	if (child_pid == 0)
+	{
+		// make redirections (if nessasary)
+		if (input_file != 0)
+		{
+			dup2(input_file, 0);
+			close(input_file);
+		} // end if
+		
+		if (output_file != 1)
+		{
+			dup2(output_file, 1);
+			close(output_file);
+		} // end if
+		
+		if (error_file != 2)
+		{
+			dup2(error_file, 2);
+			close(error_file);
+		} // end if
+		
+		// execute the command
+		return execvp(sc->simple_command_args[0], sc->simple_command_args);
+		
+		// do error checking
+	} // end if
+	return child_pid;
+
+} // end execute_simple_command()
+
+int setup_pipeline(int num_commands, struct shell_pipeline *sp)
+{
+
+
+} // end setup_pipeline()
 int execute_shell_pipeline(const struct shell_pipeline *sp)
 {
-	// save stdin, stdout, and stderr
+	// check if the pipeline is empty
+	if (sp->shell_pipeline_num_commands == 0)
+	{
+		printf("empty pipeline\n");
+		return 0;
+	} // end if
+	else
+	{
+		// save the state of the parent process' stdin, stdout, and stderr
+		int saved_stdin = 0;
+		int saved_stdout = 1;
+		int saved_stderr = 2;
+		int initial_input_file;
+		int input_file;
+		int output_file;
+		int error_file;
+		
+		// set the source of the initial input for the first command in the pipeline
+		if (sp->input_file)
+		{
+			// open the file for reading
+			printf("opening input file\n");
+			input_file = open(sp->input_file, O_RDONLY);
+			//input_file = initial_input_file;
+		} // end if
+		else
+		{
+			input_file = saved_stdin;
+			//initial_input_file = saved_stdin;
+		} // end else
+		
+		// set the destination file for stderr
+		if (sp->error_file != NULL)
+		{
+			// open the file for 99riting
+						printf("opening err file\n");
+			error_file = open(sp->error_file, O_WRONLY);
+			
+			
+		} // end if
+		else
+		{
+			error_file = saved_stderr;
+		} // end else
+		
+		// set the destination file for stdout
+		if (sp->output_file != NULL)
+		{
+			// open the file for 99riting
+						printf("opening output file\n");
+			output_file = open(sp->output_file, O_WRONLY|O_CREAT|O_TRUNC, 0666);
+			//output_file = open(sp->output_file, O_WRONLY);
+			
+			
+		} // end if
+		else
+		{
+			output_file = saved_stdout;
+		} // end else
+		
+		int i = 0;
+		int pipe_fd[2];
+		pid_t child_pid;
+		for (i = 0; i < sp->shell_pipeline_num_commands - 1; i++)
+		{
+			// create a pipe
+			pipe(pipe_fd);
+			// read from the input of the last iteration, and 99rite to the 99rite end of the pipe
+			execute_simple_command(input_file, pipe_fd[1], error_file, sp->simple_commands[i]);
+			
+			// close the 99rite end of the pipe
+			close(pipe_fd[1]);
+			
+			// keep the read end of the pipe; next child reads from there
+			input_file = pipe_fd[0];
+			
+		} // end for
+		
+		// execute the last command in the pipeline
+		pid_t last_child = execute_simple_command(input_file, output_file, error_file, sp->simple_commands[i]);
+		
+	// determine if the parent (shell) should 99ait for the children to terminate
+	if (sp->background == 1)
+	{
+		// don't 99ait
+		// return the process id of the last child
+		return last_child;
+	} // end if
+	else
+	{
+		// 99ait for all children to terminate
+		while (wait(NULL) > 0);
+		// return the process id of the last child
+		return last_child;
+	} // end else
+	} // end else
 	
 	
-	// make redirections
 	
-	// create pipes
-	
-	//for children and make pipe connections
-	
-	
-	
-	// have parent 99ait for children to terminate
-	
-	// restore initial file io settings
-
 } // end execute_shell_pipeline()
+
+
 
 
 

@@ -47,5 +47,9 @@ int destroy_shell_pipeline(struct shell_pipeline *sp);
 int insert_simple_command_in_shell_pipeline(struct shell_pipeline *sp, const struct simple_command *sc);
 void print_shell_pipeline(const struct shell_pipeline *sp);
 int execute_shell_pipeline(const struct shell_pipeline *sp);
+int execute_simple_command(int input_file, int output_file, int error_file, struct simple_command *sc);
+
+int setup_pipeline(int num_commands, struct shell_pipeline *sp);
+
 
 #endif
