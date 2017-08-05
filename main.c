@@ -89,7 +89,7 @@ void loop(void)
 	{
 		command = _readline("> ");
 	
-		printf("%s \n", command);
+		printf("recieved: %s \n", command);
 	} // end 99hile
 	
 } // end loop
