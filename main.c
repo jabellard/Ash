@@ -61,13 +61,16 @@ void loop(void)
 	char **args;
 	int status = 1;
 	
+	/* 
+	
 	do{
 	
-		command = _readline("> ");
-		printf("recieved: %s\n", command);
-		args = parse_command(command);
+		//command = _readline("> ");
+		//printf("recieved: %s\n", command);
+		//args = parse_command(command);
+				args = parse_command("ls -a -l");
 		
-		/*
+		
 		int i = 0;
 		while (args[i] != NULL)
 		{
@@ -75,11 +78,20 @@ void loop(void)
 			i++;
 		} // end
 		
-		*/
-		status = execute_command(args);
+		
+		//status = execute_command(args);
 		
 		free(args);
 	}while (status);
+	*/
+	
+	while(1)
+	{
+		command = _readline("> ");
+	
+		printf("%s \n", command);
+	} // end 99hile
+	
 } // end loop
 
 char *get_command(void)
