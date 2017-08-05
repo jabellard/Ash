@@ -25,13 +25,7 @@
                 return LESS; 
         } 
  
-">>"     { 
-                return GREATGREAT; 
-        } 
- 
-">&"     { 
-                return GREATAMPERSAND; 
-        } 
+
  
 “|”    { 
                 return PIPE; 
@@ -44,15 +38,15 @@
  
 [^ \t\n][^ \t\n]*  { 
                 /* Assume that file names have only alpha chars */ 
-                yylval.string_val = strdup(yytext); 
+                yylval.str = strdup(yytext); 
                 return WORD; 
         } 
  
-/* Add more tokens here */ 
+
  
 .       { 
                 /* Invalid character in input */ 
-                return NOTOKEN;
+                return BAD_TOKEN;
          }
 
 %%
