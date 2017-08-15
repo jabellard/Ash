@@ -6,6 +6,23 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include "builtins.h"
+
+// mapping of shell builtin to function
+Builtin builtins[] =
+{
+	{"cd", &Ash_cd},
+	{"exit", &Ash_exit},
+	{"help", &Ash_help}
+
+};
+
+// calculate the number of builtins
+int num_builtins()
+{
+
+	return sizeof(builtins) / sizeof(Builtin);
+}
 
 // -----------------------simple_command functions
 
@@ -23,8 +40,7 @@ struct simple_command * create_simple_command(void)
 	
 	// set current number of arguments to zero
 	sc->simple_command_num_args = 0;
-	
-	//return a pointer to the structure
+		//return a pointer to the structure
 	return sc;
 } // end create_simple_command()
 
@@ -186,6 +202,19 @@ void print_shell_pipeline(const struct shell_pipeline *sp)
 
 int execute_simple_command(int input_file, int output_file, int error_file, struct simple_command *sc)
 {
+	// check if simple command is a shell builtin
+	int i = 0;
+	for (i; i < num_builtins(); i++)
+	{
+		if (strcmp(sc->simple_command_args[0], builtins[i].name) == 0)
+		{
+			// the command is a builtin
+			return (*builtins[i].function)(sc->simple_command_args);
+		} // end if
+	
+	
+	} // end for
+	
 	pid_t child_pid = fork();
 	if (child_pid == 0)
 	{
@@ -294,6 +323,9 @@ int execute_shell_pipeline(const struct shell_pipeline *sp)
 			// read from the input of the last iteration, and 99rite to the 99rite end of the pipe
 			execute_simple_command(input_file, pipe_fd[1], error_file, sp->simple_commands[i]);
 			
+			// stop loop if the command just executed 99as a shell builtin????
+			
+			
 			// close the 99rite end of the pipe
 			close(pipe_fd[1]);
 			
@@ -325,8 +357,6 @@ int execute_shell_pipeline(const struct shell_pipeline *sp)
 	
 	
 } // end execute_shell_pipeline()
-
-
 
 
 
