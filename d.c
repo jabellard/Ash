@@ -34,9 +34,13 @@ int main()
 	insert_arg_in_simple_command(z, "30");
 	
 	
+	struct simple_command *t = create_simple_command();
+	insert_arg_in_simple_command(t, "cd");
+		//insert_arg_in_simple_command(t, "/home/joenatech7/dev/Ash");
+	
 	struct shell_pipeline *s = create_shell_pipeline();
 	
-	insert_simple_command_in_shell_pipeline(s, z);
+	insert_simple_command_in_shell_pipeline(s, t);
 	//insert_simple_command_in_shell_pipeline(s, b);
 	//insert_simple_command_in_shell_pipeline(s, c);
 	//insert_simple_command_in_shell_pipeline(s, b);
