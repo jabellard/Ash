@@ -27,22 +27,32 @@
  
 
  
-“|”    { 
+"|"    { 
                 return PIPE; 
         } 
  
-“&”    { 
+"&"    { 
                 return AMPERSAND; 
         } 
+        
+";"	{
+		return SEMICOLON;
+
+	}
  
+
  
-[a-zA-Z][a-zA-Z0-9]*  { 
-                /* Assume that file names have only alpha chars */ 
+[-_/a-zA-Z0-9][-_/a-zA-Z0-9]*  { 
+                /*
+                [a-zA-Z][a-zA-Z0-9]*  { 
+                
                 yylval.str = strdup(yytext); 
                 return WORD; 
         } 
- 
-
+        */
+                yylval.str = strdup(yytext); 
+                return ID; 
+        } 
  
 .       { 
                 /* Invalid character in input */ 

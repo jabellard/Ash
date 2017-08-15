@@ -11,17 +11,14 @@
 
 // global variables/decalrations
 static char *line_buffer = (char *)NULL;
-static char HISTORY_FILE[80]; // LOOK UP MAX LENGHT OF FILE PATH
+static char HISTORY_FILE[100]; // LOOK UP MAX LENGHT OF FILE PATH
 static int NUM_ENTRIES_HISTORY_FILE;
 static int MAX_NUM_ENTRIES_HISTORY_FILE = 500;
 char *command_list[] =
 {
-	"entryA",
-	"entryB",
-	"entryC",
-	"comA",
-	"comB",
-	"comC",
+	"cd",
+	"exit",
+	"help",
 	NULL
 }; // end command_list
 
@@ -233,7 +230,7 @@ int initialize_history()
 	
 	char *home_dir = getenv("HOME");
  	strcpy(HISTORY_FILE, home_dir);
- 	strcat(HISTORY_FILE, "/.Ash_history\0");
+ 	strcat(HISTORY_FILE, "/.Ash_config/.inputrc\0");
  	
 	
 	NUM_ENTRIES_HISTORY_FILE = count_lines_in_file(HISTORY_FILE);
@@ -285,7 +282,7 @@ int initialize_readline()
 	
 
 	// set INPUTRC environment variable
-	int r = setenv("INPUTRC", "~/.Ash_inputrc", 0);
+	int r = setenv("INPUTRC", HISTORY_FILE, 0);
 	if (r != 0);
 	{
 		return 1;

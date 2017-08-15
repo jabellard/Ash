@@ -1,0 +1,4 @@
+#! /bin/bash
+
+# copy directory of configuration files to hime directory of user
+cp -r .Ash_config ~/
