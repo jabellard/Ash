@@ -14,6 +14,7 @@ int Ash_cd(char **args)
 		{
 		
 			// error checking code
+			perror("error...\n");
 		
 		} // end if
 		else
