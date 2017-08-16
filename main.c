@@ -19,6 +19,8 @@ int main(int argc, char **argv)
 
 void loop()
 {
+	// initialize readline/history
+	initialize_readline();
 	char *pipeline_list = NULL;
 	char *pipeline_list_ = NULL;
 	while (1)

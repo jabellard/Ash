@@ -12,8 +12,11 @@
 // global variables/decalrations
 static char *line_buffer = (char *)NULL;
 static char HISTORY_FILE[100]; // LOOK UP MAX LENGHT OF FILE PATH
+static char INPUTRC_FILE[100];
 static int NUM_ENTRIES_HISTORY_FILE;
 static int MAX_NUM_ENTRIES_HISTORY_FILE = 500;
+
+// change this
 char *command_list[] =
 {
 	"cd",
@@ -21,6 +24,75 @@ char *command_list[] =
 	"help",
 	NULL
 }; // end command_list
+
+int remove_lines_from_file(char * file_name, int start_line, int line_count)
+{
+	FILE *fp;
+	int lines = 1;
+	int dest = 0;
+	int src = 0;
+	int pos = -1;
+	
+	char *buffer;
+	size_t buffer_size;
+	
+	// open the file for reading
+	fp = fopen(file_name, "r");
+	if (!fp)
+	{
+		fprintf(stderr, "remove_lines_from_file(): could not open \"%s\"\n", file_name);
+		return -1;
+	} // end if
+	
+	
+	// determine the file size, and allocate buffer to hold file contents
+	fseek(fp, 0, SEEK_END);
+	buffer_size = ftell(fp);
+	rewind(fp);
+	
+	buffer = (char *) malloc(buffer_size + 1);
+	
+	// populate the buffer, count lines in file, and save file offsets
+	while((buffer[++pos] = fgetc(fp)) != EOF)
+	{
+		if (buffer[pos] == '\n')
+		{
+			lines++;
+			if (lines == start_line)
+			{
+				dest = pos + 1;
+			} // end if
+			if (lines == start_line + line_count)
+			{
+				src = pos + 1;
+			} // end if			
+		} // end if
+	} // end while
+	
+	
+	// check if deletion of requested file region can be done
+	if (start_line + line_count > lines)
+	{
+		free(buffer);
+		fclose(fp);
+		fprintf(stderr, "remove_lines_from_file(): deletion of requested file region is invalid\n");
+		return - 1;
+	} // end if
+	
+	// overwrite the file region to be deleted in the buffer
+	memmove(buffer + dest, buffer + src, pos - src);
+	
+	// re-open the file and write back all but the deleted file region
+	freopen(file_name, "w", fp);
+	fwrite(buffer, pos - src + dest, 1, fp);
+	
+	// clean up
+	free(buffer);
+	fclose(fp);
+	return 0;
+	
+
+} // end remove_lines_from_file
 
 int invert_case_in_region(int count, int key)
 {
@@ -222,7 +294,7 @@ int initialize_history()
 	using_history();
 	
 	//set the maximum number of entries in the history list (modifies history_max_entries var)
-	stifle_history(500);
+	stifle_history(MAX_NUM_ENTRIES_HISTORY_FILE);
 	
 	//read history from the history file (last history_max_entries recorded commands)
 	int start_index = 0;
@@ -230,10 +302,11 @@ int initialize_history()
 	
 	char *home_dir = getenv("HOME");
  	strcpy(HISTORY_FILE, home_dir);
- 	strcat(HISTORY_FILE, "/.Ash_config/.inputrc\0");
+ 	strcat(HISTORY_FILE, "/.Ash_config/.history\0");
  	
 	
 	NUM_ENTRIES_HISTORY_FILE = count_lines_in_file(HISTORY_FILE);
+	//printf("%d entries\n", NUM_ENTRIES_HISTORY_FILE);
 	
 	if (NUM_ENTRIES_HISTORY_FILE <= history_max_entries)
 	{
@@ -246,7 +319,7 @@ int initialize_history()
 		end_index = -1;
 	} // end else
 	
-	read_history_range(HISTORY_FILE, start_index, end_index); // "~/.Ash_history"
+	read_history_range(HISTORY_FILE, start_index, end_index); // "~/.Ash_config/.history"
 	
 	//disable the recording of timestamps for history entries
 	history_write_timestamps = 0;
@@ -280,16 +353,22 @@ int initialize_readline()
 	// make sure readline() does not ovveride custom bindings
 	rl_startup_hook = &custom_key_bindings_emacs;
 	
-
-	// set INPUTRC environment variable
-	int r = setenv("INPUTRC", HISTORY_FILE, 0);
+	// set INPUTRC environemnt variable
+	char *home_dir = getenv("HOME");
+ 	strcpy(INPUTRC_FILE, home_dir);
+ 	strcat(INPUTRC_FILE, "/.Ash_config/.inputrc\0");
+	
+	
+	int r = setenv("INPUTRC", INPUTRC_FILE, 0);
 	if (r != 0);
 	{
 		return 1;
 	} // end if
 	
 	//read the input file
-	//rl_read_init_file(getenv("INPUTRC"));
+	rl_read_init_file(getenv("INPUTRC"));	
+	
+
 
 	return 0;
 } // end initialize_readline
@@ -318,19 +397,21 @@ char *_readline(const char * prompt_string)
 	
 		if (NUM_ENTRIES_HISTORY_FILE  >= MAX_NUM_ENTRIES_HISTORY_FILE)
 		{
-			// remove oldest entry(ies)
-			num_entries_to_remove = NUM_ENTRIES_HISTORY_FILE - MAX_NUM_ENTRIES_HISTORY_FILE + 1;
+			// remove oldest half of the entries in the file
+			num_entries_to_remove = NUM_ENTRIES_HISTORY_FILE - MAX_NUM_ENTRIES_HISTORY_FILE + (MAX_NUM_ENTRIES_HISTORY_FILE / 2);
 		
 			//remove first num_entries_to_remove lines from the file
-			// solution 1: remove first 100 entries so that removal cost is amortized
-			//solution 2: remove only first entry (cost is not amortized)
-		
+			// solution 1: remove first HALF entries so that removal cost is amortized
+			remove_lines_from_file(HISTORY_FILE, 1, num_entries_to_remove);
+			
+			
 			// add this command to the file
+			append_history(1, HISTORY_FILE); 			
 		} // end if
 		else
 		{
 			// add this command to the history file
-			append_history(1, HISTORY_FILE); // "~/.Ash_history"
+			append_history(1, HISTORY_FILE); 
 		} // end else
 	} // end if
 	

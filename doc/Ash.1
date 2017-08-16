@@ -1,0 +1,94 @@
+.\" man page for Ash (Alpha shell)
+.TH ASH "1" "August 2017" "Ash 2.0" "Shell Manual"
+.SH NAME \"--------------------------------------
+Ash \- Alpha shell.
+.SH SYNOPSIS \"--------------------------------------
+sample grammer: cmd [arg]* [| cmd [arg]*]*
+.SH DESCRIPTION \"--------------------------------------
+Ash is a bash-like shell.
+
+
+.SH GRAMMAR \"--------------------------------------
+<identifier> ::= any sequence of the following character classes:
+.br
+	[a-z], [A-Z], [0-9], and [-_/.]
+
+<cmd> ::= <identifier>
+.br
+
+<arg> ::= <identifier>
+.br
+
+<arg_list> ::= <arg_list> <arg>
+.br
+	| 
+.br
+	
+<simple_command> ::= <cmd> <arg_list>
+.br
+
+<simple_command_list> ::= <simple_command_list> '|' <simple_command>
+.br
+	| <simple_command>
+.br
+
+<redirection> ::= '<' <identifier>
+.br
+	| '>' <identifier>
+.br
+	| '2' '>' <identifier>
+.br
+
+<redirection_list> ::= <redirection_list> <redirection>
+.br
+	| 
+.br
+
+<background> ::= '&'
+.br
+	| 
+.br
+
+<pipeline_terminator> ::= '\n'
+.br
+	| ';'
+.br
+	| ';' '\n'
+.br
+
+<pipeline> ::= <simple_command_list> <redirection_list> <background> <pipeline_terminator>
+.br
+	| <pipeline_terminator>
+.br
+
+<pipeline_list> ::= <pipeline_list> <pipeline>
+.br
+	| <pipeline>
+.SH BUILTINS \"--------------------------------------
+The following are the shell builtins:
+.br
+(1) help : display help for the shell.
+.br
+(2) cd <path-name> : change the current working directory to <path-name>.
+.br
+(3) exit : exit from the shell.
+.SH FILES \"--------------------------------------
+The following files are stored in the ~/.Ash_config directory: 
+.br
+(1) .inputrc -- contains configurations for readline , and 
+.br
+(2) .history -- contains the command history of the shell.
+.SH EXAMPLES \"--------------------------------------
+ls -a -l | wc -l 
+.br 
+ls -a -l > <file> 
+.br
+cd <file-path>; ls -al
+
+.SH SEE ALSO \"--------------------------------------
+bash(1), zsh(1)
+.SH COPYRIGHT
+-
+.SH AUTHOR \"--------------------------------------
+.TP 
+Joe Nathan Abellard (github.com/joenatech7)

@@ -29,7 +29,8 @@ int Ash_cd(char **args)
 
 int Ash_help(char **args)
 {
-	printf("Shell grammar: \n");
+	printf("Sample shell grammar:\n cmd [arg]* [| cmd [arg]*]*\n");
+	printf("execute \"man Ash\" for more details\n");
 	return 0;
 
 } // end Ash_help

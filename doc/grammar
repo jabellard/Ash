@@ -1,0 +1,40 @@
+BNF for Ash
+The following is the grammar of Ash 2.0 in Backus-Naur Form (BNF)
+
+<identifier> ::= any sequence of the following character classes:
+	[a-z], [A-Z], [0-9], and [-_/.]
+
+<cmd> ::= <identifier>
+
+<arg> ::= <identifier>
+
+<arg_list> ::= <arg_list> <arg>
+	| 
+	
+<simple_command> ::= <cmd> <arg_list>
+
+<simple_command_list> ::= <simple_command_list> '|' <simple_command>
+	| <simple_command>
+
+<redirection> ::= '<' <identifier>
+	| '>' <identifier>
+	| '2' '>' <identifier>
+
+<redirection_list> ::= <redirection_list> <redirection>
+	| 
+
+<background> ::= '&'
+	| 
+
+<pipeline_terminator> ::= '\n'
+	| ';'
+	| ';' '\n'
+
+<pipeline> ::= <simple_command_list> <redirection_list> <background> <pipeline_terminator>
+	| <pipeline_terminator>
+
+<pipeline_list> ::= <pipeline_list> <pipeline>
+	| <pipeline>
+
+
+	
