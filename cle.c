@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <string.h>
 #include "cle.h"
+#include "err.h"
 
 
 
@@ -51,6 +52,10 @@ int remove_lines_from_file(char * file_name, int start_line, int line_count)
 	rewind(fp);
 	
 	buffer = (char *) malloc(buffer_size + 1);
+	if(!buffer)
+	{
+		err_msg("malloc");
+	} // end if
 	
 	// populate the buffer, count lines in file, and save file offsets
 	while((buffer[++pos] = fgetc(fp)) != EOF)
@@ -73,7 +78,7 @@ int remove_lines_from_file(char * file_name, int start_line, int line_count)
 	// check if deletion of requested file region can be done
 	if (start_line + line_count > lines)
 	{
-		free(buffer);
+		sfree(buffer);
 		fclose(fp);
 		fprintf(stderr, "remove_lines_from_file(): deletion of requested file region is invalid\n");
 		return - 1;
@@ -83,12 +88,22 @@ int remove_lines_from_file(char * file_name, int start_line, int line_count)
 	memmove(buffer + dest, buffer + src, pos - src);
 	
 	// re-open the file and write back all but the deleted file region
-	freopen(file_name, "w", fp);
+	fp = freopen(file_name, "w", fp);
+	if(!fp)
+	{
+		err_msg("freopen, remove_lines_from_file()");
+	} // end if
 	fwrite(buffer, pos - src + dest, 1, fp);
 	
+	
 	// clean up
-	free(buffer);
-	fclose(fp);
+	sfree(buffer);
+	
+	// close the file
+	if(fclose(fp) == EOF)
+	{
+		err_msg("fclose");
+	} // end if	
 	return 0;
 	
 
@@ -381,7 +396,7 @@ char *_readline(const char * prompt_string)
 	// if the line buffer has already pointed to allocated memory, then free it
 	if (line_buffer)
 	{
-		free(line_buffer);
+		sfree(line_buffer);
 		line_buffer = (char *)NULL;
 	} // end if
 	

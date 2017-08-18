@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "err.h"
 
 int Ash_cd(char **args)
 {
@@ -10,11 +11,12 @@ int Ash_cd(char **args)
 	} // end if
 	else
 	{
-		if (chdir(args[1]) != 0)
+		int result = chdir(args[1]);
+		if (result != 0)
 		{
 		
 			// error checking code
-			perror("error...\n");
+			err_msg("chdir")
 		
 		} // end if
 		else

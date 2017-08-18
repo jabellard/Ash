@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "cle.h"
+#include "err.h"
 
 
 
@@ -32,6 +33,10 @@ void loop()
 		
 		// add ne99line and \o at the end of the pipeline_list
 		pipeline_list_ = (char *) malloc(strlen(pipeline_list) + 3);
+		if(!pipeline_list)
+		{
+			err_msg("malloc");
+		} // end if
 		
 		strcpy(pipeline_list_, pipeline_list);
 		strcat(pipeline_list_, "\n\0");
@@ -58,7 +63,7 @@ void loop()
 		//free(pipeline_list);
 		
 		// free pipeline_list_
-		free(pipeline_list_);
+		sfree(pipeline_list_);
 		
 		pipeline_list_ = NULL;
 		

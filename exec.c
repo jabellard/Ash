@@ -7,6 +7,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include "builtins.h"
+#include "err.h"
 
 // mapping of shell builtin to function
 Builtin builtins[] =
@@ -30,7 +31,10 @@ struct simple_command * create_simple_command(void)
 {
 	//dynamically create a simple command (not not be right, double check)
 	struct simple_command *sc =  (struct simple_command*) malloc(sizeof(struct simple_command));
-	
+	if(!sc)
+	{
+		err_msg("malloc");
+	} // end if
 	// make sure all pointers in the simple_command_ars array initially point to NULL
 	int i = 0;
 	for (i; i < MAX_ARGS; i++)
@@ -51,11 +55,11 @@ int destroy_simple_command(struct simple_command *sc)
 	for (i; i < sc->simple_command_num_args; i++)
 	{
 		// check for de-allocation error here
-		free(sc->simple_command_args[i]);
+		sfree(sc->simple_command_args[i]);
 	} // end for
 	
 	// free the simple_command struture
-	free(sc);
+	sfree(sc);
 	
 	return 0;
 	
@@ -120,6 +124,10 @@ struct simple_command * simple_command_dup(const struct simple_command * sc)
 struct shell_pipeline * create_shell_pipeline(void)
 {
 	struct shell_pipeline *sp = (struct shell_pipeline*) malloc(sizeof(struct shell_pipeline));
+	if(!sp)
+	{
+		err_msg("malloc");
+	} // end if
 	
 	// make sure all pointers in the simple_commands array initially point to NULL
 	int i = 0;
@@ -154,7 +162,7 @@ int destroy_shell_pipeline(struct shell_pipeline *sp)
 	} // end for
 	
 	// free the shell_pipeline structure
-	free(sp);
+	sfree(sp);
 	
 	return 0;
 
@@ -276,12 +284,17 @@ int execute_shell_pipeline(const struct shell_pipeline *sp)
 		{
 			// open the file for reading
 			input_file = open(sp->input_file, O_RDONLY);
+			if(input_file == -1)
+			{
+				err_msg("open, input file");
+			} // end if
 			//printf("in fd # %d\n", input_file);
 			//input_file = initial_input_file;
 		} // end if
 		else
 		{
 			input_file = saved_stdin;
+			
 			//initial_input_file = saved_stdin;
 		} // end else
 		
@@ -290,6 +303,10 @@ int execute_shell_pipeline(const struct shell_pipeline *sp)
 		{
 			// open the file for 99riting
 			error_file = open(sp->error_file, O_WRONLY);
+			if(error_file == -1)
+			{
+				err_msg("open, error file");
+			} // end if			
 			
 			
 		} // end if
@@ -303,6 +320,10 @@ int execute_shell_pipeline(const struct shell_pipeline *sp)
 		{
 			// open the file for 99riting
 			output_file = open(sp->output_file, O_WRONLY|O_CREAT|O_TRUNC, 0666);
+			if(output_file == -1)
+			{
+				err_msg("open, output file");
+			} // end if			
 			//printf("out fd # %d\n", output_file);
 			//output_file = open(sp->output_file, O_WRONLY);
 			
