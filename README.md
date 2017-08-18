@@ -1,5 +1,5 @@
 
-# Ash (Alpha shell) -- version 2.0
+# Ash (Alpha shell) -- version 2.1
 ## I. Shell Features
 
 ### This version of the shell has the following features:
