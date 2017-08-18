@@ -16,7 +16,7 @@ int Ash_cd(char **args)
 		{
 		
 			// error checking code
-			err_msg("chdir")
+			err_msg("chdir");
 		
 		} // end if
 		else
