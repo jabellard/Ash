@@ -83,7 +83,7 @@ int Ash_jobs(Process *p, int in_file, int out_file, int err_file)
 	{
 		if (job_is_completed(j))
 		{
-			dprintf(out_file, "[%d] %ld Completed\n", j->id, (long)j->pgid);
+			dprintf(out_file, "[%d] %ld Done\n", j->id, (long)j->pgid);
 		} // end if
 		else if (job_is_stopped(j))
 		{
@@ -135,21 +135,21 @@ int is_builtin(Process *p)
 
 void init_shell()
 {
-	printf("about to init shell\n");
+
     /* See if we are running interactively.  */
     Ash_terminal = STDIN_FILENO;
     Ash_is_interactive = isatty(Ash_terminal);
     if (Ash_is_interactive)
     {
-    	printf("running interac\n");
+
         /* Loop until we are in the foreground.  */
         while (tcgetpgrp (Ash_terminal) != (Ash_pgid = getpgrp ()))
         {
-        	printf("not in fore\n");
+
             kill (-Ash_pgid, SIGTTIN);        
         } // end 99hile
 
-	printf("in fore\n");
+
         /* Ignore interactive and job-control signals.  */
         signal (SIGINT, SIG_IGN);
         signal (SIGQUIT, SIG_IGN);
@@ -168,10 +168,10 @@ void init_shell()
 
         /* Grab control of the terminal.  */
         tcsetpgrp (Ash_terminal, Ash_pgid);
-	printf("grabed term\n");
+
         /* Save default terminal attributes for shell.  */
         tcgetattr (Ash_terminal, &Ash_tmodes);
-        printf("saved term\n");
+
     }
 } // end init_shell()
 
@@ -457,7 +457,8 @@ int job_is_completed(Job *j)
 
 void format_job_info (Job *j, const char *status)
 {
-	fprintf (stderr, "[%d] %ld %s\n", j->id, (long)j->pgid, status);
+	fprintf (stdout, "[%d] %ld %s\n", j->id, (long)j->pgid, status);
+	
 } // end format_job_info
 
 
@@ -538,6 +539,7 @@ void wait_for_job(Job *j)
 
 void do_job_notification(void)
 {
+	update_status();
 	Job *last_job = NULL;
 	Job *curr_job = NULL;
 	Job *next_job = NULL;
@@ -660,13 +662,13 @@ void add_job_to_table(Job *j)
 
 void execute_job(Job *j)
 {
-	printf("execute_job...\n");
+
 	Process *p;
 	pid_t pid;
 	int pipe_fds[2];
 	int in_file;
 	int out_file;
-			printf("-------------------\n");
+
 	if (j->in_file)
 	{
 		j->stdin_ = open(j->in_file, O_RDONLY);
@@ -694,10 +696,9 @@ void execute_job(Job *j)
 			exit(1);
 		}
 	}
-		printf("-------------------\n");
+
 	in_file = j->stdin_;
 	int i = 0;
-			printf("---------before for----------\n");
 	for (i; i < j->num_processes; i++)
 	{
 		/* Set up pipes, if necessary.  */
@@ -722,14 +723,11 @@ void execute_job(Job *j)
 		if ((result = is_builtin(j->processes[i])) != -1)
 		{
 			
-			printf("its a builtin (%d)\n", result);
 			(builtins_func[result])(j->processes[i], in_file, out_file, j->stderr_);
-			printf("after built\n");			
 			(j->processes[i])->completed = 1;
 		}
 		else
 		{
-					printf("its not a builtin\n");
 			/* Fork the child processes.  */
 			pid = fork ();
 			if (pid == 0)
@@ -765,8 +763,8 @@ void execute_job(Job *j)
 			close (out_file);
 		in_file = pipe_fds[0];
 	}
-				printf("---------after for----------\n");
-	format_job_info(j, "launched");
+
+	//format_job_info(j, "launched");
 	// assume everything went ok, and add job to the job table
 	add_job_to_table(j);
 	//do_job_notification();

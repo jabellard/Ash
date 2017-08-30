@@ -1299,7 +1299,7 @@ case 18:
 		//destroy_job(j);
 		
 		// print job table
-		print_job_table();
+		//print_job_table();
 		// reset shell pipeline flag
 		jj = 0;
 	;
