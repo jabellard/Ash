@@ -32,7 +32,7 @@ char *builtins[] =
 
  typedef int (*b_func)(Process *p, int in_file, int out_file, int err_file);
  
- b_func *builtins_func[] = 
+ b_func builtins_func[] = 
  {
  	&Ash_cd,
  	&Ash_exit,
@@ -124,7 +124,7 @@ int is_builtin(Process *p)
 	int i = 0;
 	for (i; builtins[i]; i++)
 	{
-		if(strcmp(p->argv[1], builtins[i]) == 0)
+		if(strcmp(p->argv[0], builtins[i]) == 0)
 		{
 			return i;
 		} // end if
@@ -660,12 +660,13 @@ void add_job_to_table(Job *j)
 
 void execute_job(Job *j)
 {
+	printf("execute_job...\n");
 	Process *p;
 	pid_t pid;
 	int pipe_fds[2];
 	int in_file;
 	int out_file;
-	
+			printf("-------------------\n");
 	if (j->in_file)
 	{
 		j->stdin_ = open(j->in_file, O_RDONLY);
@@ -693,8 +694,10 @@ void execute_job(Job *j)
 			exit(1);
 		}
 	}
+		printf("-------------------\n");
 	in_file = j->stdin_;
 	int i = 0;
+			printf("---------before for----------\n");
 	for (i; i < j->num_processes; i++)
 	{
 		/* Set up pipes, if necessary.  */
@@ -718,12 +721,15 @@ void execute_job(Job *j)
 		int result;
 		if ((result = is_builtin(j->processes[i])) != -1)
 		{
-			printf("its a builtin\n");
-			(*(builtins_func[result]))(j->processes[i], in_file, out_file, j->stderr_);
+			
+			printf("its a builtin (%d)\n", result);
+			(builtins_func[result])(j->processes[i], in_file, out_file, j->stderr_);
+			printf("after built\n");			
 			(j->processes[i])->completed = 1;
 		}
 		else
 		{
+					printf("its not a builtin\n");
 			/* Fork the child processes.  */
 			pid = fork ();
 			if (pid == 0)
@@ -759,7 +765,7 @@ void execute_job(Job *j)
 			close (out_file);
 		in_file = pipe_fds[0];
 	}
-	
+				printf("---------after for----------\n");
 	format_job_info(j, "launched");
 	// assume everything went ok, and add job to the job table
 	add_job_to_table(j);
