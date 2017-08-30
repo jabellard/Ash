@@ -5,6 +5,7 @@
 #include <string.h>
 #include "cle.h"
 #include "err.h"
+#include "e.h"
 
 
 
@@ -20,6 +21,8 @@ int main(int argc, char **argv)
 
 void loop()
 {
+	//initialize the shell
+	init_shell();
 	// initialize readline/history
 	initialize_readline();
 	char *pipeline_list = NULL;

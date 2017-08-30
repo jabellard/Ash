@@ -1,17 +1,19 @@
 %{
 #include <string.h>
 #include <stdio.h>
-#include "exec.h"
+#include "e.h"
 // function prototypes
 int yylex(void);
 void yyerror(char *);
 
 // global declarations
-static struct simple_command *sc = (struct simple_command*) NULL;
-static struct shell_pipeline *sp = (struct shell_pipeline*) NULL;
+//static struct simple_command *sc = (struct simple_command*) NULL;
+//static struct shell_pipeline *sp = (struct shell_pipeline*) NULL;
+static Process *p = (Process *)NULL;
+static Job *j = (Job *)NULL;
 static int i = 0; // simple command flag -- controls 99hen a ne99 simple command instance should be created
-static int j = 0; // shell pipeline flag -- controls 99hen a ne99 shell pipeline instance should be created
-
+static int jj = 0; // shell pipeline flag -- controls 99hen a ne99 shell pipeline instance should be created
+static int job_num = 0;
 
 %}
 
@@ -37,12 +39,17 @@ cmd:
 		if (i == 0)
 		{
 			//create a simple command instance
-			sc = create_simple_command();
+			//sc = create_simple_command();
+			p = create_process();
+			
+			
+		
 			
 			// set simple command flag
 			i = 1;
 			// insert the command
-			insert_arg_in_simple_command(sc, $1);
+			//insert_arg_in_simple_command(sc, $1);
+			insert_arg_in_process(p, $1);
 				
 		} // end if
 		else
@@ -51,17 +58,19 @@ cmd:
 			//i++;
 		
 			// insert the command
-			insert_arg_in_simple_command(sc, $1);		
+			//insert_arg_in_simple_command(sc, $1);	
+			insert_arg_in_process(p, $1);				
 		} // end else
 		
-		if (j == 0)
+		if (jj == 0)
 		{
 
 			// initialize the shell pipeline instance
-			sp = create_shell_pipeline();
+			//sp = create_shell_pipeline();
+			j = create_job();
 			
 			// set shell pipeline flag 
-			j = 1;		
+			jj = 1;		
 		
 		} // end if
 		
@@ -78,7 +87,8 @@ arg:
 		//i++;
 		
 		// insert the arg
-		insert_arg_in_simple_command(sc, $1);		 
+		//insert_arg_in_simple_command(sc, $1);	
+		insert_arg_in_process(p, $1);	 
 	}
 
 ;
@@ -107,11 +117,13 @@ simple_command:
 		// print_simple_command(sc);
 		 
 		 // insert the command in pipeline
-		insert_simple_command_in_shell_pipeline(sp, sc);
+		//insert_simple_command_in_shell_pipeline(sp, sc);
+		insert_process_in_job(j, p);
 		 
 		 
 		 //free the simple command instance
-		 destroy_simple_command(sc);
+		 //destroy_simple_command(sc);
+		 destroy_process(p);
 		 
 		 // reset simple command flag
 		 i = 0;
@@ -137,7 +149,8 @@ redirection:
 		//printf("in redirection\n");
 		
 		// set the input file
-		sp->input_file = strdup($2);
+		//sp->input_file = strdup($2);
+		j->in_file = strdup($2);
 	}
 	| GREAT ID 
 	{
@@ -145,7 +158,8 @@ redirection:
 		//printf("out redirection\n");
 		
 		// set the output file
-		sp->output_file = strdup($2);
+		//sp->output_file = strdup($2);
+		j->out_file = strdup($2);
 	}
 	| '2' GREAT ID
 	{
@@ -153,7 +167,8 @@ redirection:
 		//printf("err redirection\n");
 		
 		// set the error file
-		sp->error_file = strdup($3);
+		//sp->error_file = strdup($3);
+		j->err_file = strdup($3);
 	}
 ;
 
@@ -174,7 +189,8 @@ background:
 		//printf("background on\n");
 		
 		// set background flag on
-		sp->background = 1;
+		//sp->background = 1;
+		j->foreground = 0;
 	}
 	|
 	{
@@ -206,24 +222,47 @@ pipeline:
 	simple_command_list redirection_list background pipeline_terminator
 	{
 	
+	
+		// assign a number to the job
+		j->id = job_num;
 		//printf("p-A\n");
 		
 		// print the pipeline
 		//print_shell_pipeline(sp);
+		//print_job(j);
+		
+		
+		
 		
 		// execute the pipeline
-		execute_shell_pipeline(sp);
+		//execute_shell_pipeline(sp);
+		// EXECUTE THE JOB AND ADD IT TO THE JOB TABLE (IF APPROPRIATE)
+		execute_job(j);
+		
+		//increase the job number
+		job_num++;
+		
+		//notify
+		do_job_notification();
+		
 		
 		// destroy the shell pipeline instance
-		destroy_shell_pipeline(sp);
+		//destroy_shell_pipeline(sp);
+		//destroy_job(j);
 		
+		// print job table
+		print_job_table();
 		// reset shell pipeline flag
-		j = 0;
+		jj = 0;
 	}
 	| pipeline_terminator
 	{
 		//printf("p-B\n");
-	}
+		// print job table
+		//print_job_table();
+		//notify
+		do_job_notification();	
+	}	
 	;
 pipeline_list:
 	pipeline_list pipeline
