@@ -27,6 +27,7 @@ char *builtins[] =
 	"bg",
 	"help",
 	"kill",
+	"killall",
 	NULL,
 }; // end builtins[]
 
@@ -41,6 +42,7 @@ char *builtins[] =
  	&Ash_bg,
  	&Ash_help,
  	&Ash_kill,
+ 	&Ash_killall,
  	NULL,
  }; // end builtins_func()
 
@@ -99,12 +101,148 @@ int Ash_jobs(Process *p, int in_file, int out_file, int err_file)
 
 int Ash_fg(Process *p, int in_file, int out_file, int err_file)
 {
+	// grammar fg %<job-num>
+	
+	if (p->argc == 2)
+	{
+		
+					//check if the first char is '%'
+					if (p->argv[1][0] != '-')
+					{
+						// argument is  not started 99ith '%' char
+						dprintf(err_file, "Ash: kill: invalid argument \"%s\"\n", p->argv[1]);
+						dprintf(err_file, "usage:\n");
+						dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+						return -1;
+						
+					} // end if
+					else
+					{
+						//1. convert the rest of the string str[1..strlen(str) - 1] to an integer
+						
+						int job_num = atoi(&p->argv[1][1]);
+					
+						//2. find the job 99ith the corresponding job number (if the job number is valid)
+						Job *j;
+						j = find_job_id(job_num);
+						
+						if (!j)
+						{
+							dprintf(err_file, "Ash: kill: invalid job number \"%d\"\n", job_num);
+							return -1;
+						} // end if
+						else
+						{
+							// continue the job in the background
+							continue_job(j, 1);
+						
+						} // end else
+					
 
+					} // end else			
+	} // end if
+	else
+	{
+		// bad grammer (invalid number of arguments)
+		dprintf(err_file, "Ash: kill: invalid number of arguments\n");
+		dprintf(err_file, "usage:\n");
+		dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+		return -1;	
+	} // end else
+	return 0;
 } // end Ash_fg
 
 int Ash_bg(Process *p, int in_file, int out_file, int err_file)
 {
+	// grammar: bg %<job-num> ...
+	//	MAKE SURE YACC CAN PARSE '%' CHAR
+	//check if command grammar is OK----------------------
+	// check if there are enough arguments
+	if (p->argc < 2)
+	{
+		// error
+		// bad grammer (invalid number of arguments)
+		dprintf(err_file, "Ash: kill: invalid number of arguments\n");
+		dprintf(err_file, "usage:\n");
+		dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+		return -1;
+	} // end if
+	else
+	{
+		//parse each argument
+		int i = 1;
+		for (i; i < p->argc;i++)
+		{
+			//check if the arg string is of the right lenght (>= 2)
+			if(strlen(p->argv[i]) < 2)
+			{
+				// argument is not of the right lenght; print err message and continue
+				if (strlen(p->argv[i] < 2)
+				{
+					// argument is not of the right lenght; print err message and continue
+					dprintf(err_file, "Ash: kill: invalid argument \"%s\"\n", p->argv[i]);
+					dprintf(err_file, "usage:\n");
+					dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+					continue;				
+				} // end if
+				else
+				{
+					//check if the first char is '%'
+					if (p->argv[i][0] != '-')
+					{
+						// argument is  not started 99ith '%' char
+						dprintf(err_file, "Ash: kill: invalid argument \"%s\"\n", p->argv[i]);
+						dprintf(err_file, "usage:\n");
+						dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+						continue;
+						
+					} // end if
+					else
+					{
+						//1. convert the rest of the string str[1..strlen(str) - 1] to an integer
+						
+						int job_num = atoi(&p->argv[i][1]);
+					
+						//2. find the job 99ith the corresponding job number (if the job number is valid)
+						Job *j;
+						j = find_job_id(job_num);
+						
+						if (!j)
+						{
+							dprintf(err_file, "Ash: kill: invalid job number \"%d\"\n", job_num);
+							continue;
+						} // end if
+						else
+						{
+							// continue the job in the background
+							continue_job(j, 0);
+						
+						} // end else
+					
 
+					} // end else				
+				} // end else
+			} // end if
+			else
+			{
+				//check if the first char is '%'
+				if (p->argv[i][i] != '%')
+				{
+					// argument is  not started 99ith '%' char
+				} // end if
+				else
+				{
+					//1. convert the rest of the string str[1..strlen(str) - 1] to an integer
+					
+					//2. find the job 99ith the corresponding job number (if the job number is valid)
+					
+					//3. continue the job
+					;
+				} // end else
+			} // end else
+		} // end for
+	} // end else
+	return 0;
 } // end Ash_bg()
 
 int Ash_help(Process *p, int in_file, int out_file, int err_file)
@@ -116,8 +254,278 @@ int Ash_help(Process *p, int in_file, int out_file, int err_file)
 
 int Ash_kill(Process *p, int in_file, int out_file, int err_file)
 {
+	//grammar: kill l | s<sig-name> | n<sig-num> %<job-num> ...
+	
+	//check if there are enough arguments
+	if (p->argc == 2 || p->argc >= 3)
+	{
+		// gammar 1: list signals
+		if (p->argc == 2)
+		{
+			// check the argument
+			if (strcmp(p->argv[1], "l") == 0)
+			{
+				// valid argument, list signals
+				// use a script to generate array of signal names
+				dprintf(out_file, "list \n");
+			} // end if
+			else
+			{
+				// invalid argument
+				dprintf(err_file, "Ash: kill: invalid argument \"%s\"\n", p->argv[1]);
+				dprintf(err_file, "usage:\n");
+				dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+				return -1;
+			} // end else
+		} // end if
+		// grammar 2: send signals		
+		else
+		{
+			// the signal number to be sent
+			int sig_num = 0;
+			// ----------------------------------------------check the signal sepecification
+			if (p->argv[1][0] == 's')
+			{
+				dprintf(out_file, "inside s...\n");
+				// check if the signal spec is of the right length
+						dprintf(out_file, "lenght =  %d\n", strlen(p->argv[1]));				
+				if (strlen(p->argv[1]) == 7 || strlen(p->argv[1]) == 8)
+				{	
 
+					// find out 99hich signal is to be sent
+					if (strcmp(&p->argv[1][1], "SIGCONT") == 0)
+					{
+						sig_num = SIGCONT;
+					} // end if
+					else if (strcmp(&p->argv[1][1], "SIGKILL") == 0)
+					{
+						sig_num = SIGKILL;
+					} // end else if
+					else if (strcmp(&p->argv[1][1], "SIGSTOP") == 0)
+					{
+						sig_num = SIGSTOP;
+					} // end else if
+					else if (strcmp(&p->argv[1][1], "SIGQUIT") == 0)
+					{
+						sig_num = SIGQUIT;
+					} // end else if
+					else
+					{
+									dprintf(out_file, "1...\n");
+						// invalid signal
+						// invalid signal spec lenght
+						dprintf(err_file, "Ash: kill: invalid signal specification \"%s\"\n", &p->argv[1][1]);
+						dprintf(err_file, "usage:\n");
+						dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+						return -1;
+					} // end else
+				} // end if
+				else
+				{
+									dprintf(out_file, "2...\n");				
+					// invalid signal spec lenght
+					dprintf(err_file, "Ash: kill: invalid signal specification \"%s\"\n", p->argv[1]);
+					dprintf(err_file, "usage:\n");
+					dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+					return -1;
+				} // end else
+			} // end if
+			else if (p->argv[1][0] == 'n')
+			{
+				// check if the signal spec is of the right lenght
+				if (strlen(p->argv[1]) >= 2)
+				{
+					sig_num = atoi(&p->argv[1][1]);
+				} // end if
+				else
+				{
+					// invalid signal spec lenght
+					dprintf(err_file, "Ash: kill: invalid signal specification \"%s\"\n", p->argv[1]);
+					dprintf(err_file, "usage:\n");
+					dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+					return -1;
+				} // end else
+			} // end else if
+			else
+			{
+										dprintf(out_file, "3...\n");			
+				dprintf(err_file, "Ash: kill: invalid signal specification \"%s\"\n", p->argv[1]);
+				dprintf(err_file, "usage:\n");
+				dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+				return -1;
+			} // end else
+			
+			// -------------------------------------------check the jobspec and send signals
+			int i;
+			for (i = 2; i < p->argc; i++)
+			{
+				//check if the arg string is of the right lenght (>= 2)
+				if(strlen(p->argv[i]) < 2)
+				{
+					// argument is not of the right lenght; print err message and continue
+					dprintf(err_file, "Ash: kill: invalid argument \"%s\"\n", p->argv[i]);
+					dprintf(err_file, "usage:\n");
+					dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+					continue;
+				} // end if
+				else
+				{
+					//check if the first char is '%'
+					if (p->argv[i][0] != '-')
+					{
+						// argument is  not started 99ith '%' char
+						dprintf(err_file, "Ash: kill: invalid argument \"%s\"\n", p->argv[i]);
+						dprintf(err_file, "usage:\n");
+						dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+						
+					} // end if
+					else
+					{
+						//1. convert the rest of the string str[1..strlen(str) - 1] to an integer
+						int job_num = -1;
+						job_num = atoi(&p->argv[i][1]);
+					
+						//2. find the job 99ith the corresponding job number (if the job number is valid)
+						Job *j;
+						j = find_job_id(job_num);
+						
+						if (!j)
+						{
+							dprintf(err_file, "Ash: kill: invalid job number \"%d\"\n", job_num);
+							continue;
+						} // end if
+						else
+						{
+							// send the signal to the job
+							if (kill(-j->pgid, sig_num) == -1)
+							{
+								dprintf(err_file, "Ash: kill: could not send signalto job # %d\n", job_num);
+								continue;
+							} // end if
+							
+						
+						} // end else
+					
+
+					} // end else
+				} // end else
+			} // end for
+		} // end else
+
+	} // end if
+	else
+	{
+		// bad grammer (invalid number of arguments)
+		dprintf(err_file, "Ash: kill: invalid number of arguments\n");
+		dprintf(err_file, "usage:\n");
+		dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+		return -1;
+	} // end else
+	return 0;
 } // end Ash_kill()
+int Ash_killall(Process *p, int in_file, int out_file, int err_file)
+{
+	//grammar: killall [l] or killall s<sig-name> | n<sig-num>
+	
+	//check if there are enough arguments
+	if (p->argc == 2)
+	{
+		int sig_num;
+		if (strcmp(p->argv[1], "l") == 0)
+		{
+			dprintf(out_file, "list \n");
+		} // end if
+		else if (p->argv[1][0] == 's')
+		{
+				dprintf(out_file, "inside s...\n");
+				// check if the signal spec is of the right length
+				dprintf(out_file, "lenght =  %d\n", strlen(p->argv[1]));				
+				if (strlen(p->argv[1]) == 7 || strlen(p->argv[1]) == 8)
+				{	
+
+					// find out 99hich signal is to be sent
+					if (strcmp(&p->argv[1][1], "SIGCONT") == 0)
+					{
+						sig_num = SIGCONT;
+					} // end if
+					else if (strcmp(&p->argv[1][1], "SIGKILL") == 0)
+					{
+						sig_num = SIGKILL;
+					} // end else if
+					else if (strcmp(&p->argv[1][1], "SIGSTOP") == 0)
+					{
+						sig_num = SIGSTOP;
+					} // end else if
+					else if (strcmp(&p->argv[1][1], "SIGQUIT") == 0)
+					{
+						sig_num = SIGQUIT;
+					} // end else if
+					else
+					{
+									dprintf(out_file, "1...\n");
+						// invalid signal
+						// invalid signal spec lenght
+						dprintf(err_file, "Ash: killall: invalid signal specification \"%s\"\n", &p->argv[1][1]);
+						dprintf(err_file, "usage:\n");
+						dprintf(err_file, "killall l  or killall s<signal-name> or killall n<signal-number>\n");
+						return -1;
+					} // end else
+				} // end if
+				else
+				{
+									dprintf(out_file, "2...\n");				
+					// invalid signal spec lenght
+					dprintf(err_file, "Ash: killall: invalid signal specification \"%s\"\n", p->argv[1]);
+					dprintf(err_file, "usage:\n");
+					dprintf(err_file, "killall l  or killall s<signal-name> or killall n<signal-number>\n");
+					return -1;
+				} // end else
+		} // end else if
+		else if (p->argv[1][0] == 'n')
+		{
+				// check if the signal spec is of the right lenght
+				if (strlen(p->argv[1]) >= 2)
+				{
+					sig_num = atoi(&p->argv[1][1]);
+				} // end if
+				else
+				{
+					// invalid signal spec lenght
+					dprintf(err_file, "Ash: killall: invalid signal specification \"%s\"\n", p->argv[1]);
+					dprintf(err_file, "usage:\n");
+					dprintf(err_file, "killall l  or killall s<signal-name> or killall n<signal-number>\n");
+					return -1;
+				} // end else		
+		}
+		else
+		{
+			dprintf(err_file, "Ash: killall: invalid argument \"%s\"\n", p->argv[1]);
+			dprintf(err_file, "usage:\n");
+			dprintf(err_file, "killall l  or killall s<signal-name> or killall n<signal-number>\n");
+			return -1;
+		} // else
+		Job j*;
+		for (j = first_job; j; j = j->next)
+		{
+			if (kill(-j->pgid, sig_num) == -1)
+			{
+				dprintf(err_file, "Ash: killall: could not send signalto job # %d\n", j->id);
+				continue;
+			} // end for
+		
+		} // end for
+					
+	} // end if
+	else
+	{
+		// bad grammer (invalid number of arguments)
+		dprintf(err_file, "Ash: kill: invalid number of arguments\n");
+		dprintf(err_file, "usage:\n");
+		dprintf(err_file, "killall l  or killall s<signal-name> or killall n<signal-number>\n");
+		return -1;
+	} // end else
+	return 0;
+} // end Ash_killall()
 
 int is_builtin(Process *p)
 {

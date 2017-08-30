@@ -82,6 +82,7 @@ int Ash_fg(Process *p, int in_file, int out_file, int err_file);
 int Ash_bg(Process *p, int in_file, int out_file, int err_file);
 int Ash_help(Process *p, int in_file, int out_file, int err_file);
 int Ash_kill(Process *p, int in_file, int out_file, int err_file);
+int Ash_killall(Process *p, int in_file, int out_file, int err_file);
 int is_builtin(Process *p);
 Job* find_job_id(int id);
 
