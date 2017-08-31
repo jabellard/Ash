@@ -51,7 +51,7 @@ int Ash_cd(Process *p, int in_file, int out_file, int err_file)
 	if (p->argv[1] == NULL)
 	{
 		dprintf(err_file, "Ash: expected argument to \"cd\"\n");
-		return 1;
+		return -1;
 	} // end if
 	else
 	{
@@ -61,7 +61,7 @@ int Ash_cd(Process *p, int in_file, int out_file, int err_file)
 		
 			// error checking code
 			err_msg("chdir");
-			return 1;
+			return -1;
 		} // end if
 		else
 		{
@@ -209,7 +209,7 @@ int Ash_bg(Process *p, int in_file, int out_file, int err_file)
 					dprintf(err_file, "Ash: bg: invalid argument \"%s\"\n", p->argv[i]);
 					dprintf(err_file, "usage:\n");
 					dprintf(err_file, "bg %<job-num> ...\n");
-					continue;				
+					return -1;				
 				} // end if
 				else
 				{
@@ -220,7 +220,7 @@ int Ash_bg(Process *p, int in_file, int out_file, int err_file)
 						dprintf(err_file, "Ash: bg: invalid argument \"%s\"\n", p->argv[i]);
 						dprintf(err_file, "usage:\n");
 						dprintf(err_file, "bg %<job-num> ...n");
-						continue;
+						return -1;
 						
 					} // end if
 					else
@@ -236,7 +236,7 @@ int Ash_bg(Process *p, int in_file, int out_file, int err_file)
 						if (!j)
 						{
 							dprintf(err_file, "Ash: kill: invalid job number \"%d\"\n", job_num);
-							continue;
+							return -1;
 						} // end if
 						else
 						{
@@ -374,7 +374,7 @@ int Ash_kill(Process *p, int in_file, int out_file, int err_file)
 					dprintf(err_file, "Ash: kill: invalid argument \"%s\"\n", p->argv[i]);
 					dprintf(err_file, "usage:\n");
 					dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
-					continue;
+					return -1;
 				} // end if
 				else
 				{
@@ -400,7 +400,7 @@ int Ash_kill(Process *p, int in_file, int out_file, int err_file)
 						if (!j)
 						{
 							dprintf(err_file, "Ash: kill: invalid job number \"%d\"\n", job_num);
-							continue;
+							return -1;
 						} // end if
 						else
 						{
@@ -408,7 +408,7 @@ int Ash_kill(Process *p, int in_file, int out_file, int err_file)
 							if (kill(-j->pgid, sig_num) == -1)
 							{
 								dprintf(err_file, "Ash: kill: could not send signalto job # %d\n", job_num);
-								continue;
+								return -1;
 							} // end if
 							
 						
@@ -1080,7 +1080,7 @@ void add_job_to_table(Job *j)
 } // end add_job_to_table();
 
 
-void execute_job(Job *j)
+int execute_job(Job *j)
 {
 
 	Process *p;
@@ -1088,32 +1088,33 @@ void execute_job(Job *j)
 	int pipe_fds[2];
 	int in_file;
 	int out_file;
+	int err_flag = 0;
 
 	if (j->in_file)
 	{
 		j->stdin_ = open(j->in_file, O_RDONLY);
-		if (j->stdin_ < 0)
+		if (j->stdin_ == -1)
 		{
-			perror(j->in_file);
-			exit(1);
+			err_msg(j->in_file);
+			return -1;
 		}
 	}
 	if (j->out_file)
 	{
-		j->stdout_ = open(j->out_file, O_WRONLY|O_CREAT|O_TRUNC, 0666);
-		if (j->stdout_ < 0)
+		j->stdout_ = open(j->out_file, O_WRONLY|O_CREAT|O_TRUNC, 0666); // 666 = rw-rw-rw-
+		if (j->stdout_ == -1)
 		{
-			perror(j->out_file);
-			exit(1);
+			err_msg(j->out_file);
+			return -1;
 		}
 	}
 	if (j->err_file)
 	{
 		j->stderr_ = open(j->err_file, O_WRONLY|O_CREAT|O_TRUNC, 0666);
-		if (j->stderr_ < 0)
+		if (j->stderr_ == -1)
 		{
-			perror(j->out_file);
-			exit(1);
+			err_msg(j->out_file);
+			return -1;
 		}
 	}
 
@@ -1124,10 +1125,10 @@ void execute_job(Job *j)
 		/* Set up pipes, if necessary.  */
 		if (j->processes[i + 1])
 		{
-			if (pipe(pipe_fds) < 0)
+			if (pipe(pipe_fds) == -1)
 			{
-				perror ("pipe");
-				exit (1);
+				err_msg("pipe");
+				return -1;
 			}
 			out_file = pipe_fds[1];
 		}
@@ -1135,15 +1136,15 @@ void execute_job(Job *j)
 		{
 			out_file = j->stdout_;		
 		} // end else
-// ---------------------------------------------------------------------------BULTIN
-/*
-
-*/		
+		
 		int result;
 		if ((result = is_builtin(j->processes[i])) != -1)
 		{
-			
-			(builtins_func[result])(j->processes[i], in_file, out_file, j->stderr_);
+			int bi_result = (builtins_func[result])(j->processes[i], in_file, out_file, j->stderr_);
+			if (bi_result == -1)
+			{
+				return -1;
+			} // end if
 			(j->processes[i])->completed = 1;
 		}
 		else
@@ -1157,8 +1158,8 @@ void execute_job(Job *j)
 			else if (pid < 0)
 			{
 				/* The fork failed.  */
-				perror ("fork");
-				exit (1);
+				err_msg("fork");
+				return -1;
 			}
 			else
 			{
@@ -1170,33 +1171,53 @@ void execute_job(Job *j)
 					{
 						j->pgid = pid;
 					setpgid (pid, j->pgid);
+					}
 				}
 			}
-		}
 		/* Clean up after pipes.  */
 		if (in_file != j->stdin_)
-			close (in_file);
+		{
+			if (close(in_file) == -1)
+			{
+				err_msg("close");
+				return -1;
+			} // end if		
+		} // end if
+
 		if (out_file != j->stdout_)
-			close (out_file);
+		{
+			if (close(out_file) == -1)
+			{
+				err_msg("close");
+				return -1;
+			} // end if		
+		} // end if
+
 		in_file = pipe_fds[0];
-	}
+	} // end else
+	} // end for
 
 	//format_job_info(j, "launched");
-	// assume everything went ok, and add job to the job table
+	//add job to the job table
 	add_job_to_table(j);
 	//do_job_notification();
 	
 
 	// job control stuff
 	if (!Ash_is_interactive)
-		wait_for_job (j);
+	{
+		wait_for_job(j);
+	} // end if
+
 	else if (j->foreground)
-		put_job_in_foreground (j, 0);
+	{
+		put_job_in_foreground(j, 0);	
+	} // end else if
 	else
 	{
-		put_job_in_background (j, 0); 
-		format_job_info (j, "backgroud");
-	}
+		put_job_in_background(j, 0); 
+		format_job_info(j, "backgroud");
+	} // end else
 
 	
 /*
@@ -1216,7 +1237,7 @@ void execute_job(Job *j)
 	
 
 */
-
+	return 0;
 
 } // end execute_job()
 

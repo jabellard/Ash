@@ -103,6 +103,7 @@ Maintained by Magnus Ekdahl <magnus@debian.org>
 #include <string.h>
 #include <stdio.h>
 #include "e.h"
+#include <setjmp.h>
 // function prototypes
 int yylex(void);
 void yyerror(char *);
@@ -110,6 +111,8 @@ void yyerror(char *);
 // global declarations
 //static struct simple_command *sc = (struct simple_command*) NULL;
 //static struct shell_pipeline *sp = (struct shell_pipeline*) NULL;
+
+extern jmp_buf input_prompt;
 static Process *p = (Process *)NULL;
 static Job *j = (Job *)NULL;
 static int i = 0; // simple command flag -- controls 99hen a ne99 simple command instance should be created
@@ -117,7 +120,7 @@ static int jj = 0; // shell pipeline flag -- controls 99hen a ne99 shell pipelin
 static int job_num = 0;
 
 
-#line 20 "parser.y"
+#line 23 "parser.y"
 typedef union
 {
 
@@ -523,9 +526,9 @@ static const short yyrhs[] = {    10,
 
 #if (YY_parse_DEBUG != 0) || defined(YY_parse_ERROR_VERBOSE) 
 static const short yyrline[] = { 0,
-    35,    80,    96,   102,   110,   135,   140,   145,   155,   164,
-   175,   180,   186,   195,   202,   208,   214,   221,   258,   267,
-   272
+    38,    83,    99,   105,   113,   138,   143,   148,   158,   167,
+   178,   183,   189,   198,   205,   211,   217,   224,   281,   290,
+   295
 };
 
 static const char * const yytname[] = {   "$","error","$illegal.","AMPERSAND",
@@ -1077,7 +1080,7 @@ YYLABEL(yyreduce)
   switch (yyn) {
 
 case 1:
-#line 37 "parser.y"
+#line 40 "parser.y"
 {
 		//printf("command \"%s\"\n", $1);
 		if (i == 0)
@@ -1121,7 +1124,7 @@ case 1:
 	;
     break;}
 case 2:
-#line 82 "parser.y"
+#line 85 "parser.y"
 {
 	
 		 //printf("argument \"%s\"\n", $1);
@@ -1135,21 +1138,21 @@ case 2:
 	;
     break;}
 case 3:
-#line 98 "parser.y"
+#line 101 "parser.y"
 {
 	
 		//printf(" argument list: \n");
 	;
     break;}
 case 4:
-#line 103 "parser.y"
+#line 106 "parser.y"
 {
 	
 	
 	;
     break;}
 case 5:
-#line 112 "parser.y"
+#line 115 "parser.y"
 {
 	
 		 //printf("simple command \n");
@@ -1172,19 +1175,19 @@ case 5:
 	;
     break;}
 case 6:
-#line 137 "parser.y"
+#line 140 "parser.y"
 {
 			//printf("1A\n");
 		;
     break;}
 case 7:
-#line 141 "parser.y"
+#line 144 "parser.y"
 {
 			//printf("1B\n");
 		;
     break;}
 case 8:
-#line 147 "parser.y"
+#line 150 "parser.y"
 {
 		// stdin redirection
 		//printf("in redirection\n");
@@ -1195,7 +1198,7 @@ case 8:
 	;
     break;}
 case 9:
-#line 156 "parser.y"
+#line 159 "parser.y"
 {
 		// stdout redirection
 		//printf("out redirection\n");
@@ -1206,7 +1209,7 @@ case 9:
 	;
     break;}
 case 10:
-#line 165 "parser.y"
+#line 168 "parser.y"
 {
 		// stderr redirection
 		//printf("err redirection\n");
@@ -1217,20 +1220,20 @@ case 10:
 	;
     break;}
 case 11:
-#line 177 "parser.y"
+#line 180 "parser.y"
 {
 		//printf("redirection_list--A\n");
 	;
     break;}
 case 12:
-#line 181 "parser.y"
+#line 184 "parser.y"
 {
 		// empty
 		//printf("redirection_list--B\n");	
 	;
     break;}
 case 13:
-#line 188 "parser.y"
+#line 191 "parser.y"
 {
 		//printf("background on\n");
 		
@@ -1240,39 +1243,40 @@ case 13:
 	;
     break;}
 case 14:
-#line 196 "parser.y"
+#line 199 "parser.y"
 {
 		// empty
 		//printf("background off\n");		
 	;
     break;}
 case 15:
-#line 204 "parser.y"
+#line 207 "parser.y"
 {
 	
 		//printf("pipeline terminator--A\n");
 	;
     break;}
 case 16:
-#line 210 "parser.y"
+#line 213 "parser.y"
 {
 	
 		//printf("pipeline terminator--B\n");
 	;
     break;}
 case 17:
-#line 216 "parser.y"
+#line 219 "parser.y"
 {
 		//printf("pipeline terminator--C\n");
 	;
     break;}
 case 18:
-#line 223 "parser.y"
+#line 226 "parser.y"
 {
 	
 	
 		// assign a number to the job
 		j->id = job_num;
+		
 		//printf("p-A\n");
 		
 		// print the pipeline
@@ -1280,14 +1284,33 @@ case 18:
 		//print_job(j);
 		
 		
+/*
+		// execute the job, and check if everything 99ent 99ell
+		if (execute_job(j) == -1)
+		{
+			// destroy the job
+			//destroy_job(j);
+			
+			// stop parsing and return back to the shell prompt
+			//1. make sure parse ignores the rest of the input
+			
+			//2. return to to shell prompt
+			//printf("returning to shell prompt\n");
+			//YYERROR;
+			//longjmp(input_prompt, 1);
+		} // end if
+		else
+		{
+			// increase the job number
+			job_num++;
+		} // end else
+
+*/		
 		
-		
-		// execute the pipeline
-		//execute_shell_pipeline(sp);
-		// EXECUTE THE JOB AND ADD IT TO THE JOB TABLE (IF APPROPRIATE)
+		//execute the job
 		execute_job(j);
 		
-		//increase the job number
+		// increase the job number
 		job_num++;
 		
 		//notify
@@ -1305,7 +1328,7 @@ case 18:
 	;
     break;}
 case 19:
-#line 259 "parser.y"
+#line 282 "parser.y"
 {
 		//printf("p-B\n");
 		// print job table
@@ -1315,13 +1338,13 @@ case 19:
 	;
     break;}
 case 20:
-#line 269 "parser.y"
+#line 292 "parser.y"
 {
 		//printf("pl-A\n");	
 	;
     break;}
 case 21:
-#line 274 "parser.y"
+#line 297 "parser.y"
 {
 	
 		//printf("pl-B\n");	
@@ -1531,7 +1554,7 @@ YYLABEL(yyerrhandle)
 /* END */
 
  #line 1038 "/usr/share/bison++/bison.cc"
-#line 281 "parser.y"
+#line 304 "parser.y"
 
 
 

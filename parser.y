@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "e.h"
+#include <setjmp.h>
 // function prototypes
 int yylex(void);
 void yyerror(char *);
@@ -9,6 +10,8 @@ void yyerror(char *);
 // global declarations
 //static struct simple_command *sc = (struct simple_command*) NULL;
 //static struct shell_pipeline *sp = (struct shell_pipeline*) NULL;
+
+extern jmp_buf input_prompt;
 static Process *p = (Process *)NULL;
 static Job *j = (Job *)NULL;
 static int i = 0; // simple command flag -- controls 99hen a ne99 simple command instance should be created
@@ -225,6 +228,7 @@ pipeline:
 	
 		// assign a number to the job
 		j->id = job_num;
+		
 		//printf("p-A\n");
 		
 		// print the pipeline
@@ -232,14 +236,33 @@ pipeline:
 		//print_job(j);
 		
 		
+/*
+		// execute the job, and check if everything 99ent 99ell
+		if (execute_job(j) == -1)
+		{
+			// destroy the job
+			//destroy_job(j);
+			
+			// stop parsing and return back to the shell prompt
+			//1. make sure parse ignores the rest of the input
+			
+			//2. return to to shell prompt
+			//printf("returning to shell prompt\n");
+			//YYERROR;
+			//longjmp(input_prompt, 1);
+		} // end if
+		else
+		{
+			// increase the job number
+			job_num++;
+		} // end else
+
+*/		
 		
-		
-		// execute the pipeline
-		//execute_shell_pipeline(sp);
-		// EXECUTE THE JOB AND ADD IT TO THE JOB TABLE (IF APPROPRIATE)
+		//execute the job
 		execute_job(j);
 		
-		//increase the job number
+		// increase the job number
 		job_num++;
 		
 		//notify
