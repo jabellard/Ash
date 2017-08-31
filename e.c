@@ -110,9 +110,9 @@ int Ash_fg(Process *p, int in_file, int out_file, int err_file)
 					if (p->argv[1][0] != '-')
 					{
 						// argument is  not started 99ith '%' char
-						dprintf(err_file, "Ash: kill: invalid argument \"%s\"\n", p->argv[1]);
+						dprintf(err_file, "Ash: fg: invalid argument \"%s\"\n", p->argv[1]);
 						dprintf(err_file, "usage:\n");
-						dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+						dprintf(err_file, "fg %<job-num>\n");
 						return -1;
 						
 					} // end if
@@ -128,7 +128,7 @@ int Ash_fg(Process *p, int in_file, int out_file, int err_file)
 						
 						if (!j)
 						{
-							dprintf(err_file, "Ash: kill: invalid job number \"%d\"\n", job_num);
+							dprintf(err_file, "Ash: fg: invalid job number \"%d\"\n", job_num);
 							return -1;
 						} // end if
 						else
@@ -144,9 +144,9 @@ int Ash_fg(Process *p, int in_file, int out_file, int err_file)
 	else
 	{
 		// bad grammer (invalid number of arguments)
-		dprintf(err_file, "Ash: kill: invalid number of arguments\n");
+		dprintf(err_file, "Ash: fg: invalid number of arguments\n");
 		dprintf(err_file, "usage:\n");
-		dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+		dprintf(err_file, "fg %<job-number>\n");
 		return -1;	
 	} // end else
 	return 0;
@@ -162,9 +162,9 @@ int Ash_bg(Process *p, int in_file, int out_file, int err_file)
 	{
 		// error
 		// bad grammer (invalid number of arguments)
-		dprintf(err_file, "Ash: kill: invalid number of arguments\n");
+		dprintf(err_file, "Ash: bg: invalid number of arguments\n");
 		dprintf(err_file, "usage:\n");
-		dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+		dprintf(err_file, "bg %<job-num> ...\n");
 		return -1;
 	} // end if
 	else
@@ -173,16 +173,14 @@ int Ash_bg(Process *p, int in_file, int out_file, int err_file)
 		int i = 1;
 		for (i; i < p->argc;i++)
 		{
-			//check if the arg string is of the right lenght (>= 2)
-			if(strlen(p->argv[i]) < 2)
-			{
+			
 				// argument is not of the right lenght; print err message and continue
-				if (strlen(p->argv[i] < 2)
+				if (strlen(p->argv[i]) < 2)
 				{
 					// argument is not of the right lenght; print err message and continue
-					dprintf(err_file, "Ash: kill: invalid argument \"%s\"\n", p->argv[i]);
+					dprintf(err_file, "Ash: bg: invalid argument \"%s\"\n", p->argv[i]);
 					dprintf(err_file, "usage:\n");
-					dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+					dprintf(err_file, "bg %<job-num> ...\n");
 					continue;				
 				} // end if
 				else
@@ -191,9 +189,9 @@ int Ash_bg(Process *p, int in_file, int out_file, int err_file)
 					if (p->argv[i][0] != '-')
 					{
 						// argument is  not started 99ith '%' char
-						dprintf(err_file, "Ash: kill: invalid argument \"%s\"\n", p->argv[i]);
+						dprintf(err_file, "Ash: bg: invalid argument \"%s\"\n", p->argv[i]);
 						dprintf(err_file, "usage:\n");
-						dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+						dprintf(err_file, "bg %<job-num> ...n");
 						continue;
 						
 					} // end if
@@ -222,24 +220,6 @@ int Ash_bg(Process *p, int in_file, int out_file, int err_file)
 
 					} // end else				
 				} // end else
-			} // end if
-			else
-			{
-				//check if the first char is '%'
-				if (p->argv[i][i] != '%')
-				{
-					// argument is  not started 99ith '%' char
-				} // end if
-				else
-				{
-					//1. convert the rest of the string str[1..strlen(str) - 1] to an integer
-					
-					//2. find the job 99ith the corresponding job number (if the job number is valid)
-					
-					//3. continue the job
-					;
-				} // end else
-			} // end else
 		} // end for
 	} // end else
 	return 0;
@@ -434,6 +414,7 @@ int Ash_killall(Process *p, int in_file, int out_file, int err_file)
 		if (strcmp(p->argv[1], "l") == 0)
 		{
 			dprintf(out_file, "list \n");
+			return 0;
 		} // end if
 		else if (p->argv[1][0] == 's')
 		{
@@ -470,6 +451,15 @@ int Ash_killall(Process *p, int in_file, int out_file, int err_file)
 						dprintf(err_file, "killall l  or killall s<signal-name> or killall n<signal-number>\n");
 						return -1;
 					} // end else
+					Job *j;
+					for (j = first_job; j; j = j->next)
+					{
+					if (kill(-j->pgid, sig_num) == -1)
+					{
+						dprintf(err_file, "Ash: killall: could not send signal to job # %d\n", j->id);
+						continue;
+					} // end if
+					} // end for
 				} // end if
 				else
 				{
@@ -487,6 +477,15 @@ int Ash_killall(Process *p, int in_file, int out_file, int err_file)
 				if (strlen(p->argv[1]) >= 2)
 				{
 					sig_num = atoi(&p->argv[1][1]);
+					Job *j;
+					for (j = first_job; j; j = j->next)
+					{
+					if (kill(-j->pgid, sig_num) == -1)
+					{
+						dprintf(err_file, "Ash: killall: could not send signalto job # %d\n", j->id);
+						continue;
+					} // end if
+					} // end for
 				} // end if
 				else
 				{
@@ -495,36 +494,21 @@ int Ash_killall(Process *p, int in_file, int out_file, int err_file)
 					dprintf(err_file, "usage:\n");
 					dprintf(err_file, "killall l  or killall s<signal-name> or killall n<signal-number>\n");
 					return -1;
-				} // end else		
-		}
+				} // end else	
+
+		
+		} // end else if
+		} // end if
 		else
 		{
-			dprintf(err_file, "Ash: killall: invalid argument \"%s\"\n", p->argv[1]);
+			dprintf(err_file, "Ash: killall: invalid number of arguments \n");
 			dprintf(err_file, "usage:\n");
 			dprintf(err_file, "killall l  or killall s<signal-name> or killall n<signal-number>\n");
 			return -1;
-		} // else
-		Job j*;
-		for (j = first_job; j; j = j->next)
-		{
-			if (kill(-j->pgid, sig_num) == -1)
-			{
-				dprintf(err_file, "Ash: killall: could not send signalto job # %d\n", j->id);
-				continue;
-			} // end for
+		} // end else
 		
-		} // end for
-					
-	} // end if
-	else
-	{
-		// bad grammer (invalid number of arguments)
-		dprintf(err_file, "Ash: kill: invalid number of arguments\n");
-		dprintf(err_file, "usage:\n");
-		dprintf(err_file, "killall l  or killall s<signal-name> or killall n<signal-number>\n");
-		return -1;
-	} // end else
-	return 0;
+		return 0;
+		
 } // end Ash_killall()
 
 int is_builtin(Process *p)
@@ -1221,35 +1205,3 @@ void print_job_table(void)
 	} // end for
 
 } // end print_job_table()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
