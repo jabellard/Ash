@@ -76,7 +76,32 @@ int Ash_exit(Process *p, int in_file, int out_file, int err_file)
 {
 	exit(EXIT_SUCCESS);
 } // end Ash_exit()
+int print_job_command(Job *j, int dest_fd)
+{	
+	dprintf(dest_fd, "\t Command: ");
+	int i = 0;
+	for (i; i < j->num_processes; i++)
+	{
+		int k = 0;
+		for (k; k < (j->processes[i])->argc; k++)
+		{
+			dprintf(dest_fd, "%s ", (j->processes[i])->argv[k]);
+		} // end for
+		if ( (i + 1) < j->num_processes)
+		{
+			dprintf(dest_fd, "| ");
+		} // end if
+	} // end for
+/*
+	if (!j->foreground)
+	{
+		dprintf(dest_fd, "&");
+	} // end if
 
+*/	
+	dprintf(dest_fd, "\n");
+	
+} // end print_job_command()
 int Ash_jobs(Process *p, int in_file, int out_file, int err_file)
 {
 	update_status();
@@ -85,15 +110,18 @@ int Ash_jobs(Process *p, int in_file, int out_file, int err_file)
 	{
 		if (job_is_completed(j))
 		{
-			dprintf(out_file, "[%d] %ld Done\n", j->id, (long)j->pgid);
+			dprintf(out_file, "[%d] %ld Done:\n", j->id, (long)j->pgid);
+			print_job_command(j, out_file);
 		} // end if
 		else if (job_is_stopped(j))
 		{
-			dprintf(out_file, "[%d] %ld Stopped\n", j->id, (long)j->pgid);
+			dprintf(out_file, "[%d] %ld Stopped:\n", j->id, (long)j->pgid);
+			print_job_command(j, out_file);
 		} // end else if
 		else
 		{
-			dprintf(out_file, "[%d] %ld Running\n", j->id, (long)j->pgid);
+			dprintf(out_file, "[%d] %ld Running:\n", j->id, (long)j->pgid);
+			print_job_command(j, out_file);
 		} // end else
 	} // end for
 	return 0;

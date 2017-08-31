@@ -49,6 +49,7 @@ typedef struct _job
 
 
 //----------------------------------function prototypes
+int print_job_command(Job *j, int dest_fd);
 void print_job_table(void);
 void init_shell();
 Process* create_process(void);
