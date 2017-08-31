@@ -611,7 +611,7 @@ Process* create_process(void)
 	p->argc = 0;
 	p->pid = -1;
 	p->completed = 0;
-	p-> stopped = 0;
+	p->stopped = 0;
 	return p;
 
 } // end create_process()
@@ -746,7 +746,7 @@ Job* create_job(void)
 	} // end for
 	
 	j->next = NULL;
-	j-> id = -1;
+	j->id = -1;
 	j->valid = 1;
 	j->num_processes = 0;
 	j->pgid = 0;
@@ -1169,9 +1169,6 @@ void execute_job(Job *j)
 					if (!j->pgid)
 					{
 						j->pgid = pid;
-						//j->id = *jobspec;
-						//*jobspec = *jobspec + 1;
-					}
 					setpgid (pid, j->pgid);
 				}
 			}
