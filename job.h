@@ -1,5 +1,5 @@
-#ifndef EXEC_H
-#define EXEC_H
+#ifndef JOB_H
+#define JOB_H
 
 #include <sys/types.h>
 #include <termios.h>

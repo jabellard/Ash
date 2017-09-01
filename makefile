@@ -1,7 +1,7 @@
 all:
 
 	#gcc -o Ash main.c cle.c builtins.c exec.c y.tab.c lex.yy.c err.c -lreadline
-	gcc  -g -o Ash main.c cle.c  e.c y.tab.c lex.yy.c err.c -lreadline  -w
+	gcc  -g -o Ash main.c cle.c  job.c y.tab.c lex.yy.c err.c -lreadline  -w
 
 install:
 	# copy configuration files in the user's home directory

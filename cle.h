@@ -14,4 +14,4 @@ int count_lines_in_file(const char *);
 
 
 
-#endif // CLE_H_
+#endif

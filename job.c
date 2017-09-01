@@ -4,7 +4,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <string.h>
-#include "e.h"
+#include "job.h"
 #include "err.h"
 #include <signal.h>
 #include <errno.h>

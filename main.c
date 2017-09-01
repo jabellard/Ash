@@ -5,7 +5,7 @@
 #include <string.h>
 #include "cle.h"
 #include "err.h"
-#include "e.h"
+#include "job.h"
 #include <setjmp.h>
 
 jmp_buf input_prompt;
