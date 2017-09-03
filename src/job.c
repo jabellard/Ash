@@ -14,8 +14,7 @@ pid_t Ash_pgid;
 struct termios Ash_tmodes;
 int Ash_terminal;
 int Ash_is_interactive;
-Job *first_job = NULL;
-Job *last_job = NULL;
+Job *job_list_head = NULL;
 
 
 char *builtins[] =
@@ -106,7 +105,7 @@ int Ash_jobs(Process *p, int in_file, int out_file, int err_file)
 {
 	update_status();
 	Job *j;
-	for (j = first_job; j; j = j->next)
+	for (j = job_list_head; j; j = j->next)
 	{
 		if (job_is_completed(j))
 		{
@@ -480,7 +479,7 @@ int Ash_killall(Process *p, int in_file, int out_file, int err_file)
 						return -1;
 					} // end else
 					Job *j;
-					for (j = first_job; j; j = j->next)
+					for (j = job_list_head; j; j = j->next)
 					{
 					if (kill(-j->pgid, sig_num) == -1)
 					{
@@ -506,7 +505,7 @@ int Ash_killall(Process *p, int in_file, int out_file, int err_file)
 				{
 					sig_num = atoi(&p->argv[1][1]);
 					Job *j;
-					for (j = first_job; j; j = j->next)
+					for (j = job_list_head; j; j = j->next)
 					{
 					if (kill(-j->pgid, sig_num) == -1)
 					{
@@ -819,7 +818,7 @@ Job* find_job(pid_t pgid)
 {
 	Job *j;
 	
-	for (j = first_job; j; j = j->next)
+	for (j = job_list_head; j; j = j->next)
 	{
 		if (j->pgid == pgid)
 		{
@@ -836,7 +835,7 @@ Job* find_job_id(int id)
 {
 	Job *j;
 	
-	for (j = first_job; j; j = j->next)
+	for (j = job_list_head; j; j = j->next)
 	{
 		if (j->id == id)
 		{
@@ -888,7 +887,7 @@ int mark_process_status(pid_t pid, int status)
 	if (pid > 0)
 	{
 		Job *j;
-		j = first_job;
+		j = job_list_head;
 		for (j; j; j = j->next)
 		{
 			int i = 0;
@@ -964,7 +963,7 @@ void do_job_notification(void)
 	Job *curr_job = NULL;
 	Job *next_job = NULL;
 	
-	for (curr_job = first_job; curr_job; curr_job = next_job)
+	for (curr_job = job_list_head; curr_job; curr_job = next_job)
 	{
 		next_job = curr_job->next;
 		
@@ -981,7 +980,7 @@ void do_job_notification(void)
 			} // end if
 			else
 			{
-				first_job = next_job;
+				job_list_head = next_job;
 			} // end else
 			
 			destroy_job(curr_job);
@@ -1067,15 +1066,15 @@ void continue_job(Job *j, int foreground)
 void add_job_to_table(Job *j)
 {
 
-	if(first_job)
+	if(job_list_head)
 	{
 		Job *temp;
-		for(temp = first_job; temp->next; temp = temp->next);
+		for(temp = job_list_head; temp->next; temp = temp->next);
 		temp->next = j;
 	} // end if
 	else
 	{
-		first_job = j;
+		job_list_head = j;
 	} // end else
 } // end add_job_to_table();
 
@@ -1245,7 +1244,7 @@ void print_job_table(void)
 {
 	printf("Job table:\n");
 	Job *j = NULL;
-	for (j = first_job; j; j = j->next)
+	for (j = job_list_head; j; j = j->next)
 	{
 		printf("Job # %d\n", j->id);
 	} // end for
