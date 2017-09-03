@@ -1197,7 +1197,7 @@ int execute_job(Job *j)
 	} // end for
 
 	//format_job_info(j, "launched");
-	//add job to the job table
+	//add job to the job list
 	add_job_to_list(j);
 	//do_job_notification();
 	
@@ -1240,13 +1240,13 @@ int execute_job(Job *j)
 
 } // end execute_job()
 
-void print_job_table(void)
+void print_job_list(void)
 {
-	printf("Job table:\n");
+	printf("Job list:\n");
 	Job *j = NULL;
 	for (j = job_list_head; j; j = j->next)
 	{
 		printf("Job # %d\n", j->id);
 	} // end for
 
-} // end print_job_table()
+} // end print_job_list()

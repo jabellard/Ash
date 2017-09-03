@@ -50,7 +50,7 @@ typedef struct _job
 
 //----------------------------------function prototypes
 int print_job_command(Job *j, int dest_fd);
-void print_job_table(void);
+void print_job_list(void);
 void init_shell();
 Process* create_process(void);
 int insert_arg_in_process(Process *p, const char * arg);
@@ -74,7 +74,7 @@ void put_job_in_foreground(Job *j, int cont);
 void put_job_in_background(Job *j, int cont);
 void mark_job_as_running(Job *j);
 void continue_job(Job *j, int foreground);
-void add_job_to_table(Job *j);
+void add_job_to_list(Job *j);
 int execute_job(Job *j);
 int Ash_cd(Process *p, int in_file, int out_file, int err_file);
 int Ash_exit(Process *p, int in_file, int out_file, int err_file);
