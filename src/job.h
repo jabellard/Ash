@@ -7,9 +7,13 @@
 #define MAX_PROCESSES 25
 
 
+ 
 //----------------------------------data structures
-/*
-*/
+
+
+
+
+
 typedef struct _process
 {
 	char *argv[MAX_ARGS];
@@ -21,7 +25,7 @@ typedef struct _process
 	
 } Process; // end struct _process
 
-#endif
+
 
 
 /*
@@ -47,6 +51,18 @@ typedef struct _job
 
 } Job; // end struct _job
 
+// function pointer to a shell buitin
+ typedef int (*b_func)(Process *p, int in_file, int out_file, int err_file);
+ 
+ 
+ typedef struct _builtin
+{
+	// the builtin name
+	char *name;
+	
+	// the function to invoke the builtin
+	b_func func;
+}Builtin; //end struct _builtin
 
 //----------------------------------function prototypes
 int print_job_command(Job *j, int dest_fd);
@@ -86,3 +102,5 @@ int Ash_kill(Process *p, int in_file, int out_file, int err_file);
 int Ash_killall(Process *p, int in_file, int out_file, int err_file);
 int is_builtin(Process *p);
 Job* find_job_id(int id);
+
+#endif

@@ -17,6 +17,23 @@ int Ash_is_interactive;
 Job *job_list_head = NULL;
 
 
+
+// list of builtins and associated functions
+Builtin builtins[] = 
+{
+
+	{"cd", &Ash_cd},
+	{"exit", &Ash_exit},
+	{"jobs", &Ash_jobs},
+	{"fg", &Ash_fg},
+	{"bg", &Ash_bg},
+	{"help", &Ash_help},
+	{"kill", &Ash_kill},
+	{"killall", &Ash_killall},
+	{NULL, NULL}
+}; // end builtins[]
+
+/*
 char *builtins[] =
 {
 	"cd",
@@ -30,7 +47,7 @@ char *builtins[] =
 	NULL,
 }; // end builtins[]
 
- typedef int (*b_func)(Process *p, int in_file, int out_file, int err_file);
+
  
  b_func builtins_func[] = 
  {
@@ -44,6 +61,9 @@ char *builtins[] =
  	&Ash_killall,
  	NULL,
  }; // end builtins_func()
+
+*/
+
 
 int Ash_cd(Process *p, int in_file, int out_file, int err_file)
 {
@@ -541,9 +561,9 @@ int Ash_killall(Process *p, int in_file, int out_file, int err_file)
 int is_builtin(Process *p)
 {
 	int i = 0;
-	for (i; builtins[i]; i++)
+	for (i; builtins[i].name; i++)
 	{
-		if(strcmp(p->argv[0], builtins[i]) == 0)
+		if(strcmp(p->argv[0], builtins[i].name) == 0)
 		{
 			return i;
 		} // end if
@@ -1139,7 +1159,7 @@ int execute_job(Job *j)
 		int result;
 		if ((result = is_builtin(j->processes[i])) != -1)
 		{
-			int bi_result = (builtins_func[result])(j->processes[i], in_file, out_file, j->stderr_);
+			int bi_result = (builtins[result].func)(j->processes[i], in_file, out_file, j->stderr_);
 			if (bi_result == -1)
 			{
 				return -1;

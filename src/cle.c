@@ -7,7 +7,7 @@
 #include <string.h>
 #include "cle.h"
 #include "err.h"
-
+#include "job.h"
 
 
 // global variables/decalrations
@@ -17,7 +17,11 @@ static char INPUTRC_FILE[100];
 static int NUM_ENTRIES_HISTORY_FILE;
 static int MAX_NUM_ENTRIES_HISTORY_FILE = 500;
 
-// change this
+// used in generator function
+extern Builtin builtins[];
+
+
+/*
 char *command_list[] =
 {
 	"cd",
@@ -25,6 +29,8 @@ char *command_list[] =
 	"help",
 	NULL
 }; // end command_list
+*/
+
 
 int remove_lines_from_file(char * file_name, int start_line, int line_count)
 {
@@ -227,8 +233,9 @@ char *command_completion_generator(const char *partial_text, int state)
 		partial_text_len = strlen(partial_text);
 	} // end if
 	
-	while (command = command_list[list_index++])
+	while (command = builtins[list_index].name)
 	{
+		list_index++;
 		if (strncmp(command, partial_text, partial_text_len) == 0)
 		{
 			return strdup(command);
