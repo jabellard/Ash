@@ -766,7 +766,6 @@ Job* create_job(void)
 	
 	j->next = NULL;
 	j->id = -1;
-	j->valid = 1;
 	j->num_processes = 0;
 	j->pgid = 0;
 	j->notified = 0;

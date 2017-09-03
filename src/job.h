@@ -34,7 +34,6 @@ typedef struct _job
 {
 	struct _job *next;
 	int id;
-	int valid;
 	Process *processes[MAX_PROCESSES];
 	int num_processes;
 	pid_t pgid;
