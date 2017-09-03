@@ -1063,7 +1063,7 @@ void continue_job(Job *j, int foreground)
 	} // end else
 } // end continue_job()
 
-void add_job_to_table(Job *j)
+void add_job_to_list(Job *j)
 {
 
 	if(job_list_head)
@@ -1076,7 +1076,7 @@ void add_job_to_table(Job *j)
 	{
 		job_list_head = j;
 	} // end else
-} // end add_job_to_table();
+} // end add_job_to_list();
 
 
 int execute_job(Job *j)
@@ -1198,7 +1198,7 @@ int execute_job(Job *j)
 
 	//format_job_info(j, "launched");
 	//add job to the job table
-	add_job_to_table(j);
+	add_job_to_list(j);
 	//do_job_notification();
 	
 
