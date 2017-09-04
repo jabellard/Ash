@@ -2,8 +2,8 @@
 #define CLE_H_
 
 //function prototypes
+int remove_lines_from_file(char * file_name, int start_line, int line_count);
 int invert_case_in_region(int count, int key);
-int custom_key_bindings_emacs(void);
 int initialize_readline();
 char *_readline(const char *);
 int toggle_editing_mode(int count, int key);

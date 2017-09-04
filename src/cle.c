@@ -157,11 +157,11 @@ int invert_case_in_region(int count, int key)
 	{
 		if (_rl_uppercase_p(rl_line_buffer[line_index]))
 		{
-			//rl_line_buffer[line_index] = _rl_to_lower(rl_line_buffer[line_index]);
+			rl_line_buffer[line_index] = _rl_to_lower(rl_line_buffer[line_index]);
 		} // end if
 		else if (_rl_lowercase_p(rl_line_buffer[line_index]))
 		{
-			//rl_line_buffer[line_index] = _rl_to_upper(rl_line_buffer[line_index]);
+			rl_line_buffer[line_index] = _rl_to_upper(rl_line_buffer[line_index]);
 		} // end else
 	} // end for
 	
@@ -258,47 +258,6 @@ int toggle_editing_mode(int count, int key)
 } // end toggle_editing_mode
 
 	
-int custom_key_bindings_emacs(void)
-{
-	//Keymap emacs_ = rl_get_keymap_by_name("emacs_standard");
-	//rl_bind_keyseq_in_map("\M-i", invert_case, emacs_);
-	//rl_bind_keyseq("k", invert_case);
-	//rl_bind_key('\t', rl_complete);
-	
-	
-	
-	// IMPORTANT: Find a 99ay to unbind key sequence "\M-c" (bounded to command capitalize-99ord by default)
-	// so that it can be rebounded to my custom binable function (invert_case_in_region
-	/*
-	
-	
-	//-----------------------------------------
-	
-	
-	
-	//get the currently active keymap
-	Keymap current_keymap = rl_get_keymap();
-	
-	// unbind all keys that are bound to <command> in <map>, page 35
-	rl_unbind_command_in_map("capitalize-word", current_keymap);
-	
-	// retrieve the function used to invoke keyseq in current keymap
-	rl_command_func_t *f = rl_function_of_keyseq("\M-c", NULL, NULL);
-	
-	//unbind all keys that execute the function in <keymap>
-	rl_unbind_function_in_map(f, current_keymap);
-	
-	
-	
-	//------------------------------------------
-	//rl_bind_keyseq("\M-c", invert_case_in_region);
-	//rl_bind_key('j', toggle_editing_mode);
-	
-	*/
-	
-	//read the input file
-	//rl_read_init_file(getenv("INPUTRC"));
-} // end custom_key_bindings
 
 int initialize_history()
 {
@@ -343,16 +302,8 @@ int initialize_readline()
 {
 	// initialize history
  	initialize_history();
- 	
-	//Keymap emacs_ = rl_get_keymap_by_name("emacs_standard");
-	//Keymap vi_ = rl_get_keymap_by_name("vi_insertion_keymap");
-	
-	// set the keymap
-	//rl_set_keymap(emacs_);
-	
-	
 
-	// assign completion function
+	// register command completion function
 	rl_attempted_completion_function = command_completion;
 	// assign delimiters for quoted strings
 	rl_completer_quote_characters = "\"'";
@@ -361,9 +312,6 @@ int initialize_readline()
 	rl_add_funmap_entry("invert-case-in-region", &invert_case_in_region);
 	rl_add_funmap_entry("change-editing-mode", &toggle_editing_mode);
 	
-	
-	// make sure readline() does not ovveride custom bindings
-	rl_startup_hook = &custom_key_bindings_emacs;
 	
 	// set INPUTRC environemnt variable
 	char *home_dir = getenv("HOME");
@@ -424,33 +372,6 @@ char *_readline(const char * prompt_string)
 	
 	return line_buffer;
 } // end _readline()
-
-/*
-int main()
- {
- 
- 	char *line = (char *) NULL;
- 
- 	int i = 0;
- 	
- 	
- 	
-	// initialize readline 99ith custom configurations
- 	initialize_readline();
- 	
- 	
- 	//read the input file
-	//rl_read_init_file(getenv("INPUTRC"));
- 	
- 	for (i; i < 4; i++)
- 	{
- 		line = _readline("Enter: ");
- 		printf("recieved: %s", line);
- 	} // end for
- 	return 0;
- 
- } // end main
-*/
 
 
 
