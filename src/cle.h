@@ -1,7 +1,7 @@
 #ifndef CLE_H_
 #define CLE_H_
 
-//function prototypes
+//function prototypes-----------------------------------
 int remove_lines_from_file(char * file_name, int start_line, int line_count);
 int invert_case_in_region(int count, int key);
 int initialize_readline();
