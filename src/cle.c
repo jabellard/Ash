@@ -390,12 +390,7 @@ int initialize_readline()
 //calls readline and processes input
 char *_readline(const char * prompt_string)
 {
-	// if the line buffer has already pointed to allocated memory, then free it
-	if (line_buffer)
-	{
-		sfree(line_buffer);
-		line_buffer = (char *)NULL;
-	} // end if
+	sfree(line_buffer);
 	
 	// read a line
 	line_buffer = readline(prompt_string);
