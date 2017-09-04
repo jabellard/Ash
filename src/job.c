@@ -16,7 +16,13 @@ int Ash_terminal;
 int Ash_is_interactive;
 Job *job_list_head = NULL;
 
-
+// job state strings
+char *job_states[] =
+{
+	"Running",
+	"Stopped",
+	"Done"
+}; // end job_states[]
 
 // list of builtins and associated functions
 Builtin builtins[] = 
@@ -98,17 +104,17 @@ int Ash_jobs(Process *p, int in_file, int out_file, int err_file)
 	{
 		if (job_is_completed(j))
 		{
-			dprintf(out_file, "[%d] %ld Done:\n", j->id, (long)j->pgid);
+			dprintf(out_file, "[%d] %ld %s:\n", j->id, (long)j->pgid, job_states[D]);
 			print_job_command(j, out_file);
 		} // end if
 		else if (job_is_stopped(j))
 		{
-			dprintf(out_file, "[%d] %ld Stopped:\n", j->id, (long)j->pgid);
+			dprintf(out_file, "[%d] %ld %s:\n", j->id, (long)j->pgid, job_states[S]);
 			print_job_command(j, out_file);
 		} // end else if
 		else
 		{
-			dprintf(out_file, "[%d] %ld Running:\n", j->id, (long)j->pgid);
+			dprintf(out_file, "[%d] %ld %s:\n", j->id, (long)j->pgid, job_states[R]);
 			print_job_command(j, out_file);
 		} // end else
 	} // end for
@@ -959,7 +965,7 @@ void do_job_notification(void)
 		{
 			if (!curr_job->foreground)
 			{
-				format_job_info(curr_job, "Done");
+				format_job_info(curr_job, job_states[D]);
 			} // end if
 			
 			if (last_job)
@@ -975,7 +981,7 @@ void do_job_notification(void)
 		} // end if
 		else if (job_is_stopped(curr_job) && !curr_job->notified)
 		{
-			format_job_info(curr_job, "Stopped");
+			format_job_info(curr_job, job_states[S]);
 			curr_job->notified = 1;
 			last_job = curr_job;
 		} // end else if

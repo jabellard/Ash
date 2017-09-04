@@ -63,6 +63,12 @@ typedef struct _job
 	b_func func;
 }Builtin; //end struct _builtin
 
+// job states
+typedef enum _job_state
+{
+	R, S, D
+}job_state;
+
 //----------------------------------function prototypes
 int print_job_command(Job *j, int dest_fd);
 void print_job_list(void);
