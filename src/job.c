@@ -33,37 +33,6 @@ Builtin builtins[] =
 	{NULL, NULL}
 }; // end builtins[]
 
-/*
-char *builtins[] =
-{
-	"cd",
-	"exit",
-	"jobs",
-	"fg",
-	"bg",
-	"help",
-	"kill",
-	"killall",
-	NULL,
-}; // end builtins[]
-
-
- 
- b_func builtins_func[] = 
- {
- 	&Ash_cd,
- 	&Ash_exit,
- 	&Ash_jobs,
- 	&Ash_fg,
- 	&Ash_bg,
- 	&Ash_help,
- 	&Ash_kill,
- 	&Ash_killall,
- 	NULL,
- }; // end builtins_func()
-
-*/
-
 
 int Ash_cd(Process *p, int in_file, int out_file, int err_file)
 {

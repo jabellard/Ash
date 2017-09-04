@@ -1,35 +1,25 @@
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-//#include <readline/chardefs.h> for _rl_to_upper()
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
 #include "cle.h"
 #include "err.h"
 #include "job.h"
+#include <limits.h>
 
 
 // global variables/decalrations
 static char *line_buffer = (char *)NULL;
-static char HISTORY_FILE[100]; // LOOK UP MAX LENGHT OF FILE PATH
-static char INPUTRC_FILE[100];
+static char HISTORY_FILE[PATH_MAX]; 
+static char INPUTRC_FILE[PATH_MAX];
 static int NUM_ENTRIES_HISTORY_FILE;
 static int MAX_NUM_ENTRIES_HISTORY_FILE = 500;
 
 // used in generator function
 extern Builtin builtins[];
 
-
-/*
-char *command_list[] =
-{
-	"cd",
-	"exit",
-	"help",
-	NULL
-}; // end command_list
-*/
 
 
 int remove_lines_from_file(char * file_name, int start_line, int line_count)
