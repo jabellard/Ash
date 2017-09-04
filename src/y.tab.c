@@ -104,23 +104,21 @@ Maintained by Magnus Ekdahl <magnus@debian.org>
 #include <stdio.h>
 #include "job.h"
 #include <setjmp.h>
-// function prototypes
+
+// function prototypes-------------------
 int yylex(void);
 void yyerror(char *);
 
-// global declarations
-//static struct simple_command *sc = (struct simple_command*) NULL;
-//static struct shell_pipeline *sp = (struct shell_pipeline*) NULL;
 
 extern jmp_buf input_prompt;
 static Process *p = (Process *)NULL;
 static Job *j = (Job *)NULL;
-static int i = 0; // simple command flag -- controls 99hen a ne99 simple command instance should be created
-static int jj = 0; // shell pipeline flag -- controls 99hen a ne99 shell pipeline instance should be created
+static int cp = 0; // this flag controls 99hen a ne99 process instance should be created.
+static int cj = 0; // this flag controls 99hen a ne99 process instance should be create.
 static int job_num = 0;
 
 
-#line 23 "parser.y"
+#line 21 "parser.y"
 typedef union
 {
 
@@ -526,9 +524,9 @@ static const short yyrhs[] = {    10,
 
 #if (YY_parse_DEBUG != 0) || defined(YY_parse_ERROR_VERBOSE) 
 static const short yyrline[] = { 0,
-    38,    83,    99,   105,   113,   138,   143,   148,   158,   167,
-   178,   183,   189,   198,   205,   211,   217,   224,   281,   290,
-   295
+    36,    75,    85,    90,    98,   116,   121,   126,   134,   141,
+   150,   155,   160,   167,   173,   178,   183,   190,   238,   245,
+   250
 };
 
 static const char * const yytname[] = {   "$","error","$illegal.","AMPERSAND",
@@ -1080,197 +1078,165 @@ YYLABEL(yyreduce)
   switch (yyn) {
 
 case 1:
-#line 40 "parser.y"
+#line 38 "parser.y"
 {
-		//printf("command \"%s\"\n", $1);
-		if (i == 0)
+		if (cp == 0)
 		{
-			//create a simple command instance
-			//sc = create_simple_command();
+			// create a ne99 process isntance
 			p = create_process();
 			
 			
 		
 			
-			// set simple command flag
-			i = 1;
-			// insert the command
-			//insert_arg_in_simple_command(sc, $1);
+			// set the create process flag 
+			cp = 1;
+			
+			//insert the argument in the current process 
 			insert_arg_in_process(p, yyvsp[0].str);
 				
 		} // end if
 		else
 		{
-			//increment i
-			//i++;
-		
-			// insert the command
-			//insert_arg_in_simple_command(sc, $1);	
+
+			//insert the argument in the current process
 			insert_arg_in_process(p, yyvsp[0].str);				
 		} // end else
 		
-		if (jj == 0)
+		if (cj == 0)
 		{
 
-			// initialize the shell pipeline instance
-			//sp = create_shell_pipeline();
+			// create a ne99 job instance
 			j = create_job();
 			
-			// set shell pipeline flag 
-			jj = 1;		
+			// set the create job flag
+			cj = 1;		
 		
 		} // end if
 		
 	;
     break;}
 case 2:
-#line 85 "parser.y"
+#line 77 "parser.y"
 {
 	
-		 //printf("argument \"%s\"\n", $1);
-		 
-		 //increment i
-		//i++;
-		
-		// insert the arg
-		//insert_arg_in_simple_command(sc, $1);	
+		//insert the argument in the current process	
 		insert_arg_in_process(p, yyvsp[0].str);	 
 	;
     break;}
 case 3:
-#line 101 "parser.y"
+#line 87 "parser.y"
 {
 	
-		//printf(" argument list: \n");
 	;
     break;}
 case 4:
-#line 106 "parser.y"
+#line 91 "parser.y"
 {
 	
 	
 	;
     break;}
 case 5:
-#line 115 "parser.y"
+#line 100 "parser.y"
 {
 	
-		 //printf("simple command \n");
-		 
-		 // print the command
-		// print_simple_command(sc);
-		 
-		 // insert the command in pipeline
-		//insert_simple_command_in_shell_pipeline(sp, sc);
+		// insert the current process instance in the current job instance
 		insert_process_in_job(j, p);
 		 
 		 
-		 //free the simple command instance
-		 //destroy_simple_command(sc);
+		// destroy the current simple process instance
 		 destroy_process(p);
 		 
-		 // reset simple command flag
-		 i = 0;
+		 // reset the create process flag
+		 cp = 0;
 		 	 
 	;
     break;}
 case 6:
-#line 140 "parser.y"
+#line 118 "parser.y"
 {
-			//printf("1A\n");
+
 		;
     break;}
 case 7:
-#line 144 "parser.y"
+#line 122 "parser.y"
 {
-			//printf("1B\n");
+
 		;
     break;}
 case 8:
-#line 150 "parser.y"
+#line 128 "parser.y"
 {
 		// stdin redirection
-		//printf("in redirection\n");
 		
 		// set the input file
-		//sp->input_file = strdup($2);
 		j->in_file = strdup(yyvsp[0].str);
 	;
     break;}
 case 9:
-#line 159 "parser.y"
+#line 135 "parser.y"
 {
 		// stdout redirection
-		//printf("out redirection\n");
 		
 		// set the output file
-		//sp->output_file = strdup($2);
 		j->out_file = strdup(yyvsp[0].str);
 	;
     break;}
 case 10:
-#line 168 "parser.y"
+#line 142 "parser.y"
 {
 		// stderr redirection
-		//printf("err redirection\n");
 		
 		// set the error file
-		//sp->error_file = strdup($3);
 		j->err_file = strdup(yyvsp[0].str);
 	;
     break;}
 case 11:
-#line 180 "parser.y"
+#line 152 "parser.y"
 {
-		//printf("redirection_list--A\n");
+
 	;
     break;}
 case 12:
-#line 184 "parser.y"
+#line 156 "parser.y"
 {
 		// empty
-		//printf("redirection_list--B\n");	
 	;
     break;}
 case 13:
-#line 191 "parser.y"
+#line 162 "parser.y"
 {
-		//printf("background on\n");
 		
-		// set background flag on
-		//sp->background = 1;
+		// reset the foreground flag for the current job instance
 		j->foreground = 0;
 	;
     break;}
 case 14:
-#line 199 "parser.y"
+#line 168 "parser.y"
 {
 		// empty
-		//printf("background off\n");		
 	;
     break;}
 case 15:
-#line 207 "parser.y"
+#line 175 "parser.y"
 {
 	
-		//printf("pipeline terminator--A\n");
 	;
     break;}
 case 16:
-#line 213 "parser.y"
+#line 180 "parser.y"
 {
 	
-		//printf("pipeline terminator--B\n");
 	;
     break;}
 case 17:
-#line 219 "parser.y"
+#line 185 "parser.y"
 {
-		//printf("pipeline terminator--C\n");
+	
 	;
     break;}
 case 18:
-#line 226 "parser.y"
+#line 192 "parser.y"
 {
 	
 	
@@ -1278,10 +1244,6 @@ case 18:
 		j->id = job_num;
 		
 		//printf("p-A\n");
-		
-		// print the pipeline
-		//print_shell_pipeline(sp);
-		//print_job(j);
 		
 		
 /*
@@ -1313,41 +1275,34 @@ case 18:
 		// increase the job number
 		job_num++;
 		
-		//notify
+		// do a job notification
 		do_job_notification();
 		
-		
-		// destroy the shell pipeline instance
-		//destroy_shell_pipeline(sp);
-		//destroy_job(j);
-		
 		// print job table
-		//print_job_table();
-		// reset shell pipeline flag
-		jj = 0;
+
+		// reset the create job flag
+		cj = 0;
 	;
     break;}
 case 19:
-#line 282 "parser.y"
+#line 239 "parser.y"
 {
-		//printf("p-B\n");
-		// print job table
-		//print_job_table();
-		//notify
+
+		// do a job notification
 		do_job_notification();	
 	;
     break;}
 case 20:
-#line 292 "parser.y"
+#line 247 "parser.y"
 {
-		//printf("pl-A\n");	
+
 	;
     break;}
 case 21:
-#line 297 "parser.y"
+#line 252 "parser.y"
 {
 	
-		//printf("pl-B\n");	
+
 	;
     break;}
 }
@@ -1554,7 +1509,7 @@ YYLABEL(yyerrhandle)
 /* END */
 
  #line 1038 "/usr/share/bison++/bison.cc"
-#line 304 "parser.y"
+#line 259 "parser.y"
 
 
 
@@ -1562,36 +1517,4 @@ void yyerror(char *s) {
     fprintf(stderr, "%s\n", s);
 }
 
-/*
-int main(void) {
-	// read input from a string
-	//YY_BUFFER_STATE *bp;
-	//struct yy_buffer_state *bp;
-
-	//char *input = "command1 | command2 | command3 | command4\n\0";
-
-	//  connect input buffer to specified string
-	//bp = yy_scan_string(input);
-
-	// read from the buffer
-	//yy_switch_to_buffer(bp);
-
-
-	// parse 
-	while(1)
-	{
-		yyparse();
-	} // end while
-
-	// delete the buffer
-	//yy_delete_buffer(bp);
-
-	// delete the string (or not)
-
-
-	return 0;
-}
-
-
-*/
 
