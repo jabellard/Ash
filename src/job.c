@@ -146,8 +146,6 @@ Builtin builtins[] =
 * Ash_cd(), Ash_exit(), Ash_jobs(), Ash_fg(), Ash_bg(), Ash_help(), Ash_kill(), Ash_killall(),
 * display_builtin_help(), is_builtin(), and #builtins.
 *
-* @todo
-* clarify, and also look at dis_help help doc (add return, param)
 */
 char BUILTIN_HELP_PATH[PATH_MAX];
 

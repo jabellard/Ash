@@ -20,7 +20,29 @@
 
 #include <sys/types.h>
 #include <termios.h>
+
+
+/**
+* @brief The Maximum number of arguments allo99ed per process.
+*
+* @par Description
+* The maximum number of arguments allo99ed per process (_process).
+*
+* @sa
+* _process, and _process::argv.
+*/
 #define MAX_ARGS 25
+
+
+/**
+* @brief The maximum number of processes allo99ed per job.
+*
+* @par Description
+* The maximum number of processes allo99ed per job (_job).
+*
+* @sa
+* _job, and _job::processes.
+*/
 #define MAX_PROCESSES 25
 
 
@@ -29,43 +51,324 @@
 
 
 
-
-
+/**
+* @brief Stores info about a child process of the shell.
+*
+* @par Description
+* This structure stores information about a child process to be execed by the shell, a child process
+* that has already been forked by the shell , or one that has already been forked and execed by the shell.
+*
+* @sa Process, Job, _job, create_process(), insert_arg_in_process(), print_process(),
+* process_dup(), execute_process(), destroy_process(), insert_process_in_job(), and
+* mark_process_status().
+* 
+*/
 typedef struct _process
 {
+	/**
+	* @brief Argument vector of the process.
+	* 
+	* @par Description
+	* The argument vector of the process. It is used by execute_process() to 
+	* @e exec the process, and is of size #MAX_ARGS.
+	*
+	* @sa _process::argc, #MAX_ARGS, Ash_cd(), print_job_command(), Ash_fg(), Ash_bg(), 
+	* Ash_kill(), Ash_killall(), is_builtin(), create_process(), insert_arg_in_process(),
+	* print_process(), process_dup(), execute_process(), destroy_process(), and @e exec().
+	*/
 	char *argv[MAX_ARGS];
+	
+	/**
+	* @brief Current number of arguments in the argument vector of the process.
+	*
+	* The current number of arguments in the argument vector(_process::argv) of the process.
+	*
+	* @sa _process::argv, print_job_command(), Ash_fg(), Ash_bg(), Ash_kill(), Ash_killall(),
+	* create_process(), insert_arg_in_process(), print_process(), process_dup(), and destroy_process().
+	*
+	*/
 	int argc;
+	/**
+	* @brief Process ID of the process.
+	*
+	* @par Description
+	* The process ID assigned to the process by the kernel. This field is valid only
+	* after the process has been forked by the shell.
+	* 
+	* @sa 
+	* _job::pgid, create_process(), process_dup(), mark_process_status(), update_status(),
+	* wait_for_job(),  execute_job() and @e fork(). 
+	* 
+	*/
 	pid_t pid;
+	
+	/**
+	* @brief Indicates if the process is completed.
+	*
+	* This field indicates if the process is completed (i.e., has finished executing). It is 
+	* only valid for a process that has been forked, or forked and then execed by the shell.
+	* If its value is non-zero (i.e., true), then execution of the process has completed. 
+	* Otherwise, the process @e may still be running.
+	*
+	* @sa _process::stopped, _job_state, job_state, #job_states,
+	* job_is_completed(), job_is_stopped(), create_process(), process_dup(), wait_for_job(),
+	* mark_process_status(), Ash_jobs(), do_job_notification(), execute_job(), and waitpid().
+	*
+	*/
 	int completed;
+	
+	/**
+	* @brief Indicates if the process is stopped.
+	*
+	* @par Description
+	* This field indicates if the process is stopped. It is only valid for a process that has
+	* been forked, or forked and then execed by the shell. If its value is non-zero (i.e., true), 
+	* then execution of the process has stopped. Otherwise, the process @e may still be
+	* running.
+	*
+	* @sa _process::completed, _job::notified, _job_state, job_state, #job_states, 
+	* job_is_completed(), job_is_stopped(), Ash_jobs(), create_process(), process_dup(),
+	* mark_process_status(),  wait_for_job(), do_job_notification(), mark_job_as_running(),
+	* and @e waitpid().
+	*
+	*/
 	int stopped;
+	
+	/**
+	* @brief Reported status value of a completed or stopped process.
+	*
+	* @par Description
+	* This field stores the reported status value of a completed or stopped process. It is only
+	* valid for a process that has been completed or stopped.
+	*
+	* @sa _process::completed, _process::stopped, Ash_jobs(), update_status(), process_dup(),
+	* format_job_info(), mark_process_status(), wait_for_job(), do_job_notification(), and
+	* @e waitpid().
+	* 
+	*/
 	int status;
 	
 } Process; // end struct _process
 
 
 
-
-/*
+/**
+* @brief Stores info about a job (i.e. pipeline).
+*
+* @par Description
+* This structure stores information about a job (i.e. pipeline of commands) that is to be 
+* @e execed by the shell, or has already been been @e execed by the shell (i.e. an active job).
+* 
+* @sa
+* _process, Process, Job, print_job_command(), print_job_list(), create_job(), 
+* insert_process_in_job(), print_job(), destroy_job(), find_job(), job_is_stopped(),
+* job_is_completed(), format_job_info(), wait_for_job(), do_job_notification(),
+* put_job_in_foreground(), put_job_in_background(), mark_job_as_running(), 
+* continue_job(), add_job_to_list(), execute_job(), find_job_id(), and Ash_jobs().
+* 
 */
 typedef struct _job
 {
+	/**
+	* @brief Pointer to the next job in the shell's active job list.
+	*
+	* @par Description	
+	* This is a pointer to the next job in the shell's active job list (#job_list_head).
+	* This field is only of interest if the job is currently on the shell's active
+	* job list.
+	*
+	* @sa 
+	* #job_list_head, add_job_to_list(), Ash_jobs(), Ash_killall(), create_job(), find_job(),
+	* find_job_id(), mark_process_status(), do_job_notification(), and print_job_list().
+	*
+	*/
 	struct _job *next;
+	
+	/**
+	* @brief Unique ID for the job.
+	*
+	* @par Description
+	* This is a unique identifier for the job. 
+	* This field is only of interest if the job is currently on the shell's active
+	* job list (#job_list_head).
+	*
+	* @sa 
+	* #job_list_head, find_job_id(), Ash_jobs(), Ash_killall(), create_job(), print_job(),
+	* format_job_info(), and print_job_list().
+	*	
+	*/
 	int id;
+
+	
+	/**
+	* @brief List of processes in the job.
+	*
+	* @par Description
+	* This array stores the list of processes (_process) in the job. It is of size #MAX_PROCESSES.
+	* 
+	* @sa 
+	* _process, Process, #MAX_PROCESSES, print_job_command(), create_job(), insert_process_in_job(), print_job(), destroy_job(), job_is_stopped(), job_is_completed(),
+	* mark_process_status(), mark_job_as_running(), and execute_job(). 
+	* 
+	*/
 	Process *processes[MAX_PROCESSES];
+	
+	/**
+	* @brief Current number of processes in the job's process list.
+	*
+	* @par Description
+	* The current number of processes (_process) in the process list 
+	* (_job::processes) of the job.
+	*
+	* @sa
+	* _job::processes, print_job_command(), create_job(), insert_process_in_job(), print_job(),
+	* destroy_job(), job_is_stopped(), job_is_completed(), mark_process_status(), mark_job_as_running(),
+	* and execute_job().
+	*/
 	int num_processes;
+	
+	/**
+	* @brief Process group ID of this job.
+	*
+	* @par Description
+	* The process group ID of the job. It is only of interest if the job
+	* has been successfully executed by the shell via execute_job(). For a successfully, 
+	* executed job, this value is the same as the process ID of the first process (_process) in the job.
+	* 
+	* @sa
+	* _process, _process::pid, Ash_jobs(), Ash_kill(), Ash_killall(), create_job(), find_job(),
+	* format_job_info(), wait_for_job(), put_job_in_foreground(), put_job_in_background(),
+	* and execute_job(). 
+	*/
 	pid_t pgid;
+	
+	/**
+	* @brief Indicates if user has been notified of a stopped job.
+	* 
+	* @par Description
+	* This field indicates if the shell has notified the user of a stopped job via
+	*  do_job_notification(). It is only of interested for a job that has been stopped
+	* by the shell.
+	* 
+	* @sa
+	* _process, _process::stopped, _process::completed, create_job(), do_job_notification(),
+	* and mark_job_as_running().
+	*
+	*/
 	int notified;
+	
+	/**
+	* @brief Saved terminal mode for the job.
+	*
+	* @par Description
+	* This field stores the saved terminal mode for the job. It is used to restore the terminal
+	* mode of a job when it is continued in the foreground. 
+	*
+	* @sa
+	* create_job(), put_job_in_foreground(), _job::foreground, @e tcsetattr(), and @e tcgetattr().
+	*
+	*/
 	struct termios saved_tmodes;
+	
+	/**
+	* @brief File descriptor to stadard input for the process.
+	*
+	* @par Description
+	* This field stores the file descriptor to standard input for the process. 
+	*
+	* @sa _job::stdout_, _job::stderr_, _job::in_file, _job::out_file, and
+	* _job::err_file.
+	* 
+	*/
 	int stdin_;
+	
+	/**
+	* @brief File descriptor to stadard output for this process.
+	*
+	* @par Description
+	* This field stores the file descriptor to standard output for the process. 
+	*
+	* @sa _job::stdin_, _job::stderr_, _job::in_file, _job::out_file,
+	* _job::err_file, create_job(), and execute_job(). 
+	* 
+	*/	
 	int stdout_;
+	
+	/**
+	* @brief File descriptor to stadard error for the process.
+	*
+	* @par Description
+	* This field stores the file descriptor to standard error for the process. 
+	*
+	* @sa _job::stdout_, _job::stdin_, _job::in_file, _job::out_file,
+	* _job::err_file, create_job(), and execute_job().
+	* 
+	*/	
 	int stderr_;
+	/**
+	* @brief File to which standard input is to be redirected for the process.
+	*
+	* @par Description
+	* This field stores the path of the file to which standard input is to be directed for 
+	* the process. If it is non-NULL, then standard input is redirected to this file.
+	* Otherwise, redirection of standard input is not performed.
+	*
+	* @sa _job::stdin_, _job::stdout_, _job::stderr_,  _job::out_file,
+	* _job::err_file, create_job(), destroy_job(), and execute_job().
+	*	
+	*/
 	char *in_file;
+	
+	/**
+	* @brief File to which standard output is to be redirected for the process.
+	*
+	* @par Description
+	* This field stores the path of the file to which standard output is to be directed for 
+	* the process. If it is non-NULL, then standard output is redirected to this file.
+	* Otherwise, redirection of standard output is not performed.
+	*
+	* @sa _job::stdin_, _job::stdout_, _job::stderr_, _job::in_file,
+	* _job::err_file, create_job(), destroy_job(), and execute_job().
+	*	
+	*/	
 	char *out_file;
+	
+	/**
+	* @brief File to which standard error is to be redirected for the process.
+	*
+	* @par Description
+	* This field stores the path of the file to which standard error is to be directed for 
+	* the process. If it is non-NULL, then standard error is redirected to this file.
+	* Otherwise, redirection of standard error is not performed.
+	*
+	* @sa _job::stdin_, _job::stdout_, _job::stderr_, _job::in_file, _job::out_file, 
+	* create_job(), destroy_job(), and execute_job().
+	*/
 	char *err_file;
+	
+	/**
+	* @brief Indicates if a job instance is a foreground, or background job.
+	*
+	* @par Description
+	* For a job that is to be executed, this field indicates if it is to be executed as a
+	* foreground job, or a background job. For a job that is active, this field indicates
+	* if it is a background job, or a foreground job. 
+	* If its value is non-zero (i.e., true), the job instance is a foreground job. Otherwise, it is
+	* a background job.
+	*
+	* @sa  create_job(), do_job_notification(), put_job_in_foreground(), put_job_in_background(), 
+	* and execute_job().
+	*/
 	int foreground;
 
 
 } Job; // end struct _job
+
+
+
+
+
+
 
 /**
 * @brief Type definition of pointer to shell builtin function.
@@ -187,14 +490,14 @@ typedef enum _job_state
 * @param dest_fd
 * File descriptor refering to the file to 99hich output is sent.
 *
-* @param 
+* @param help_file
 * The name of the help file that contains the documentation for the shell builtin.
 *
 * @return
 * Returns @e 0 on success, or @e -1 on failure.
 * @sa 
 * Ash_cd(), Ash_exit(), Ash_jobs(), Ash_fg(), Ash_bg(), Ash_help(), Ash_kill(),
-* Ash_killall(), is_builtin(), and #builtins.
+* Ash_killall(), is_builtin(), #BUILTIN_HELP_PATH, and #builtins.
 *
 */
 int display_builtin_help(int dest_fd, const char *help_file);
