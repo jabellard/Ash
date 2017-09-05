@@ -1,0 +1,13 @@
+--------------------------------------------------------------------------------
+
+Name:
+  jobs - List the jobs in the shell's active job list.
+Expected grammar:
+  jobs or jobs h
+Description:
+  jobs
+    List the jobs in the shell's active job list.
+  jobs h
+    Display this help menu.
+    
+--------------------------------------------------------------------------------

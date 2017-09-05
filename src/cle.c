@@ -351,7 +351,7 @@ int initialize_history()
 	
 	char *home_dir = getenv("HOME");
  	strcpy(HISTORY_FILE, home_dir);
- 	strcat(HISTORY_FILE, "/.Ash_config/.history\0");
+ 	strcat(HISTORY_FILE, "/.Ash/config/history\0");
  	
 	
 	NUM_ENTRIES_HISTORY_FILE = count_lines_in_file(HISTORY_FILE);
@@ -368,7 +368,7 @@ int initialize_history()
 		end_index = -1;
 	} // end else
 	
-	read_history_range(HISTORY_FILE, start_index, end_index); // "~/.Ash_config/.history"
+	read_history_range(HISTORY_FILE, start_index, end_index); // 
 	
 	//disable the recording of timestamps for history entries
 	history_write_timestamps = 0;
@@ -394,7 +394,7 @@ int initialize_readline()
 	// set INPUTRC environemnt variable
 	char *home_dir = getenv("HOME");
  	strcpy(INPUTRC_FILE, home_dir);
- 	strcat(INPUTRC_FILE, "/.Ash_config/.inputrc\0");
+ 	strcat(INPUTRC_FILE, "/.Ash/config/inputrc\0");
 	
 	
 	int r = setenv("INPUTRC", INPUTRC_FILE, 0);

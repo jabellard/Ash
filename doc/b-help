@@ -1,0 +1,132 @@
+This file contains help menus for the shell builtins.
+
+10
+----------
+80
+--------------------------------------------------------------------------------
+
+
+
+--------------------------------------------------------------------------------
+
+Name:
+  cd - Change the shell's current working directory.
+Expected grammar:
+  cd <path-to-new-directory> or cd h
+Description:
+  cd <path-to-new-directory>
+    Change the shell's current working directory to <path-to-new-directory>.
+  cd h
+    Display this help menu.
+    
+--------------------------------------------------------------------------------
+
+Name:
+  exit - Exit from the shell.
+Expected grammar:
+  exit or exit h
+Description:
+  exit
+    Exit from the shell.
+  cd h
+    Display this help menu.
+
+--------------------------------------------------------------------------------
+
+Name:
+  jobs - List the jobs in the shell's active job list.
+Expected grammar:
+  jobs or jobs h
+Description:
+  jobs
+    List the jobs in the shell's active job list.
+  jobs h
+    Display this help menu.
+    
+--------------------------------------------------------------------------------
+
+Name:
+  fg - Continue an active job in the foreground.
+Expected grammar:
+  fg <job-ID> or fg h
+Description:
+  fg <job-ID>
+    Continue the active job with ID <job-ID> in the foreground.
+  fg h
+    Display this help menu.
+
+--------------------------------------------------------------------------------
+
+Name:
+  bg - Continue one or more active job(s) in the background.
+Expected grammar:
+  bg -<job-ID> ... or bg h
+Description:
+  bg -<job-ID> ...
+    Continue the active job(s) with the specified ID(s) -<job-ID> ... in the
+    background.
+  bg h
+    Display this help menu.
+
+--------------------------------------------------------------------------------
+
+Name:
+  kill - Sends a signal to one or more active job(s). 
+Expected grammar:
+  kill l, kill s<signal-name> -<job-ID> ..., 
+  kill n<signal-number> -<job-ID> ... , or kill h
+Description:
+  kill l
+    List the signals that can be sent.
+  kill s<signal-name> -<job-ID> ...
+    Send signal <signal-name> to the active job(s) with the specified ID(s)
+    -<job-ID> ... . This syntax is used to specified a signal using its
+    symbolic name. The symbolic name must be a case-insensitive string of one
+    of the following patterns: 
+    (1) SIGXXX (e.g., SIGHUP or sighup),
+    (2) SIGXXXX (e.g., SIGKILL or sigkill),
+    (3) XXX (e.g., HUP or hup), or
+    (4) XXXX (e.g., KILL or kill) .
+    
+  kill n<signal-number> -<job-ID> ...
+    Send signal <signal-number> to the active job(s) with the specified ID(s)
+    -<job-ID> ... .
+  kill h
+    Display this help menu.
+
+--------------------------------------------------------------------------------
+
+Name:
+  killall - Sends a signal to all active jobs of the shell. 
+Expected grammar:
+  killall l, killall s<signal-name> , 
+  killall n<signal-number> , or killall h
+Description:
+  killall l
+    List the signals that can be sent.
+  killall s<signal-name> 
+    Send signal <signal-name> to all active jobs of the shell.
+    This syntax is used to specified a signal using its
+    symbolic name. The symbolic name must be a case-insensitive string of one
+    of the following patterns: 
+    (1) SIGXXX (e.g., SIGHUP or sighup),
+    (2) SIGXXXX (e.g., SIGKILL or sigkill),
+    (3) XXX (e.g., HUP or hup), or
+    (4) XXXX (e.g., KILL or kill) .
+    
+  killall n<signal-number> 
+    Send signal <signal-number> to all active jobs of the shell.
+  killall h
+    Display this help menu.
+
+--------------------------------------------------------------------------------
+Name:
+  cd - Change the shell's current working directory.
+Expected grammar:
+  cd <path-to-new-directory> or cd h
+Description:
+  cd <path-to-new-directory>
+    Change the shell's current working directory to <path-to-new-directory>.
+  cd h
+    Display this help menu.
+

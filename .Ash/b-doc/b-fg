@@ -1,0 +1,13 @@
+--------------------------------------------------------------------------------
+
+Name:
+  fg - Continue an active job in the foreground.
+Expected grammar:
+  fg <job-ID> or fg h
+Description:
+  fg <job-ID>
+    Continue the active job with ID <job-ID> in the foreground.
+  fg h
+    Display this help menu.
+
+--------------------------------------------------------------------------------

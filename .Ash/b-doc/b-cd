@@ -1,0 +1,13 @@
+--------------------------------------------------------------------------------
+
+Name:
+  cd - Change the shell's current working directory.
+Expected grammar:
+  cd <path-to-new-directory> or cd h
+Description:
+  cd <path-to-new-directory>
+    Change the shell's current working directory to <path-to-new-directory>.
+  cd h
+    Display this help menu.
+    
+--------------------------------------------------------------------------------

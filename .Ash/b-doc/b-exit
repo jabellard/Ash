@@ -1,0 +1,13 @@
+--------------------------------------------------------------------------------
+
+Name:
+  exit - Exit from the shell.
+Expected grammar:
+  exit or exit h
+Description:
+  exit
+    Exit from the shell.
+  cd h
+    Display this help menu.
+
+--------------------------------------------------------------------------------

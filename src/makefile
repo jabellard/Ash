@@ -5,7 +5,7 @@ all:
 
 install:
 	# copy configuration files in the user's home directory
-	cp -r .Ash_config ~/
+	cp -r ../.Ash ~/
 	
 	# copy the manual document to one of the directories search by man
 	cp doc/Ash.1.gz "/usr/local/man/man1/Ash.1.gz"

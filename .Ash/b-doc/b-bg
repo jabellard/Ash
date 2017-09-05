@@ -1,0 +1,14 @@
+--------------------------------------------------------------------------------
+
+Name:
+  bg - Continue one or more active job(s) in the background.
+Expected grammar:
+  bg -<job-ID> ... or bg h
+Description:
+  bg -<job-ID> ...
+    Continue the active job(s) with the specified ID(s) -<job-ID> ... in the
+    background.
+  bg h
+    Display this help menu.
+
+--------------------------------------------------------------------------------
