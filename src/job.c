@@ -139,22 +139,13 @@ int Ash_cd(Process *p, int in_file, int out_file, int err_file)
 {
 	if (p->argc == 2 && (strcmp(p->argv[1], "h") == 0))
 	{
-		dprintf(out_file, "Name:\n");
-		dprintf(out_file, "\tcd - Change the shell's current 99orking directory.\n");
-		dprintf(out_file, "Expected grammar:\n");
-		dprintf(out_file, "\tcd <path-to-ne99-directory> or cd h\n");
-		dprintf(out_file, "Description:\n");
-		dprintf(out_file, "\tcd <path-to-ne99-directory>\n");
-		dprintf(out_file, "\t\tChange the shell's current 99orking directory to <path-to-ne99-directoryyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy>.\n");
-		dprintf(out_file, "\tcd h\n");
-		dprintf(out_file, "\n");
-		dprintf(out_file, "\t\tPrint this help menu.\n");
-		dprintf(out_file, "\n");
+		dprintf(out_file, "--------------------------------------------------------------------------------\n");
 		return 0;
 	} // end if
 	else if (p->argv[1] == NULL)
 	{
-		dprintf(err_file, "Ash: expected argument to \"cd\"\n");
+		dprintf(err_file, "Ash: cd: expected an argument.\n");
+		dprintf(err_file, "Ash: cd: execute \"cd h\" for help.\n");		
 		return -1;
 	} // end else if
 	else
@@ -164,7 +155,7 @@ int Ash_cd(Process *p, int in_file, int out_file, int err_file)
 		{
 		
 			// error checking code
-			err_msg("Ash: chdir");
+			err_msg("Ash: cd: chdir()");
 			return -1;
 		} // end if
 		else
@@ -183,6 +174,11 @@ int Ash_exit(Process *p, int in_file, int out_file, int err_file)
 		dprintf(out_file, "the help...\n");
 		return 0;
 	} // end if
+	else if (p->argc >= 2)
+	{
+		dprintf(err_file, "Ash: exit: invalid argument(s).\n");
+		dprintf(err_file, "Ash: exit: execute \"exit h\" for help.\n");
+	} // end else if
 	else
 	{	
 		exit(EXIT_SUCCESS);
@@ -213,6 +209,7 @@ int Ash_jobs(Process *p, int in_file, int out_file, int err_file)
 	if (p->argc == 2 && (strcmp(p->argv[1], "h") == 0))
 	{
 		dprintf(out_file, "the help...\n");
+		return 0;
 	} // end if	
 	else
 	{
@@ -235,8 +232,9 @@ int Ash_jobs(Process *p, int in_file, int out_file, int err_file)
 			dprintf(out_file, "[%d] %ld %s:\n", j->id, (long)j->pgid, job_states[R]);
 			print_job_command(j, out_file);
 		} // end else
+		return 0;
 	} // end for
-	return 0;
+
 	} // end else
 } // end Ash_jobs()
 
@@ -257,8 +255,7 @@ int Ash_fg(Process *p, int in_file, int out_file, int err_file)
 					{
 						// argument is  not started with '%' char
 						dprintf(err_file, "Ash: fg: invalid argument \"%s\"\n", p->argv[1]);
-						dprintf(err_file, "usage:\n");
-						dprintf(err_file, "fg %<job-num>\n");
+						dprintf(err_file, "Ash: fg: execute \"fg h\" for help.\n");		
 						return -1;
 						
 					} // end if
@@ -291,8 +288,7 @@ int Ash_fg(Process *p, int in_file, int out_file, int err_file)
 	{
 		// bad grammer (invalid number of arguments)
 		dprintf(err_file, "Ash: fg: invalid number of arguments\n");
-		dprintf(err_file, "usage:\n");
-		dprintf(err_file, "fg %<job-number>\n");
+		dprintf(err_file, "Ash: fg: execute \"fg h\" for help.\n");		
 		return -1;	
 	} // end else
 	return 0;
@@ -314,9 +310,8 @@ int Ash_bg(Process *p, int in_file, int out_file, int err_file)
 	{
 		// error
 		// bad grammer (invalid number of arguments)
-		dprintf(err_file, "Ash: bg: invalid number of arguments\n");
-		dprintf(err_file, "usage:\n");
-		dprintf(err_file, "bg %<job-num> ...\n");
+		dprintf(err_file, "Ash: bg: invalid number of arguments.\n");
+		dprintf(err_file, "Ash: bg: execute \"bg h\" for help.\n");		
 		return -1;
 	} // end else if
 	else
@@ -330,9 +325,8 @@ int Ash_bg(Process *p, int in_file, int out_file, int err_file)
 				if (strlen(p->argv[i]) < 2)
 				{
 					// argument is not of the right lenght; print err message and continue
-					dprintf(err_file, "Ash: bg: invalid argument \"%s\"\n", p->argv[i]);
-					dprintf(err_file, "usage:\n");
-					dprintf(err_file, "bg %<job-num> ...\n");
+					dprintf(err_file, "Ash: bg: invalid argument \"%s\".\n", p->argv[i]);
+					dprintf(err_file, "Ash: bg: execute \"bg h\" for help.\n");		
 					return -1;				
 				} // end if
 				else
@@ -342,8 +336,7 @@ int Ash_bg(Process *p, int in_file, int out_file, int err_file)
 					{
 						// argument is  not started with '%' char
 						dprintf(err_file, "Ash: bg: invalid argument \"%s\"\n", p->argv[i]);
-						dprintf(err_file, "usage:\n");
-						dprintf(err_file, "bg %<job-num> ...n");
+						dprintf(err_file, "Ash: bg: execute \"bg h\" for help.\n");		
 						return -1;
 						
 					} // end if
@@ -359,7 +352,7 @@ int Ash_bg(Process *p, int in_file, int out_file, int err_file)
 						
 						if (!j)
 						{
-							dprintf(err_file, "Ash: kill: invalid job number \"%d\"\n", job_num);
+							dprintf(err_file, "Ash: bg: invalid job number \"%d\".\n", job_num);
 							return -1;
 						} // end if
 						else
@@ -380,7 +373,7 @@ int Ash_bg(Process *p, int in_file, int out_file, int err_file)
 int Ash_help(Process *p, int in_file, int out_file, int err_file)
 {
 	dprintf(out_file, "Sample shell grammar:\n cmd [arg]* [| cmd [arg]*]*\n");
-	dprintf(out_file, "execute \"man Ash\" for more details\n");
+	dprintf(out_file, "execute \"man Ash\" for more details.\n");
 	return 0;
 } // end Ash_hel()
 
@@ -410,8 +403,7 @@ int Ash_kill(Process *p, int in_file, int out_file, int err_file)
 			{
 				// invalid argument
 				dprintf(err_file, "Ash: kill: invalid argument \"%s\"\n", p->argv[1]);
-				dprintf(err_file, "usage:\n");
-				dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+				dprintf(err_file, "Ash: kill: execute \"kill h\" for help.\n");		
 				return -1;
 			} // end else
 		} // end if
@@ -423,9 +415,9 @@ int Ash_kill(Process *p, int in_file, int out_file, int err_file)
 			// ----------------------------------------------check the signal sepecification
 			if (p->argv[1][0] == 's')
 			{
-				dprintf(out_file, "inside s...\n");
+				//dprintf(out_file, "inside s...\n");
 				// check if the signal spec is of the right length
-						dprintf(out_file, "lenght =  %d\n", strlen(p->argv[1]));				
+						//dprintf(out_file, "lenght =  %d\n", strlen(p->argv[1]));				
 				if (strlen(p->argv[1]) == 7 || strlen(p->argv[1]) == 8)
 				{	
 
@@ -452,8 +444,7 @@ int Ash_kill(Process *p, int in_file, int out_file, int err_file)
 						// invalid signal
 						// invalid signal spec lenght
 						dprintf(err_file, "Ash: kill: invalid signal specification \"%s\"\n", &p->argv[1][1]);
-						dprintf(err_file, "usage:\n");
-						dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+						dprintf(err_file, "Ash: kill: execute \"kill h\" for help.\n");		
 						return -1;
 					} // end else
 				} // end if
@@ -462,8 +453,7 @@ int Ash_kill(Process *p, int in_file, int out_file, int err_file)
 									dprintf(out_file, "2...\n");				
 					// invalid signal spec lenght
 					dprintf(err_file, "Ash: kill: invalid signal specification \"%s\"\n", p->argv[1]);
-					dprintf(err_file, "usage:\n");
-					dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+					dprintf(err_file, "Ash: kill: execute \"kill h\" for help.\n");		
 					return -1;
 				} // end else
 			} // end if
@@ -478,17 +468,15 @@ int Ash_kill(Process *p, int in_file, int out_file, int err_file)
 				{
 					// invalid signal spec lenght
 					dprintf(err_file, "Ash: kill: invalid signal specification \"%s\"\n", p->argv[1]);
-					dprintf(err_file, "usage:\n");
-					dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+					dprintf(err_file, "Ash: kill: execute \"kill h\" for help.\n");		
 					return -1;
 				} // end else
 			} // end else if
 			else
 			{
-										dprintf(out_file, "3...\n");			
+				//dprintf(out_file, "3...\n");			
 				dprintf(err_file, "Ash: kill: invalid signal specification \"%s\"\n", p->argv[1]);
-				dprintf(err_file, "usage:\n");
-				dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+				dprintf(err_file, "Ash: kill: execute \"kill h\" for help.\n");		
 				return -1;
 			} // end else
 			
@@ -501,8 +489,7 @@ int Ash_kill(Process *p, int in_file, int out_file, int err_file)
 				{
 					// argument is not of the right lenght; print err message and continue
 					dprintf(err_file, "Ash: kill: invalid argument \"%s\"\n", p->argv[i]);
-					dprintf(err_file, "usage:\n");
-					dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+					dprintf(err_file, "Ash: kill: execute \"kill h\" for help.\n");		
 					return -1;
 				} // end if
 				else
@@ -512,8 +499,7 @@ int Ash_kill(Process *p, int in_file, int out_file, int err_file)
 					{
 						// argument is  not started with '%' char
 						dprintf(err_file, "Ash: kill: invalid argument \"%s\"\n", p->argv[i]);
-						dprintf(err_file, "usage:\n");
-						dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+						dprintf(err_file, "Ash: kill: execute \"kill h\" for help.\n");		
 						
 					} // end if
 					else
@@ -554,8 +540,7 @@ int Ash_kill(Process *p, int in_file, int out_file, int err_file)
 	{
 		// bad grammer (invalid number of arguments)
 		dprintf(err_file, "Ash: kill: invalid number of arguments\n");
-		dprintf(err_file, "usage:\n");
-		dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
+		dprintf(err_file, "Ash: kill: execute \"kill h\" for help.\n");		
 		return -1;
 	} // end else
 	return 0;
@@ -580,9 +565,9 @@ int Ash_killall(Process *p, int in_file, int out_file, int err_file)
 		} // end if
 		else if (p->argv[1][0] == 's')
 		{
-				dprintf(out_file, "inside s...\n");
+				//dprintf(out_file, "inside s...\n");
 				// check if the signal spec is of the right length
-				dprintf(out_file, "lenght =  %d\n", strlen(p->argv[1]));				
+				//dprintf(out_file, "lenght =  %d\n", strlen(p->argv[1]));				
 				if (strlen(p->argv[1]) == 7 || strlen(p->argv[1]) == 8)
 				{	
 
@@ -609,8 +594,7 @@ int Ash_killall(Process *p, int in_file, int out_file, int err_file)
 						// invalid signal
 						// invalid signal spec lenght
 						dprintf(err_file, "Ash: killall: invalid signal specification \"%s\"\n", &p->argv[1][1]);
-						dprintf(err_file, "usage:\n");
-						dprintf(err_file, "killall l  or killall s<signal-name> or killall n<signal-number>\n");
+						dprintf(err_file, "Ash: killall: execute \"killall h\" for help.\n");		
 						return -1;
 					} // end else
 					Job *j;
@@ -628,8 +612,7 @@ int Ash_killall(Process *p, int in_file, int out_file, int err_file)
 									dprintf(out_file, "2...\n");				
 					// invalid signal spec lenght
 					dprintf(err_file, "Ash: killall: invalid signal specification \"%s\"\n", p->argv[1]);
-					dprintf(err_file, "usage:\n");
-					dprintf(err_file, "killall l  or killall s<signal-name> or killall n<signal-number>\n");
+					dprintf(err_file, "Ash: killall: execute \"killall h\" for help.\n");
 					return -1;
 				} // end else
 		} // end else if
@@ -653,19 +636,23 @@ int Ash_killall(Process *p, int in_file, int out_file, int err_file)
 				{
 					// invalid signal spec lenght
 					dprintf(err_file, "Ash: killall: invalid signal specification \"%s\"\n", p->argv[1]);
-					dprintf(err_file, "usage:\n");
-					dprintf(err_file, "killall l  or killall s<signal-name> or killall n<signal-number>\n");
+					dprintf(err_file, "Ash: killall: execute \"killall h\" for help.\n");
 					return -1;
 				} // end else	
 
 		
 		} // end else if
+		else
+		{
+			dprintf(err_file, "Ash: killall: invalid number of arguments \n");
+			dprintf(err_file, "Ash: killall: execute \"killall h\" for help.\n");
+			return -1;
+		} // end else
 		} // end else if
 		else
 		{
 			dprintf(err_file, "Ash: killall: invalid number of arguments \n");
-			dprintf(err_file, "usage:\n");
-			dprintf(err_file, "killall l  or killall s<signal-name> or killall n<signal-number>\n");
+			dprintf(err_file, "Ash: killall: execute \"killall h\" for help.\n");
 			return -1;
 		} // end else
 		
