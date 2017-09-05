@@ -1,3 +1,19 @@
+/**
+* @file cle.c
+* @author Joe Nathan Abellard {https://github.com/joenatech7}
+* 
+* @date September 1, 2017
+* @brief Contains the code for the command line editing sub system.
+*
+* @par Description
+* This file contains contains the code for the command line editing sub subsystem.
+*
+* @sa
+* cle.h
+*
+*/
+
+
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -10,12 +26,74 @@
 #include <limits.h>
 
 
-// global variables/decalrations
-static char *line_buffer = (char *)NULL;
-static char HISTORY_FILE[PATH_MAX]; 
-static char INPUTRC_FILE[PATH_MAX];
-static int NUM_ENTRIES_HISTORY_FILE;
-static int MAX_NUM_ENTRIES_HISTORY_FILE = 500;
+// global variables/decalrations-----------------------------------
+
+
+/**
+* @brief Stores the address of the last @e readline buffer.
+*
+* @par Description
+* This pointer stores the address of the last @e readline buffer. It is aliased by #pipeline_list
+* in input_loop(). To avoid a possible double free expection, #pipeline_list should never be used
+* to free the @e readline buffer.
+*
+* @sa
+* _readline(), @e readline , and input_loop().
+*
+*/
+char *line_buffer = NULL;
+
+
+/**
+* @brief Stores the path of the command history file.
+*
+* This array stores the path fo the command history file.
+*
+* @sa
+* @e readline, @e history, initialize_history(), #NUM_ENTRIES_HISTORY_FILE, and #MAX_NUM_ENTRIES_HISTORY_FILE.
+*
+*/
+char HISTORY_FILE[PATH_MAX]; 
+
+
+/**
+* @brief Stores the path of the @e readline input file.
+*
+* @par Description
+* This array stores the path of the @e readline input file. The input file stores
+* settings that can be used to configure the behavior of @e readline.
+*
+* @sa 
+* initialize_readline(), and @e readline.
+*
+*/
+char INPUTRC_FILE[PATH_MAX];
+
+
+/**
+* @brief Stores the current number of entries in the command history file.
+* 
+* @par Description
+* This variable stores the current number of entires in the command history file.
+*
+* @sa
+* @e history, @e readline, #MAX_NUM_ENTRIES_HISTORY_FILE, #HISTORY_FILE, and initialize_history().
+*
+*/
+int NUM_ENTRIES_HISTORY_FILE;
+
+
+/**
+* @brief Stores the maximum number of entries allowed in the command history file.
+*
+* @par Description
+* This variable stores the maximum number of entries allowed in the command history file.
+*
+* @sa
+* @e readline, @e history, #HISTORY_FILE, #NUM_ENTRIES_HISTORY_FILE, initialize_history(), and _readline().
+*
+*/
+int MAX_NUM_ENTRIES_HISTORY_FILE = 500;
 
 // used in generator function
 extern Builtin builtins[];
