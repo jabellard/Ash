@@ -1,3 +1,19 @@
+/**
+* @file err.c
+* @author Joe Nathan Abellard {https://github.com/joenatech7}
+* 
+* @date September 1, 2017
+* @brief Contains code for the error handling subsystem.
+*
+* @par Description
+* This file contains contains code for the error handling sub system.
+*
+* @sa
+* err.h
+*
+*/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
