@@ -1,8 +1,8 @@
 BNF for Ash
 The following is the grammar of Ash 2.0 in Backus-Naur Form (BNF)
 
-<identifier> ::= any sequence of the following character classes:
-	[a-z], [A-Z], [0-9], and [-_/.]
+<identifier> ::= any sequence characters from the following character class:
+	[-_/.a-zA-Z0-9]
 
 <cmd> ::= <identifier>
 
