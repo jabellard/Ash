@@ -664,24 +664,30 @@ Process* process_dup(const Process *p)
 } // end process_dup()
 
 
-
 void execute_process(Process *p, pid_t pgid, int in_file, int out_file, int err_file, int foreground)
 {
 	pid_t pid;
 
 	if (Ash_is_interactive)
 	{
-	/* Put the process into the process group and give the process group
-	 the terminal, if appropriate.
-	 This has to be done both by the shell and in the individual
-	 child processes because of potential race conditions.  */
+	
+	 	/*
+	 	 Place the process into the appropriate process group, and give it access to the
+	 	 controlling terminal, if nessasary.
+	 	*/
 		pid = getpid ();
-		if (pgid == 0) pgid = pid;
+		if (pgid == 0)
+		{
+			pgid = pid;
+		} // end if 
 		setpgid (pid, pgid);
 		if (foreground)
-		tcsetpgrp (Ash_terminal, pgid);
+		{
+			tcsetpgrp (Ash_terminal, pgid);		
+		} // end if
 
-	/* Set the handling for job control signals back to the default.  */
+
+		// set the disposition of job control stop signals back to default.
 		signal (SIGINT, SIG_DFL);
 		signal (SIGQUIT, SIG_DFL);
 		signal (SIGTSTP, SIG_DFL);
@@ -690,7 +696,7 @@ void execute_process(Process *p, pid_t pgid, int in_file, int out_file, int err_
 		signal (SIGCHLD, SIG_DFL);
 	}
 
-	/* Set the standard input/output channels of the new process.  */
+	// perform I/O redirection, if nessasary
 	if (in_file != STDIN_FILENO)
 	{
 		dup2 (in_file, STDIN_FILENO);
@@ -707,10 +713,11 @@ void execute_process(Process *p, pid_t pgid, int in_file, int out_file, int err_
 		close (err_file);
 	}
 
-	/* Exec the new process.  Make sure we exit.  */
+	// execute the ne99 program
 	execvp(p->argv[0], p->argv);
 	err_exit(p->argv[0]);
 } // end execute_process()
+
 
 void destroy_process(Process* p)
 {

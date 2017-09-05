@@ -1,3 +1,16 @@
+/**
+* @file main.c
+* @author Joe Nathan Abellard {https://github.com/joenatech7}
+* 
+* @date September 1, 2017
+* @brief Contains main().
+*
+* @par Description
+* Contains main().
+*
+*/
+
+
 #include <sys/wait.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -8,13 +21,71 @@
 #include "job.h"
 #include <setjmp.h>
 
+
+/**
+* @brief Points to the @e readline buffer.
+*
+* This pointer points to the @e readline buffer returned by _readline(). It aliases #line_buffer.
+* To avoid a possible double free exeption, this pointer should never be used to free the 
+* @e readline buffer.
+*
+* @sa
+* _readline(), @e readline, #line_buffer, and #pipeline_list_.
+*
+* @todo
+* Check if the buffer returned by _readline() ends with "\n\0".
+*
+*/
+char *pipeline_list = NULL;
+
+
+/**
+* @brief Makes sure the @e readline buffer end with "\n\0".
+* I am unsure if the buffer returned by _readline() ends with "\n\0". There I use this pointer
+* to allocate enough memory to to store the buffer returned by _readline() and "\n\0". This new
+* buffer is the input source for @e yacc. 
+*
+* @sa
+* _readline(), @e readline, #line_buffer, and #pipeline_list_.
+*
+* @todo
+* Check if the buffer returned by _readline() ends with "\n\0".
+*
+*/
+char *pipeline_list_ = NULL;
 jmp_buf input_prompt;
 
 
+/**
+* @brief The shell's input loop.
+*
+* This function runs the shell's main input loop. In an infinite loop, it does the following:
+* @li Calls _readline() to read input from the user.
+* @li Sets up @e yacc to read input from the @e readline buffer.
+* @li Calls @e yyparse() (i.e., the parser) to parse the input read.
+* @li Cleans up  buffers
+*
+* @sa
+* main(), _readline(), @e yacc, @e bison, @e yyparse(), and sfree().
+*
+*/
+void input_loop();
 
-void loop();
 
 
+/**
+* @brief The @e main function.
+*
+* @par Description
+* This is the main function. It does the following:
+* @li Calls init_shell() to initialize the shell.
+* @li Calls initialize_readline() to initialize the shell's command line editing facilities.
+* @li Calls input_loop() to run the shell's input loop.
+*
+* @sa
+* input_loop(), initialize_readline(), and init_shell().
+*
+*/
 int main(int argc, char **argv)
 {
 	//initialize the shell
@@ -22,16 +93,13 @@ int main(int argc, char **argv)
 	// initialize readline/history
 	initialize_readline();
 	
-	loop();
+	input_loop();
 	return EXIT_SUCCESS;
 
 } // end main
 
-void loop()
+void input_loop()
 {
-
-	char *pipeline_list = NULL;
-	char *pipeline_list_ = NULL;
 	while (1)
 	{
 		// read from the terminal------------------
