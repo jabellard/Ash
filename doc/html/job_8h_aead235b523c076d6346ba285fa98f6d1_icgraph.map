@@ -1,7 +1,0 @@
-<map id="wait_for_job" name="wait_for_job">
-<area shape="rect" id="node2" href="$job_8h.html#ab3b7803e9a87944a86267abc40fe6c39" title="Puts a job in the foreground. " alt="" coords="147,31,296,57"/>
-<area shape="rect" id="node6" href="$job_8h.html#a328634c49391a29ef1d4e86d6bf0ea7e" title="execute_job" alt="" coords="346,81,438,108"/>
-<area shape="rect" id="node3" href="$job_8h.html#ab69ad21398604a048a5a1b4ef7af1320" title="Continues a job. " alt="" coords="345,31,439,57"/>
-<area shape="rect" id="node4" href="$job_8h.html#a792fcc9814d020b087911591c5fce10b" title="[BUILTIN]: Continues an active job in the foreground. " alt="" coords="490,5,553,32"/>
-<area shape="rect" id="node5" href="$job_8h.html#a9bc6f26d0ab14359707a0f367f1a6522" title="[BUILTIN]: Continues active jobs in the background. " alt="" coords="488,56,555,83"/>
-</map>

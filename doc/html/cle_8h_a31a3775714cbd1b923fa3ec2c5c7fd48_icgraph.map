@@ -1,5 +1,0 @@
-<map id="remove_lines_from_file" name="remove_lines_from_file">
-<area shape="rect" id="node2" href="$cle_8h.html#ab33aa7fc65ab36bf5b799aa6521a4881" title="Calls readline() to read input and manages the shell&#39;s command history. " alt="" coords="211,5,285,32"/>
-<area shape="rect" id="node3" href="$main_8c.html#af783a9705a73559f4b17ec991bc11f1e" title="The shell&#39;s input loop. " alt="" coords="334,5,415,32"/>
-<area shape="rect" id="node4" href="$main_8c.html#a3c04138a5bfe5d72780bb7e82a18e627" title="The main function. " alt="" coords="464,5,515,32"/>
-</map>

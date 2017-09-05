@@ -1,8 +1,0 @@
-<map id="Ash_jobs" name="Ash_jobs">
-<area shape="rect" id="node2" href="$job_8c.html#ad8e58b77db46018eeb20c68855538f35" title="Updates the status of stopped or completed child processes of the shell. " alt="" coords="147,5,251,32"/>
-<area shape="rect" id="node5" href="$job_8c.html#a0654ba7330ec47c1e636afe60657651b" title="Determines if a job is completed. " alt="" coords="137,56,260,83"/>
-<area shape="rect" id="node6" href="$job_8c.html#ae54ca57ee056e74d8ae32967453e4482" title="Prints the command associated with a job. " alt="" coords="131,107,266,133"/>
-<area shape="rect" id="node7" href="$job_8c.html#a4b49892bffa5095eb5a0fb7d86659456" title="Determines if a job is stopped. " alt="" coords="144,157,253,184"/>
-<area shape="rect" id="node3" href="$job_8c.html#a5419d481fca1c4c7bb7c89e38b964fa9" title="Marks the status of a stopped or terminated child process. " alt="" coords="315,5,461,32"/>
-<area shape="rect" id="node4" href="$err_8c.html#a07dfb9fd24fe41a9f703bd92af2cf646" title="Prints an error message corresponding to the current value of errno. " alt="" coords="509,5,579,32"/>
-</map>

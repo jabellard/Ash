@@ -1,5 +1,0 @@
-<map id="execute_process" name="execute_process">
-<area shape="rect" id="node2" href="$err_8c.html#ab24204e73fd5cdd4d62dc30f4794da23" title="Prints and error message, and terminates the calling process. " alt="" coords="177,31,242,57"/>
-<area shape="rect" id="node3" href="$err_8c.html#a07dfb9fd24fe41a9f703bd92af2cf646" title="Prints an error message corresponding to the current value of errno. " alt="" coords="295,5,364,32"/>
-<area shape="rect" id="node4" href="$err_8c.html#a8e8952208174427fc9de79dfed72b043" title="Terminates the calling process. " alt="" coords="291,56,367,83"/>
-</map>

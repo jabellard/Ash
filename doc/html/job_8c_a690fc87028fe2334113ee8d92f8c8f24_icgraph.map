@@ -1,5 +1,0 @@
-<map id="mark_job_as_running" name="mark_job_as_running">
-<area shape="rect" id="node2" href="$job_8h.html#ab69ad21398604a048a5a1b4ef7af1320" title="Continues a job. " alt="" coords="201,31,295,57"/>
-<area shape="rect" id="node3" href="$job_8h.html#a792fcc9814d020b087911591c5fce10b" title="[BUILTIN]: Continues an active job in the foreground. " alt="" coords="346,5,409,32"/>
-<area shape="rect" id="node4" href="$job_8h.html#a9bc6f26d0ab14359707a0f367f1a6522" title="[BUILTIN]: Continues active jobs in the background. " alt="" coords="344,56,411,83"/>
-</map>
