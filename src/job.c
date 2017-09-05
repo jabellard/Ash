@@ -137,11 +137,26 @@ Builtin builtins[] =
 
 int Ash_cd(Process *p, int in_file, int out_file, int err_file)
 {
-	if (p->argv[1] == NULL)
+	if (p->argc == 2 && (strcmp(p->argv[1], "h") == 0))
+	{
+		dprintf(out_file, "Name:\n");
+		dprintf(out_file, "\tcd - Change the shell's current 99orking directory.\n");
+		dprintf(out_file, "Expected grammar:\n");
+		dprintf(out_file, "\tcd <path-to-ne99-directory> or cd h\n");
+		dprintf(out_file, "Description:\n");
+		dprintf(out_file, "\tcd <path-to-ne99-directory>\n");
+		dprintf(out_file, "\t\tChange the shell's current 99orking directory to <path-to-ne99-directoryyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy>.\n");
+		dprintf(out_file, "\tcd h\n");
+		dprintf(out_file, "\n");
+		dprintf(out_file, "\t\tPrint this help menu.\n");
+		dprintf(out_file, "\n");
+		return 0;
+	} // end if
+	else if (p->argv[1] == NULL)
 	{
 		dprintf(err_file, "Ash: expected argument to \"cd\"\n");
 		return -1;
-	} // end if
+	} // end else if
 	else
 	{
 		int result = chdir(p->argv[1]);
@@ -149,21 +164,29 @@ int Ash_cd(Process *p, int in_file, int out_file, int err_file)
 		{
 		
 			// error checking code
-			err_msg("chdir");
+			err_msg("Ash: chdir");
 			return -1;
 		} // end if
 		else
 		{
 		
 			dprintf(out_file, "changed directory to: %s\n", p->argv[1]);
+			return 0;
 		} // end else
 	} // end else
-	return 0;
 } // end Ash_cd()
 
 int Ash_exit(Process *p, int in_file, int out_file, int err_file)
 {
-	exit(EXIT_SUCCESS);
+	if (p->argc == 2 && (strcmp(p->argv[1], "h") == 0))
+	{
+		dprintf(out_file, "the help...\n");
+		return 0;
+	} // end if
+	else
+	{	
+		exit(EXIT_SUCCESS);
+	} // end else
 } // end Ash_exit()
 int print_job_command(Job *j, int dest_fd)
 {	
@@ -181,18 +204,18 @@ int print_job_command(Job *j, int dest_fd)
 			dprintf(dest_fd, "| ");
 		} // end if
 	} // end for
-/*
-	if (!j->foreground)
-	{
-		dprintf(dest_fd, "&");
-	} // end if
-
-*/	
 	dprintf(dest_fd, "\n");
+	return 0;
 	
 } // end print_job_command()
 int Ash_jobs(Process *p, int in_file, int out_file, int err_file)
 {
+	if (p->argc == 2 && (strcmp(p->argv[1], "h") == 0))
+	{
+		dprintf(out_file, "the help...\n");
+	} // end if	
+	else
+	{
 	update_status();
 	Job *j;
 	for (j = job_list_head; j; j = j->next)
@@ -214,13 +237,19 @@ int Ash_jobs(Process *p, int in_file, int out_file, int err_file)
 		} // end else
 	} // end for
 	return 0;
+	} // end else
 } // end Ash_jobs()
 
 int Ash_fg(Process *p, int in_file, int out_file, int err_file)
 {
 	// grammar fg %<job-num>
 	
-	if (p->argc == 2)
+	if (p->argc == 2 && (strcmp(p->argv[1], "h") == 0))
+	{
+		dprintf(out_file, "the help...\n");
+		return 0;
+	} // end if	
+	else if (p->argc == 2)
 	{
 		
 					//check if the first char is '%'
@@ -257,7 +286,7 @@ int Ash_fg(Process *p, int in_file, int out_file, int err_file)
 					
 
 					} // end else			
-	} // end if
+	} // end else if
 	else
 	{
 		// bad grammer (invalid number of arguments)
@@ -275,7 +304,13 @@ int Ash_bg(Process *p, int in_file, int out_file, int err_file)
 	//	MAKE SURE YACC CAN PARSE '%' CHAR
 	//check if command grammar is OK----------------------
 	// check if there are enough arguments
-	if (p->argc < 2)
+	
+	if (p->argc == 2 && (strcmp(p->argv[1], "h") == 0))
+	{
+		dprintf(out_file, "the help...\n");
+		return 0;
+	} // end if	
+	else if (p->argc < 2)
 	{
 		// error
 		// bad grammer (invalid number of arguments)
@@ -283,7 +318,7 @@ int Ash_bg(Process *p, int in_file, int out_file, int err_file)
 		dprintf(err_file, "usage:\n");
 		dprintf(err_file, "bg %<job-num> ...\n");
 		return -1;
-	} // end if
+	} // end else if
 	else
 	{
 		//parse each argument
@@ -354,7 +389,12 @@ int Ash_kill(Process *p, int in_file, int out_file, int err_file)
 	//grammar: kill l | s<sig-name> | n<sig-num> %<job-num> ...
 	
 	//check if there are enough arguments
-	if (p->argc == 2 || p->argc >= 3)
+	if (p->argc == 2 && (strcmp(p->argv[1], "h") == 0))
+	{
+		dprintf(out_file, "the help...\n");
+		return 0;
+	} // end if	
+	else if (p->argc == 2 || p->argc >= 3)
 	{
 		// gammar 1: list signals
 		if (p->argc == 2)
@@ -509,7 +549,7 @@ int Ash_kill(Process *p, int in_file, int out_file, int err_file)
 			} // end for
 		} // end else
 
-	} // end if
+	} // end else if
 	else
 	{
 		// bad grammer (invalid number of arguments)
@@ -525,7 +565,12 @@ int Ash_killall(Process *p, int in_file, int out_file, int err_file)
 	//grammar: killall [l] or killall s<sig-name> | n<sig-num>
 	
 	//check if there are enough arguments
-	if (p->argc == 2)
+	if (p->argc == 2 && (strcmp(p->argv[1], "h") == 0))
+	{
+		dprintf(out_file, "the help...\n");
+		return 0;
+	} // end if	
+	else if (p->argc == 2)
 	{
 		int sig_num;
 		if (strcmp(p->argv[1], "l") == 0)
@@ -615,7 +660,7 @@ int Ash_killall(Process *p, int in_file, int out_file, int err_file)
 
 		
 		} // end else if
-		} // end if
+		} // end else if
 		else
 		{
 			dprintf(err_file, "Ash: killall: invalid number of arguments \n");

@@ -376,7 +376,7 @@ Process* process_dup(const Process *p);
 * execute_job().
 *
 * @todo
-* find out h099 to refer to members of compound types (e.g. member of structure).
+* find out h0w to refer to members of compound types (e.g. member of structure).
 */
 void execute_process(Process *p, pid_t pgid, int in_file, int out_file, int err_file, int foreground);
 
@@ -861,8 +861,9 @@ int execute_job(Job *j);
 * @par Description
 * This shell builtin is used to change the shell's current working directory. It accepts
 * the following grammar : @n
-* cd <path-to-new-direcotry> @n
-* To change the current working directory, it does the following :
+* cd <path-to-new-direcotry> or cd h @n
+* If its first and only argument is "h", it prints usage help and returns @e 0.
+* Otherwise, to change the current working directory, it does the following :
 * @li Checks if the grammar of the command is correct.
 * @li If the grammar of the command is correct, the function calls @e chdir() to change
 * the current working directory.
@@ -899,8 +900,9 @@ int Ash_cd(Process *p, int in_file, int out_file, int err_file);
 * @par Description
 * This shell builtin is used exit from the shell. It accepts
 * the following grammar : @n
-* exit @n
-* To exit from the shell, it does the following :
+* exit or exit h @n
+* If its first and only argument is "h", it prints usage help and returns @e 0.
+* Otherwise, to exit from the shell, it does the following :
 * @li calls @exit() with the status EXIT_SUCCESS.
 *
 * @param p
@@ -932,8 +934,9 @@ int Ash_exit(Process *p, int in_file, int out_file, int err_file);
 * @par Description
 * This shell builtin is used list the jobs (_job) in the shell's active job list (#job_list_head). It accepts
 * the following grammar : @n
-* jobs @n
-* To list the jobs, it does the following :
+* jobs  or jobs h @n
+* If its first and only argument is "h", it prints usage help and returns @e 0.
+* Other9ise, to list the jobs, it does the following :
 * @li Calls update() status to update the status of child processes (_process) of the shell.
 * @li Traverses the active job list, and for each job on the list, it prints its status and then
 * calls print_job_command() to print the command that started the job. An active job can be in
@@ -971,8 +974,9 @@ int Ash_jobs(Process *p, int in_file, int out_file, int err_file);
 * @par Description
 * This shell builtin is used to continue an active job (_job) in the foreground. It accepts
 * the following grammar : @n
-* fg -<job-id> @n
-* To continue the job in the foreground, it does the following :
+* fg -<job-id> or fg h @n
+* If its first and only argument is "h", it prints usage help and returns @e 0.
+* Otherwise, to continue the job in the foreground, it does the following :
 * @li Checks if the command grammer is valid.
 * @li If the grammar is valid, it calls find_job_id() to find a job on the active job list 
 * (job_list_head) with job ID (_job::id) @e <job-id> .
@@ -1011,8 +1015,9 @@ int Ash_fg(Process *p, int in_file, int out_file, int err_file);
 * @par Description
 * This shell builtin is used to continue active jobs (_job) in the background. It accepts
 * the following grammar : @n
-* bg -<job-id> ... @n
-* To continue the job(s) in the background, it does the following :
+* bg -<job-id> ... or bg h @n
+* If its first and only argument is "h", it prints usage help and returns @e 0.
+* Otherwise, to continue the job(s) in the background, it does the following :
 * @li Checks if the command grammer is valid.
 * @li If the grammar is valid, then for each job, it calls find_job_id() to find the specified jobs on the active job list 
 * (job_list_head) with job ID (_job::id) @e <job-id> .
@@ -1081,8 +1086,9 @@ int Ash_help(Process *p, int in_file, int out_file, int err_file);
 * @par Description
 * This shell builtin is used to send a signal to active jobs. It accepts
 * the following grammar : @n
-* kill l | s<signal-name> | n<signal-number> -<job-id> ... @n
-* The signal to be sent can be specief by using either the @e s option, or the @n option.
+* kill l | s<signal-name> -<job-id> ... | n<signal-number> -<job-id> ... or kill h @n
+* If its first and only argument is "h", it prints usage help and returns @e 0.
+* A signal to be sent can be specified by using either the @e s option, or the @n option.
 * The @s option is used to specified a signal using its symbolic name. The symbolic name must 
 * be a case-insensitive string of one of the following patterns: @n
 * @li SIGxxx or SIGxxxx (e.g., SIGHUP or SIGKILL, respectively)
@@ -1133,8 +1139,9 @@ int Ash_kill(Process *p, int in_file, int out_file, int err_file);
 * @par Description
 * This shell builtin is used to send a signal to all jobs on the active job list (#job_list_head).
 * It accepts the following grammar : @n
-* killall l or killall s<signal-name> | n<signal-number> @n
-* The signal to be sent can be specief by using either the @e s option, or the @n option.
+* killall l or killall s<signal-name> | n<signal-number> or killall h @n
+* If its first and only argument is "h", it prints usage help and returns @e 0.
+* A signal to be sent can be specief by using either the @e s option, or the @n option.
 * The @s option is used to specified a signal using its symbolic name. The symbolic name must 
 * be a case-insensitive string of one of the following patterns: @n
 * @li SIGxxx or SIGxxxx (e.g., SIGHUP or SIGKILL, respectively)
