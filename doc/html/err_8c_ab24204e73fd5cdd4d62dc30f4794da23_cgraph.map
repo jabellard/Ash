@@ -1,0 +1,4 @@
+<map id="err_exit" name="err_exit">
+<area shape="rect" id="node2" href="$err_8c.html#a07dfb9fd24fe41a9f703bd92af2cf646" title="Prints an error message corresponding to the current value of errno. " alt="" coords="124,5,193,32"/>
+<area shape="rect" id="node3" href="$err_8c.html#a8e8952208174427fc9de79dfed72b043" title="Terminates the calling process. " alt="" coords="121,56,197,83"/>
+</map>

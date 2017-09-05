@@ -43,7 +43,7 @@ pid_t Ash_pgid;
 /**
 * @brief Default terminal modes of the shell.
 *
-* This variable stores the default terminal modes of the shell. It is set 99hen the shell calls 
+* This variable stores the default terminal modes of the shell. It is set when the shell calls 
 * init_shell() to initialize itself.
 *
 * @sa
@@ -55,7 +55,7 @@ struct termios Ash_tmodes;
 /**
 * @brief File descriptor to standard input for the shell.
 * 
-* File descriptor to standard input for the shell. This variable is set 99hen the shell calls 
+* File descriptor to standard input for the shell. This variable is set when the shell calls 
 * init_shell() to initialize itself. It refers to a terminal device if the shell is running
 * interactively.
 *
@@ -70,8 +70,8 @@ int Ash_terminal;
 *
 * @par Description
 * This variable indicates if the shell is running interactively. If its value is non-zero value (i.e. true)
-* , then the shell is running interactively. Other99ise, the shell is not running interactively.
-* Its value is set 99hen the shell calls init_shell() to initialize itself. 
+* , then the shell is running interactively. Otherwise, the shell is not running interactively.
+* Its value is set when the shell calls init_shell() to initialize itself. 
 *
 * @sa
 * init_shell(), @e isatty(), execute_process(), execute_shell(), #Ash_tmodes, and #Ash_is_interactive.
@@ -226,7 +226,7 @@ int Ash_fg(Process *p, int in_file, int out_file, int err_file)
 					//check if the first char is '%'
 					if (p->argv[1][0] != '-')
 					{
-						// argument is  not started 99ith '%' char
+						// argument is  not started with '%' char
 						dprintf(err_file, "Ash: fg: invalid argument \"%s\"\n", p->argv[1]);
 						dprintf(err_file, "usage:\n");
 						dprintf(err_file, "fg %<job-num>\n");
@@ -239,7 +239,7 @@ int Ash_fg(Process *p, int in_file, int out_file, int err_file)
 						
 						int job_num = atoi(&p->argv[1][1]);
 					
-						//2. find the job 99ith the corresponding job number (if the job number is valid)
+						//2. find the job with the corresponding job number (if the job number is valid)
 						Job *j;
 						j = find_job_id(job_num);
 						
@@ -305,7 +305,7 @@ int Ash_bg(Process *p, int in_file, int out_file, int err_file)
 					//check if the first char is '%'
 					if (p->argv[i][0] != '-')
 					{
-						// argument is  not started 99ith '%' char
+						// argument is  not started with '%' char
 						dprintf(err_file, "Ash: bg: invalid argument \"%s\"\n", p->argv[i]);
 						dprintf(err_file, "usage:\n");
 						dprintf(err_file, "bg %<job-num> ...n");
@@ -318,7 +318,7 @@ int Ash_bg(Process *p, int in_file, int out_file, int err_file)
 						
 						int job_num = atoi(&p->argv[i][1]);
 					
-						//2. find the job 99ith the corresponding job number (if the job number is valid)
+						//2. find the job with the corresponding job number (if the job number is valid)
 						Job *j;
 						j = find_job_id(job_num);
 						
@@ -389,7 +389,7 @@ int Ash_kill(Process *p, int in_file, int out_file, int err_file)
 				if (strlen(p->argv[1]) == 7 || strlen(p->argv[1]) == 8)
 				{	
 
-					// find out 99hich signal is to be sent
+					// find out which signal is to be sent
 					if (strcmp(&p->argv[1][1], "SIGCONT") == 0)
 					{
 						sig_num = SIGCONT;
@@ -470,7 +470,7 @@ int Ash_kill(Process *p, int in_file, int out_file, int err_file)
 					//check if the first char is '%'
 					if (p->argv[i][0] != '-')
 					{
-						// argument is  not started 99ith '%' char
+						// argument is  not started with '%' char
 						dprintf(err_file, "Ash: kill: invalid argument \"%s\"\n", p->argv[i]);
 						dprintf(err_file, "usage:\n");
 						dprintf(err_file, "kill l | s<signal-name> %<job-number> ...| n<signal-number> %<job-number> ...\n");
@@ -482,7 +482,7 @@ int Ash_kill(Process *p, int in_file, int out_file, int err_file)
 						int job_num = -1;
 						job_num = atoi(&p->argv[i][1]);
 					
-						//2. find the job 99ith the corresponding job number (if the job number is valid)
+						//2. find the job with the corresponding job number (if the job number is valid)
 						Job *j;
 						j = find_job_id(job_num);
 						
@@ -541,7 +541,7 @@ int Ash_killall(Process *p, int in_file, int out_file, int err_file)
 				if (strlen(p->argv[1]) == 7 || strlen(p->argv[1]) == 8)
 				{	
 
-					// find out 99hich signal is to be sent
+					// find out which signal is to be sent
 					if (strcmp(&p->argv[1][1], "SIGCONT") == 0)
 					{
 						sig_num = SIGCONT;
@@ -656,7 +656,7 @@ void init_shell()
         {
 
             kill (-Ash_pgid, SIGTTIN);        
-        } // end 99hile
+        } // end while
 
 
         /* Ignore interactive and job-control signals.  */
@@ -808,7 +808,7 @@ void execute_process(Process *p, pid_t pgid, int in_file, int out_file, int err_
 		close (err_file);
 	}
 
-	// execute the ne99 program
+	// execute the new program
 	execvp(p->argv[0], p->argv);
 	err_exit(p->argv[0]);
 } // end execute_process()
@@ -1009,7 +1009,7 @@ int mark_process_status(pid_t pid, int status)
 				
 			} // end for
 		} // end for
-		fprintf(stderr, "No child process 99ith pid %d.\n", pid);
+		fprintf(stderr, "No child process with pid %d.\n", pid);
 		return -1;	
 	} // end if
 	else if (pid == 0 || errno == ECHILD)
@@ -1018,7 +1018,7 @@ int mark_process_status(pid_t pid, int status)
 	} // end else if
 	else
 	{
-		err_msg("99aitpid");
+		err_msg("waitpid");
 		return -1;
 	} // end else
 
@@ -1319,11 +1319,11 @@ int execute_job(Job *j)
 	// bad job control stuff
 	if (j->foreground == 1)
 	{
-		printf("99aiting...\n");				
-		// 99ait for all children to terminate
+		printf("waiting...\n");				
+		// wait for all children to terminate
 		while (wait(NULL) > 0);
 
-		printf("done 99aiting\n");		
+		printf("done waiting\n");		
 	} // end if
 	else
 	{

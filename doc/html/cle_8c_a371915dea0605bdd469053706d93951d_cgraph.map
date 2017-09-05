@@ -1,0 +1,8 @@
+<map id="initialize_readline" name="initialize_readline">
+<area shape="rect" id="node2" href="$cle_8c.html#acbd58e7ffbca9f6d8d7494a053414e49" title="Initializes the shell&#39;s command history facilities. " alt="" coords="193,9,308,36"/>
+<area shape="rect" id="node4" href="$cle_8c.html#ab57f2ac63325fc919968e7eb78586965" title="Registred function to perform command completion. " alt="" coords="176,61,325,88"/>
+<area shape="rect" id="node6" href="$cle_8c.html#a327aaeef5e5ada52f0a64d0be178bb30" title="Inverts the case of characters in a region of the current line buffer of readline ..." alt="" coords="177,112,325,139"/>
+<area shape="rect" id="node7" href="$cle_8c.html#a8a75575085afe93be976c3d116ed8231" title="Toggles readline &#39;s editing mode. " alt="" coords="180,163,321,189"/>
+<area shape="rect" id="node3" href="$cle_8c.html#a74b72242dbf240d23501bb34bfdc4fea" title="Counts the number of lines in a file. " alt="" coords="383,5,513,32"/>
+<area shape="rect" id="node5" href="$cle_8c.html#ade079408c61657dc7bbd2142a78e0e8a" title="Generation function used for command completion. " alt="" coords="373,57,523,98"/>
+</map>

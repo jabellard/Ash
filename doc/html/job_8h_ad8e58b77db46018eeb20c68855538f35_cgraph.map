@@ -1,0 +1,4 @@
+<map id="update_status" name="update_status">
+<area shape="rect" id="node2" href="$job_8c.html#a5419d481fca1c4c7bb7c89e38b964fa9" title="Marks the status of a stopped or terminated child process. " alt="" coords="157,5,304,32"/>
+<area shape="rect" id="node3" href="$err_8c.html#a07dfb9fd24fe41a9f703bd92af2cf646" title="Prints an error message corresponding to the current value of errno. " alt="" coords="352,5,421,32"/>
+</map>

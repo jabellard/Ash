@@ -1,0 +1,4 @@
+<map id="create_process" name="create_process">
+<area shape="rect" id="node2" href="$job_8h.html#a9c2d0895268bd3229fc231b00029eb7b" title="Duplicates an instance of a process. " alt="" coords="165,5,261,32"/>
+<area shape="rect" id="node3" href="$job_8h.html#a78dbe5452200ef69f412085af895096b" title="Inserts a process instance in a job instance. " alt="" coords="310,5,458,32"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="find_job_id" name="find_job_id">
+<area shape="rect" id="node2" href="$job_8h.html#a792fcc9814d020b087911591c5fce10b" title="[BUILTIN]: Continues an active job in the foreground. " alt="" coords="142,5,205,32"/>
+<area shape="rect" id="node3" href="$job_8h.html#a9bc6f26d0ab14359707a0f367f1a6522" title="[BUILTIN]: Continues active jobs in the background. " alt="" coords="140,56,207,83"/>
+<area shape="rect" id="node4" href="$job_8h.html#a723e6648fca47a139cdff5cf4f1bc4bb" title="[BUILTIN]: Sends a signal to active jobs. " alt="" coords="139,107,207,133"/>
+</map>

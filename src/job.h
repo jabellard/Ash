@@ -375,6 +375,8 @@ Process* process_dup(const Process *p);
 * signal(), STDIN_FILENO, STDOUT_FILENO, STDERR_FILENO, dup2(), execvp(), err_exit(), and
 * execute_job().
 *
+* @todo
+* find out h099 to refer to members of compound types (e.g. member of structure).
 */
 void execute_process(Process *p, pid_t pgid, int in_file, int out_file, int err_file, int foreground);
 

@@ -1,0 +1,4 @@
+<map id="process_dup" name="process_dup">
+<area shape="rect" id="node2" href="$job_8c.html#a1af7ca10dbe6b9358262cc18f04bf6f5" title="Creates an instance of a process. " alt="" coords="150,5,261,32"/>
+<area shape="rect" id="node3" href="$err_8c.html#a07dfb9fd24fe41a9f703bd92af2cf646" title="Prints an error message corresponding to the current value of errno. " alt="" coords="309,5,379,32"/>
+</map>

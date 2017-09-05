@@ -106,7 +106,7 @@ void input_loop()
 		pipeline_list = _readline("> ");
 		
 		
-		// add ne99line and \o at the end of the pipeline_list------------------
+		// add newline and \o at the end of the pipeline_list------------------
 		pipeline_list_ = (char *) malloc(strlen(pipeline_list) + 3);
 		
 		strcpy(pipeline_list_, pipeline_list);
@@ -133,7 +133,7 @@ void input_loop()
 		sfree(pipeline_list_);
 
 	
-	} // end 99hile
+	} // end while
 
 } // end loop
 

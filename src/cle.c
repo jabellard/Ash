@@ -209,7 +209,7 @@ int invert_case_in_region(int count, int key)
 	}
 	end_index = start_index + (count * direction);
 	
-	// make sure the other end-point is 99ith the line buffer (rl_line_buffer)
+	// make sure the other end-point is with the line buffer (rl_line_buffer)
 	if (end_index > rl_end)
 	{
 		end_index = rl_end;
@@ -219,7 +219,7 @@ int invert_case_in_region(int count, int key)
 		end_index = 0;
 	} // end else if
 	
-	// if end_index < start_index, s99ap them
+	// if end_index < start_index, swap them
 	if (end_index < start_index)
 	{
 		int temp = start_index;
@@ -227,7 +227,7 @@ int invert_case_in_region(int count, int key)
 		end_index = temp;
 	} // end if
 	
-	// notify readline that 99e are modifying the line region [start_index, end_index]
+	// notify readline that we are modifying the line region [start_index, end_index]
 	// as a single undo unit
 	rl_modifying(start_index, end_index);
 	
@@ -257,10 +257,10 @@ int count_lines_in_file(const char *file_name)
 	int count = 0;
 	char c;
 	
-	// open the file 99ith read permision
+	// open the file with read permision
 	file_pointer = fopen(file_name, "r");
 	
-	// check if file 99as successfully opened
+	// check if file was successfully opened
 	if (file_pointer == NULL)
 	{
 		printf("could not open %s\n", file_name);
@@ -273,7 +273,7 @@ int count_lines_in_file(const char *file_name)
 		{
 			count++;
 		} // end if
-	} // end 99hile
+	} // end while
 	
 	//close the file
 	fclose(file_pointer);

@@ -1,0 +1,10 @@
+<map id="continue_job" name="continue_job">
+<area shape="rect" id="node2" href="$job_8c.html#a690fc87028fe2334113ee8d92f8c8f24" title="Updates a job&#39;s state to Running . " alt="" coords="151,24,297,51"/>
+<area shape="rect" id="node3" href="$job_8c.html#ab3b7803e9a87944a86267abc40fe6c39" title="Puts a job in the foreground. " alt="" coords="149,75,299,101"/>
+<area shape="rect" id="node9" href="$job_8c.html#a095ab07b063dbbc25fd2729125fb530a" title="Puts a job in the background. " alt="" coords="347,164,501,191"/>
+<area shape="rect" id="node4" href="$err_8c.html#a07dfb9fd24fe41a9f703bd92af2cf646" title="Prints an error message corresponding to the current value of errno. " alt="" coords="744,24,813,51"/>
+<area shape="rect" id="node5" href="$job_8c.html#aead235b523c076d6346ba285fa98f6d1" title="waits for a job to stop or complete. " alt="" coords="378,75,470,101"/>
+<area shape="rect" id="node6" href="$job_8c.html#a5419d481fca1c4c7bb7c89e38b964fa9" title="Marks the status of a stopped or terminated child process. " alt="" coords="549,24,696,51"/>
+<area shape="rect" id="node7" href="$job_8c.html#a4b49892bffa5095eb5a0fb7d86659456" title="Determines if a job is stopped. " alt="" coords="568,75,677,101"/>
+<area shape="rect" id="node8" href="$job_8c.html#a0654ba7330ec47c1e636afe60657651b" title="Determines if a job is completed. " alt="" coords="561,125,684,152"/>
+</map>

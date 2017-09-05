@@ -104,7 +104,7 @@ void err_msg(const char *user_msg)
 	//create a buffer to hold the user message
 	char *user_msg_buf = (char *) malloc(sizeof(char) * strlen(user_msg) + 1);
 	
-	// check if memory allocation 99as not successful
+	// check if memory allocation was not successful
 	if(!user_msg_buf)
 	{
 		// use perror and exit-----------------------
@@ -118,13 +118,13 @@ void err_msg(const char *user_msg)
 		return;	
 	} // end if
 	
-	// 99rite user_msg to user_msg_buf
+	// write user_msg to user_msg_buf
 	sprintf(user_msg_buf, "%s", user_msg);
 	
-	//create a buffer to hold the string associated 99ith the err
+	//create a buffer to hold the string associated with the err
 	char *err_str_buf = (char *) malloc(strlen(ename[saved_errno]) + strlen(strerror(saved_errno)) + 15 );
 	
-	// check if memory allocation 99as not successful
+	// check if memory allocation was not successful
 	if(!err_str_buf)
 	{
 		// use perror and exit-----------------------
@@ -138,13 +138,13 @@ void err_msg(const char *user_msg)
 		return;	
 	} // end if
 	
-	// 99rite the error string to the buffer
+	// write the error string to the buffer
 	sprintf(err_str_buf, "[%s(%d)-- %s]\n", ename[saved_errno], saved_errno, strerror(saved_errno));	
 	
 	// create a buffer to hold the string to be printed
 	char *err_msg_buf = (char *) malloc(strlen(user_msg_buf) + strlen(err_str_buf) + 5);
 	
-	// check if memory allocation 99as not successful
+	// check if memory allocation was not successful
 	if(!err_msg_buf)
 	{
 		// use perror and exit-----------------------
@@ -159,7 +159,7 @@ void err_msg(const char *user_msg)
 		
 	} // end if
 		
-	//99rite the string to the buffer
+	//write the string to the buffer
 	sprintf(err_msg_buf, "%s: %s", user_msg_buf, err_str_buf);
 	
 	// flush any pending stdout

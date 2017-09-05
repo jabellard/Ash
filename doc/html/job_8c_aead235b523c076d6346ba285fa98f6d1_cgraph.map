@@ -1,0 +1,6 @@
+<map id="wait_for_job" name="wait_for_job">
+<area shape="rect" id="node2" href="$job_8c.html#a5419d481fca1c4c7bb7c89e38b964fa9" title="Marks the status of a stopped or terminated child process. " alt="" coords="147,5,293,32"/>
+<area shape="rect" id="node4" href="$job_8c.html#a4b49892bffa5095eb5a0fb7d86659456" title="Determines if a job is stopped. " alt="" coords="165,56,275,83"/>
+<area shape="rect" id="node5" href="$job_8c.html#a0654ba7330ec47c1e636afe60657651b" title="Determines if a job is completed. " alt="" coords="159,107,281,133"/>
+<area shape="rect" id="node3" href="$err_8c.html#a07dfb9fd24fe41a9f703bd92af2cf646" title="Prints an error message corresponding to the current value of errno. " alt="" coords="341,5,411,32"/>
+</map>

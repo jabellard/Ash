@@ -1,0 +1,26 @@
+<map id="err_msg" name="err_msg">
+<area shape="rect" id="node2" href="$cle_8h.html#a31a3775714cbd1b923fa3ec2c5c7fd48" title="Removes lines from a file. " alt="" coords="123,5,279,32"/>
+<area shape="rect" id="node6" href="$err_8h.html#abdf2524e566eb527094c786e60c4e15a" title="Prints and error message, and terminates the calling process. " alt="" coords="169,207,234,233"/>
+<area shape="rect" id="node8" href="$job_8h.html#a328634c49391a29ef1d4e86d6bf0ea7e" title="execute_job" alt="" coords="703,309,795,336"/>
+<area shape="rect" id="node9" href="$err_8h.html#a30a51bd316b9e22534d7d2c50c110e9e" title="Prints and error message, and terminates the calling process. " alt="" coords="165,436,237,463"/>
+<area shape="rect" id="node10" href="$job_8h.html#a2c2cfa6591ee05cc5bf0c39f38b9e2ea" title="[BUILTIN]: Changes the shell&#39;s current working directory. " alt="" coords="168,487,235,513"/>
+<area shape="rect" id="node11" href="$job_8h.html#a3a5b33cdd8fb591704c9adfcf908a273" title="Initializes the shell. " alt="" coords="353,56,426,83"/>
+<area shape="rect" id="node12" href="$job_8h.html#a1af7ca10dbe6b9358262cc18f04bf6f5" title="Creates an instance of a process. " alt="" coords="146,537,257,564"/>
+<area shape="rect" id="node15" href="$job_8h.html#a18d3d13da14c1f38fa2b0932e8850129" title="Creates a new job instance. " alt="" coords="160,588,243,615"/>
+<area shape="rect" id="node16" href="$job_8h.html#a5419d481fca1c4c7bb7c89e38b964fa9" title="Marks the status of a stopped or terminated child process. " alt="" coords="128,284,275,311"/>
+<area shape="rect" id="node21" href="$job_8h.html#ab3b7803e9a87944a86267abc40fe6c39" title="Puts a job in the foreground. " alt="" coords="501,360,651,387"/>
+<area shape="rect" id="node25" href="$job_8h.html#a095ab07b063dbbc25fd2729125fb530a" title="Puts a job in the background. " alt="" coords="499,411,653,437"/>
+<area shape="rect" id="node3" href="$cle_8h.html#ab33aa7fc65ab36bf5b799aa6521a4881" title="Calls readline() to read input and manages the shell&#39;s command history. " alt="" coords="352,5,427,32"/>
+<area shape="rect" id="node4" href="$main_8c.html#af783a9705a73559f4b17ec991bc11f1e" title="The shell&#39;s input loop. " alt="" coords="535,5,617,32"/>
+<area shape="rect" id="node5" href="$main_8c.html#a3c04138a5bfe5d72780bb7e82a18e627" title="The main function. " alt="" coords="724,31,775,57"/>
+<area shape="rect" id="node7" href="$job_8h.html#acaa6f75b768f52660498b9fab3898e15" title="Executes a process. " alt="" coords="329,169,450,196"/>
+<area shape="rect" id="node13" href="$job_8h.html#a9c2d0895268bd3229fc231b00029eb7b" title="Duplicates an instance of a process. " alt="" coords="341,537,437,564"/>
+<area shape="rect" id="node14" href="$job_8h.html#a78dbe5452200ef69f412085af895096b" title="Inserts a process instance in a job instance. " alt="" coords="502,537,650,564"/>
+<area shape="rect" id="node17" href="$job_8h.html#ad8e58b77db46018eeb20c68855538f35" title="Updates the status of stopped or completed child processes of the shell. " alt="" coords="337,233,441,260"/>
+<area shape="rect" id="node20" href="$job_8h.html#aead235b523c076d6346ba285fa98f6d1" title="waits for a job to stop or complete. " alt="" coords="343,284,435,311"/>
+<area shape="rect" id="node18" href="$job_8h.html#a8950ee4bf84f8322e0b294d0c448a9e7" title="[BUILTIN]: List the jobs in the shell&#39;s active job list. " alt="" coords="538,208,614,235"/>
+<area shape="rect" id="node19" href="$job_8h.html#a75430387f345a954b011547bf14a56ce" title="Notifies the user of job status updates. " alt="" coords="511,259,641,285"/>
+<area shape="rect" id="node22" href="$job_8h.html#ab69ad21398604a048a5a1b4ef7af1320" title="Continues a job. " alt="" coords="702,385,797,412"/>
+<area shape="rect" id="node23" href="$job_8h.html#a792fcc9814d020b087911591c5fce10b" title="[BUILTIN]: Continues an active job in the foreground. " alt="" coords="847,360,910,387"/>
+<area shape="rect" id="node24" href="$job_8h.html#a9bc6f26d0ab14359707a0f367f1a6522" title="[BUILTIN]: Continues active jobs in the background. " alt="" coords="845,411,912,437"/>
+</map>

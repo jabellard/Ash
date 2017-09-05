@@ -1,0 +1,555 @@
+\hypertarget{cle_8c}{\section{src/cle.c File Reference}
+\label{cle_8c}\index{src/cle.\-c@{src/cle.\-c}}
+}
+
+
+Contains the code for the command line editing sub system.  
+
+
+{\ttfamily \#include $<$stdio.\-h$>$}\\*
+{\ttfamily \#include $<$readline/readline.\-h$>$}\\*
+{\ttfamily \#include $<$readline/history.\-h$>$}\\*
+{\ttfamily \#include $<$stdlib.\-h$>$}\\*
+{\ttfamily \#include $<$unistd.\-h$>$}\\*
+{\ttfamily \#include $<$string.\-h$>$}\\*
+{\ttfamily \#include \char`\"{}cle.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}err.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}job.\-h\char`\"{}}\\*
+{\ttfamily \#include $<$limits.\-h$>$}\\*
+Include dependency graph for cle.\-c\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{cle_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{cle_8c_a31a3775714cbd1b923fa3ec2c5c7fd48}{remove\-\_\-lines\-\_\-from\-\_\-file} (char $\ast$file\-\_\-name, int start\-\_\-line, int line\-\_\-count)
+\begin{DoxyCompactList}\small\item\em Removes lines from a file. \end{DoxyCompactList}\item 
+int \hyperlink{cle_8c_a327aaeef5e5ada52f0a64d0be178bb30}{invert\-\_\-case\-\_\-in\-\_\-region} (int count, int key)
+\begin{DoxyCompactList}\small\item\em Inverts the case of characters in a region of the current line buffer of {\itshape readline} . \end{DoxyCompactList}\item 
+int \hyperlink{cle_8c_a74b72242dbf240d23501bb34bfdc4fea}{count\-\_\-lines\-\_\-in\-\_\-file} (const char $\ast$file\-\_\-name)
+\begin{DoxyCompactList}\small\item\em Counts the number of lines in a file. \end{DoxyCompactList}\item 
+char $\ast$$\ast$ \hyperlink{cle_8c_ab57f2ac63325fc919968e7eb78586965}{command\-\_\-completion} (const char $\ast$partial\-\_\-text, int start, int end)
+\begin{DoxyCompactList}\small\item\em Registred function to perform command completion. \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{cle_8c_ade079408c61657dc7bbd2142a78e0e8a}{command\-\_\-completion\-\_\-generator} (const char $\ast$partial\-\_\-text, int state)
+\begin{DoxyCompactList}\small\item\em Generation function used for command completion. \end{DoxyCompactList}\item 
+int \hyperlink{cle_8c_a8a75575085afe93be976c3d116ed8231}{toggle\-\_\-editing\-\_\-mode} (int count, int key)
+\begin{DoxyCompactList}\small\item\em Toggles {\itshape readline} 's editing mode. \end{DoxyCompactList}\item 
+int \hyperlink{cle_8c_acbd58e7ffbca9f6d8d7494a053414e49}{initialize\-\_\-history} ()
+\begin{DoxyCompactList}\small\item\em Initializes the shell's command history facilities. \end{DoxyCompactList}\item 
+int \hyperlink{cle_8c_a371915dea0605bdd469053706d93951d}{initialize\-\_\-readline} ()
+\begin{DoxyCompactList}\small\item\em Initializes the shell's commmandline editing facilities. \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{cle_8c_a19bb8493640e845196c4d763f4109b67}{\-\_\-readline} (const char $\ast$prompt\-\_\-string)
+\begin{DoxyCompactList}\small\item\em Calls {\itshape readline()} to read input and manages the shell's command history. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+char $\ast$ \hyperlink{cle_8c_a48b5776fb79c56d2584cfa6f109e8f22}{line\-\_\-buffer} = N\-U\-L\-L
+\begin{DoxyCompactList}\small\item\em Stores the address of the last {\itshape readline} buffer. \end{DoxyCompactList}\item 
+char \hyperlink{cle_8c_a4a65daaf4e44aa02a8fac3ed42ec9f68}{H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E} \mbox{[}P\-A\-T\-H\-\_\-\-M\-A\-X\mbox{]}
+\begin{DoxyCompactList}\small\item\em Stores the path of the command history file. \end{DoxyCompactList}\item 
+char \hyperlink{cle_8c_a2b3f51fec8189b0ed52c3a29b4d7614e}{I\-N\-P\-U\-T\-R\-C\-\_\-\-F\-I\-L\-E} \mbox{[}P\-A\-T\-H\-\_\-\-M\-A\-X\mbox{]}
+\begin{DoxyCompactList}\small\item\em Stores the path of the {\itshape readline} input file. \end{DoxyCompactList}\item 
+int \hyperlink{cle_8c_a26c966f13355ca7e2a3fb8a6c3fb51c0}{N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}
+\begin{DoxyCompactList}\small\item\em Stores the current number of entries in the command history file. \end{DoxyCompactList}\item 
+int \hyperlink{cle_8c_a11b4616ee9e2b6f719a050b70a70b59d}{M\-A\-X\-\_\-\-N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E} = 500
+\begin{DoxyCompactList}\small\item\em Stores the maximum number of entries allowed in the command history file. \end{DoxyCompactList}\item 
+\hyperlink{job_8h_a165885ac9a829b970ba29594fec5acd7}{Builtin} \hyperlink{cle_8c_a2c5551422426f406568d84844b40acb9}{builtins} \mbox{[}$\,$\mbox{]}
+\begin{DoxyCompactList}\small\item\em List of shell builtins an associated function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Contains the code for the command line editing sub system. \begin{DoxyAuthor}{Author}
+Joe Nathan Abellard \{\href{https://github.com/joenatech7}{\tt https\-://github.\-com/joenatech7}\}
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+September 1, 2017 
+\end{DoxyDate}
+\begin{DoxyParagraph}{Description}
+This file contains contains the code for the command line editing sub subsystem.
+\end{DoxyParagraph}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{cle_8h}{cle.\-h} 
+\end{DoxySeeAlso}
+
+
+\subsection{Function Documentation}
+\hypertarget{cle_8c_a19bb8493640e845196c4d763f4109b67}{\index{cle.\-c@{cle.\-c}!\-\_\-readline@{\-\_\-readline}}
+\index{\-\_\-readline@{\-\_\-readline}!cle.c@{cle.\-c}}
+\subsubsection[{\-\_\-readline}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ \-\_\-readline (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{}
+\end{DoxyParamCaption}
+)}}\label{cle_8c_a19bb8493640e845196c4d763f4109b67}
+
+
+Calls {\itshape readline()} to read input and manages the shell's command history. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to call @ readline() to read input from the shell prompt, and to manage the shell's command history. It does the following\-: \begin{DoxyItemize}
+\item Calls \hyperlink{err_8h_a40bd4201ea3cf1b6f8e7fef01362bf67}{sfree} to de-\/allocate the memory block of the last line buffer returned by (), if nessasary. This buffer is pointed to by \hyperlink{cle_8c_a48b5776fb79c56d2584cfa6f109e8f22}{line\-\_\-buffer}. \hyperlink{cle_8c_a48b5776fb79c56d2584cfa6f109e8f22}{line\-\_\-buffer} is aliased by \hyperlink{main_8c_ae8d7cb95bc48828d10bf3c7a31680ce2}{pipeline\-\_\-list} in \hyperlink{main_8c_af783a9705a73559f4b17ec991bc11f1e}{input\-\_\-loop()}. To avoid a possible double free exeption, \hyperlink{main_8c_ae8d7cb95bc48828d10bf3c7a31680ce2}{pipeline\-\_\-list} should never be used to free the {\itshape readline} buffer. \item Calls {\itshape readline()} to read input, and assigns the location of the {\itshape readline} buffer to \hyperlink{cle_8c_a48b5776fb79c56d2584cfa6f109e8f22}{line\-\_\-buffer}. \item If the {\itshape readline} buffer is not empty, then add the line read to the history list and to the history file (\hyperlink{cle_8c_a4a65daaf4e44aa02a8fac3ed42ec9f68}{H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}). If insertion of the new entry would result in the history file having more than \hyperlink{cle_8c_a11b4616ee9e2b6f719a050b70a70b59d}{M\-A\-X\-\_\-\-N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}, or that the history file already contains more than M\-A\-X\-\_\-\-N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E, then the function invokes removed\-\_\-lines\-\_\-from\-\_\-file() to remove lines from the history file before performing the insertion.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em promt\-\_\-string} & The prompt string that is displayed on the terminal.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns \hyperlink{cle_8c_a48b5776fb79c56d2584cfa6f109e8f22}{line\-\_\-buffer}.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{err_8h_a40bd4201ea3cf1b6f8e7fef01362bf67}{sfree}, \hyperlink{cle_8c_a48b5776fb79c56d2584cfa6f109e8f22}{line\-\_\-buffer}, readline(), \hyperlink{cle_8c_a11b4616ee9e2b6f719a050b70a70b59d}{M\-A\-X\-\_\-\-N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}, \hyperlink{cle_8c_a26c966f13355ca7e2a3fb8a6c3fb51c0}{N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}, \hyperlink{cle_8h_a31a3775714cbd1b923fa3ec2c5c7fd48}{remove\-\_\-lines\-\_\-from\-\_\-file()}, \hyperlink{main_8c_ae8d7cb95bc48828d10bf3c7a31680ce2}{pipeline\-\_\-list}, and \hyperlink{main_8c_af783a9705a73559f4b17ec991bc11f1e}{input\-\_\-loop()}. 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{cle_8c_a19bb8493640e845196c4d763f4109b67_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=308pt]{cle_8c_a19bb8493640e845196c4d763f4109b67_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{cle_8c_ab57f2ac63325fc919968e7eb78586965}{\index{cle.\-c@{cle.\-c}!command\-\_\-completion@{command\-\_\-completion}}
+\index{command\-\_\-completion@{command\-\_\-completion}!cle.c@{cle.\-c}}
+\subsubsection[{command\-\_\-completion}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$$\ast$ command\-\_\-completion (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{, }
+\item[{int}]{, }
+\item[{int}]{}
+\end{DoxyParamCaption}
+)}}\label{cle_8c_ab57f2ac63325fc919968e7eb78586965}
+
+
+Registred function to perform command completion. 
+
+\begin{DoxyParagraph}{Description}
+This function is assigned to {\itshape readline's} {\itshape rl\-\_\-attempted\-\_\-completion} variable. Consequently, when the tab key is pressed on the command line, it is invoked to perform command completion on a partial text. It uses {\itshape readline's} {\itshape rl\-\_\-completion\-\_\-matches} function with the \hyperlink{cle_8h_af9de2a3a174e2493e7f3e168949bf84f}{command\-\_\-completion\-\_\-generator()} genarator function to find possible completions for the partial text in the list of commands in the \hyperlink{job_8c_a2c5551422426f406568d84844b40acb9}{builtins} array
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em partial\-\_\-text} & The partial text to be completed.\\
+\hline
+{\em start} & The starting position of {\itshape partial\-\_\-text} in {\itshape readline's} line buffer.\\
+\hline
+{\em end} & The ending position of {\itshape partial\-\_\-text} in {\itshape readline's} line buffer.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns an array of pointers to strings. Three outcomes are possible \-: \begin{DoxyItemize}
+\item No possible completions found. In that case, the first element of the array points to N\-U\-L\-L. \item One possible completion was found. In that case, the first element of the array points to the possible completion string, and the second element points to N\-U\-L\-L. \item {\itshape n$>$=2} possible completion were found. In that case, the first {\itshape n} elements of the array point to the {\itshape n} possible completion strings, and the {\itshape }(n + 1)th element of the array points to N\-U\-L\-L.\end{DoxyItemize}
+
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+{\itshape readline} , \hyperlink{cle_8h_a371915dea0605bdd469053706d93951d}{initialize\-\_\-readline()}, command\-\_\-completion\-\_\-genarator(), and \hyperlink{job_8c_a2c5551422426f406568d84844b40acb9}{builtins}. 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=340pt]{cle_8c_ab57f2ac63325fc919968e7eb78586965_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{cle_8c_ab57f2ac63325fc919968e7eb78586965_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{cle_8c_ade079408c61657dc7bbd2142a78e0e8a}{\index{cle.\-c@{cle.\-c}!command\-\_\-completion\-\_\-generator@{command\-\_\-completion\-\_\-generator}}
+\index{command\-\_\-completion\-\_\-generator@{command\-\_\-completion\-\_\-generator}!cle.c@{cle.\-c}}
+\subsubsection[{command\-\_\-completion\-\_\-generator}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ command\-\_\-completion\-\_\-generator (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{, }
+\item[{int}]{}
+\end{DoxyParamCaption}
+)}}\label{cle_8c_ade079408c61657dc7bbd2142a78e0e8a}
+
+
+Generation function used for command completion. 
+
+\begin{DoxyParagraph}{Description}
+This generation function is used by \hyperlink{cle_8h_a839745638ece1570d3c7792dfa182ae7}{command\-\_\-completion()} to find possible command completions in the \hyperlink{job_8c_a2c5551422426f406568d84844b40acb9}{builtins} array.
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em partial\-\_\-text} & The partial text to be completed.\\
+\hline
+{\em state} & The first time the function is called, state is {\itshape 0}. When state is zero, the function initialize some static variables.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+If a possible completion for {\itshape partial\-\_\-text} is found in the \hyperlink{job_8c_a2c5551422426f406568d84844b40acb9}{builtins} array, the function returns a copy to the completion string. Otherwise, it returns N\-U\-L\-L.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{cle_8h_a839745638ece1570d3c7792dfa182ae7}{command\-\_\-completion()}, \hyperlink{job_8c_a2c5551422426f406568d84844b40acb9}{builtins}, and {\itshape readline} . 
+\end{DoxySeeAlso}
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{cle_8c_ade079408c61657dc7bbd2142a78e0e8a_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{cle_8c_a74b72242dbf240d23501bb34bfdc4fea}{\index{cle.\-c@{cle.\-c}!count\-\_\-lines\-\_\-in\-\_\-file@{count\-\_\-lines\-\_\-in\-\_\-file}}
+\index{count\-\_\-lines\-\_\-in\-\_\-file@{count\-\_\-lines\-\_\-in\-\_\-file}!cle.c@{cle.\-c}}
+\subsubsection[{count\-\_\-lines\-\_\-in\-\_\-file}]{\setlength{\rightskip}{0pt plus 5cm}int count\-\_\-lines\-\_\-in\-\_\-file (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{}
+\end{DoxyParamCaption}
+)}}\label{cle_8c_a74b72242dbf240d23501bb34bfdc4fea}
+
+
+Counts the number of lines in a file. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to count the number of lines in a file.
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em file\-\_\-name} & The pathname of the file.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape -\/1} on failure, or the number of lines in the file on success. Possible reasons for failure are as follows\-: \begin{DoxyItemize}
+\item The specified file could not be opened.\end{DoxyItemize}
+
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{cle_8h_a31a3775714cbd1b923fa3ec2c5c7fd48}{remove\-\_\-lines\-\_\-from\-\_\-file()}, \hyperlink{cle_8h_acbd58e7ffbca9f6d8d7494a053414e49}{initialize\-\_\-history()}, \hyperlink{cle_8c_a4a65daaf4e44aa02a8fac3ed42ec9f68}{H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}, {\itshape fopen()}, {\itshape getc()}, {\itshape fclose()}, and \hyperlink{cle_8c_a26c966f13355ca7e2a3fb8a6c3fb51c0}{N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}. 
+\end{DoxySeeAlso}
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{cle_8c_a74b72242dbf240d23501bb34bfdc4fea_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{cle_8c_acbd58e7ffbca9f6d8d7494a053414e49}{\index{cle.\-c@{cle.\-c}!initialize\-\_\-history@{initialize\-\_\-history}}
+\index{initialize\-\_\-history@{initialize\-\_\-history}!cle.c@{cle.\-c}}
+\subsubsection[{initialize\-\_\-history}]{\setlength{\rightskip}{0pt plus 5cm}int initialize\-\_\-history (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{cle_8c_acbd58e7ffbca9f6d8d7494a053414e49}
+
+
+Initializes the shell's command history facilities. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to initialize the shell's command history facilities. It does the following \-: \begin{DoxyItemize}
+\item Calls using\-\_\-history() to make history facilities available. \item Sets the maximum number of enties in the shell's history list to \hyperlink{cle_8c_a11b4616ee9e2b6f719a050b70a70b59d}{M\-A\-X\-\_\-\-N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}. \item Obtains the pathname of the shell's history file and stores the result in \hyperlink{cle_8c_a4a65daaf4e44aa02a8fac3ed42ec9f68}{H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}. \item Obtains the number of lines in the shell's history file (\hyperlink{cle_8c_a4a65daaf4e44aa02a8fac3ed42ec9f68}{H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}) via \hyperlink{cle_8h_a1e9cca6339e637e5dae988a369265b24}{count\-\_\-lines\-\_\-in\-\_\-file()} , and assigns the value to \hyperlink{cle_8c_a26c966f13355ca7e2a3fb8a6c3fb51c0}{N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}. \item Reads history from the history file (\hyperlink{cle_8c_a4a65daaf4e44aa02a8fac3ed42ec9f68}{H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}) into the shell's history list. \item Disables the recording of timestamps for history entries.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape void}.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+and \hyperlink{cle_8h_a371915dea0605bdd469053706d93951d}{initialize\-\_\-readline()}. \hyperlink{cle_8c_a11b4616ee9e2b6f719a050b70a70b59d}{M\-A\-X\-\_\-\-N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}, \hyperlink{cle_8c_a4a65daaf4e44aa02a8fac3ed42ec9f68}{H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}, \hyperlink{cle_8c_a26c966f13355ca7e2a3fb8a6c3fb51c0}{N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}, \hyperlink{cle_8h_a1e9cca6339e637e5dae988a369265b24}{count\-\_\-lines\-\_\-in\-\_\-file()}, 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=300pt]{cle_8c_acbd58e7ffbca9f6d8d7494a053414e49_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{cle_8c_acbd58e7ffbca9f6d8d7494a053414e49_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{cle_8c_a371915dea0605bdd469053706d93951d}{\index{cle.\-c@{cle.\-c}!initialize\-\_\-readline@{initialize\-\_\-readline}}
+\index{initialize\-\_\-readline@{initialize\-\_\-readline}!cle.c@{cle.\-c}}
+\subsubsection[{initialize\-\_\-readline}]{\setlength{\rightskip}{0pt plus 5cm}int initialize\-\_\-readline (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{cle_8c_a371915dea0605bdd469053706d93951d}
+
+
+Initializes the shell's commmandline editing facilities. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to initialize the shell's commandline editing facilities. It does the following \-: \begin{DoxyItemize}
+\item Calls \hyperlink{cle_8h_acbd58e7ffbca9f6d8d7494a053414e49}{initialize\-\_\-history()} to initialize the shell's command history facilities. \item Registers the shell's command completion function (\hyperlink{cle_8h_a839745638ece1570d3c7792dfa182ae7}{command\-\_\-completion()}). \item Registers custom binable functions (\hyperlink{cle_8h_a327aaeef5e5ada52f0a64d0be178bb30}{invert\-\_\-case\-\_\-in\-\_\-region()}, and \hyperlink{cle_8h_a8a75575085afe93be976c3d116ed8231}{toggle\-\_\-editing\-\_\-mode()}). \item Obtains the path of {\itshape readline} 's {\itshape inputrc} file and assign the value to \hyperlink{cle_8c_a2b3f51fec8189b0ed52c3a29b4d7614e}{I\-N\-P\-U\-T\-R\-C\-\_\-\-F\-I\-L\-E}. \item Sets the I\-N\-P\-U\-T\-R\-C environment variable. \item Reads settings from the input file (\hyperlink{cle_8c_a2b3f51fec8189b0ed52c3a29b4d7614e}{I\-N\-P\-U\-T\-R\-C\-\_\-\-F\-I\-L\-E}).\end{DoxyItemize}
+
+\end{DoxyParagraph}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape -\/1} on failure, or {\itshape 0} on success.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{cle_8h_acbd58e7ffbca9f6d8d7494a053414e49}{initialize\-\_\-history()}, \hyperlink{cle_8h_a839745638ece1570d3c7792dfa182ae7}{command\-\_\-completion()}, \hyperlink{cle_8h_a327aaeef5e5ada52f0a64d0be178bb30}{invert\-\_\-case\-\_\-in\-\_\-region()}, \hyperlink{cle_8h_a8a75575085afe93be976c3d116ed8231}{toggle\-\_\-editing\-\_\-mode()}, \hyperlink{cle_8c_a2b3f51fec8189b0ed52c3a29b4d7614e}{I\-N\-P\-U\-T\-R\-C\-\_\-\-F\-I\-L\-E}, {\itshape readline} , {\itshape inputrc}, and (). 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{cle_8c_a371915dea0605bdd469053706d93951d_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{cle_8c_a371915dea0605bdd469053706d93951d_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{cle_8c_a327aaeef5e5ada52f0a64d0be178bb30}{\index{cle.\-c@{cle.\-c}!invert\-\_\-case\-\_\-in\-\_\-region@{invert\-\_\-case\-\_\-in\-\_\-region}}
+\index{invert\-\_\-case\-\_\-in\-\_\-region@{invert\-\_\-case\-\_\-in\-\_\-region}!cle.c@{cle.\-c}}
+\subsubsection[{invert\-\_\-case\-\_\-in\-\_\-region}]{\setlength{\rightskip}{0pt plus 5cm}int invert\-\_\-case\-\_\-in\-\_\-region (
+\begin{DoxyParamCaption}
+\item[{int}]{count, }
+\item[{int}]{key}
+\end{DoxyParamCaption}
+)}}\label{cle_8c_a327aaeef5e5ada52f0a64d0be178bb30}
+
+
+Inverts the case of characters in a region of the current line buffer of {\itshape readline} . 
+
+\begin{DoxyParagraph}{Description}
+This function is used to inverts the case of characters in a region of the current line buffer of {\itshape readline}.
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em count} & The number of characters whose case is to be inverted.\\
+\hline
+{\em key} & Not used in the function.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Return {\itshape -\/1} on failure, or the number of characters inverted on success.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+{\itshape readline}, and \hyperlink{cle_8h_a371915dea0605bdd469053706d93951d}{initialize\-\_\-readline()}. 
+\end{DoxySeeAlso}
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{cle_8c_a327aaeef5e5ada52f0a64d0be178bb30_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{cle_8c_a31a3775714cbd1b923fa3ec2c5c7fd48}{\index{cle.\-c@{cle.\-c}!remove\-\_\-lines\-\_\-from\-\_\-file@{remove\-\_\-lines\-\_\-from\-\_\-file}}
+\index{remove\-\_\-lines\-\_\-from\-\_\-file@{remove\-\_\-lines\-\_\-from\-\_\-file}!cle.c@{cle.\-c}}
+\subsubsection[{remove\-\_\-lines\-\_\-from\-\_\-file}]{\setlength{\rightskip}{0pt plus 5cm}int remove\-\_\-lines\-\_\-from\-\_\-file (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{file\-\_\-name, }
+\item[{int}]{start\-\_\-line, }
+\item[{int}]{line\-\_\-count}
+\end{DoxyParamCaption}
+)}}\label{cle_8c_a31a3775714cbd1b923fa3ec2c5c7fd48}
+
+
+Removes lines from a file. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to remove lines within a region of a file. It removes lines {\ttfamily  \mbox{[}start\-\_\-line.. (start\-\_\-line + line\-\_\-count) -\/ 1\mbox{]} } from the file.
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em file\-\_\-name} & The pathname of the file.\\
+\hline
+{\em start\-\_\-line} & The first line to remove.\\
+\hline
+{\em line\-\_\-count} & The number of lines to remove.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape -\/1} on failure, or {\itshape 0} on success. Possible reasons for failure are as follows\-: \begin{DoxyItemize}
+\item The file specified by {\itshape file\-\_\-name} could not be opened. \item The specified file region is invalid.\end{DoxyItemize}
+
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{cle_8h_a1e9cca6339e637e5dae988a369265b24}{count\-\_\-lines\-\_\-in\-\_\-file()}, {\itshape fopen()}, {\itshape fprintf()}, {\itshape fseek()}, {\itshape rewind()}, {\itshape malloc()}, {\itshape fgetc()}, \hyperlink{err_8h_a40bd4201ea3cf1b6f8e7fef01362bf67}{sfree()}, {\itshape fclose()}, {\itshape memmove()}, {\itshape freopen()}, \hyperlink{err_8c_a07dfb9fd24fe41a9f703bd92af2cf646}{err\-\_\-msg()}, {\itshape fwrite()}, and \hyperlink{cle_8h_ab33aa7fc65ab36bf5b799aa6521a4881}{\-\_\-readline()}. 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=286pt]{cle_8c_a31a3775714cbd1b923fa3ec2c5c7fd48_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{cle_8c_a31a3775714cbd1b923fa3ec2c5c7fd48_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{cle_8c_a8a75575085afe93be976c3d116ed8231}{\index{cle.\-c@{cle.\-c}!toggle\-\_\-editing\-\_\-mode@{toggle\-\_\-editing\-\_\-mode}}
+\index{toggle\-\_\-editing\-\_\-mode@{toggle\-\_\-editing\-\_\-mode}!cle.c@{cle.\-c}}
+\subsubsection[{toggle\-\_\-editing\-\_\-mode}]{\setlength{\rightskip}{0pt plus 5cm}int toggle\-\_\-editing\-\_\-mode (
+\begin{DoxyParamCaption}
+\item[{int}]{count, }
+\item[{int}]{key}
+\end{DoxyParamCaption}
+)}}\label{cle_8c_a8a75575085afe93be976c3d116ed8231}
+
+
+Toggles {\itshape readline} 's editing mode. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to toggle {\itshape readline} 's edditing mode between {\itshape vi} mode and {\itshape emacs} mode.
+\end{DoxyParagraph}
+\begin{DoxyRefDesc}{Bug}
+\item[\hyperlink{bug__bug000001}{Bug}]Does not work.\end{DoxyRefDesc}
+
+
+\begin{DoxySeeAlso}{See Also}
+{\itshape readline} . 
+\end{DoxySeeAlso}
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{cle_8c_a8a75575085afe93be976c3d116ed8231_icgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Variable Documentation}
+\hypertarget{cle_8c_a2c5551422426f406568d84844b40acb9}{\index{cle.\-c@{cle.\-c}!builtins@{builtins}}
+\index{builtins@{builtins}!cle.c@{cle.\-c}}
+\subsubsection[{builtins}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Builtin} builtins\mbox{[}$\,$\mbox{]}}}\label{cle_8c_a2c5551422426f406568d84844b40acb9}
+
+
+List of shell builtins an associated function. 
+
+\begin{DoxyParagraph}{Description}
+This array stores the list of shell builtins and associated functions.
+\end{DoxyParagraph}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__builtin}{\-\_\-builtin}, \hyperlink{job_8h_a165885ac9a829b970ba29594fec5acd7}{Builtin}, \hyperlink{job_8c_a028aee0dd87474ee61f6c654efe653a2}{is\-\_\-builtin()}, \hyperlink{cle_8c_ade079408c61657dc7bbd2142a78e0e8a}{command\-\_\-completion\-\_\-generator()}, and and \hyperlink{job_8c_a328634c49391a29ef1d4e86d6bf0ea7e}{execute\-\_\-job()}. 
+\end{DoxySeeAlso}
+\hypertarget{cle_8c_a4a65daaf4e44aa02a8fac3ed42ec9f68}{\index{cle.\-c@{cle.\-c}!H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E@{H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}}
+\index{H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E@{H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}!cle.c@{cle.\-c}}
+\subsubsection[{H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}]{\setlength{\rightskip}{0pt plus 5cm}char H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E\mbox{[}P\-A\-T\-H\-\_\-\-M\-A\-X\mbox{]}}}\label{cle_8c_a4a65daaf4e44aa02a8fac3ed42ec9f68}
+
+
+Stores the path of the command history file. 
+
+This array stores the path fo the command history file.
+
+\begin{DoxySeeAlso}{See Also}
+{\itshape readline}, {\itshape history}, \hyperlink{cle_8c_acbd58e7ffbca9f6d8d7494a053414e49}{initialize\-\_\-history()}, \hyperlink{cle_8c_a26c966f13355ca7e2a3fb8a6c3fb51c0}{N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}, and \hyperlink{cle_8c_a11b4616ee9e2b6f719a050b70a70b59d}{M\-A\-X\-\_\-\-N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}. 
+\end{DoxySeeAlso}
+\hypertarget{cle_8c_a2b3f51fec8189b0ed52c3a29b4d7614e}{\index{cle.\-c@{cle.\-c}!I\-N\-P\-U\-T\-R\-C\-\_\-\-F\-I\-L\-E@{I\-N\-P\-U\-T\-R\-C\-\_\-\-F\-I\-L\-E}}
+\index{I\-N\-P\-U\-T\-R\-C\-\_\-\-F\-I\-L\-E@{I\-N\-P\-U\-T\-R\-C\-\_\-\-F\-I\-L\-E}!cle.c@{cle.\-c}}
+\subsubsection[{I\-N\-P\-U\-T\-R\-C\-\_\-\-F\-I\-L\-E}]{\setlength{\rightskip}{0pt plus 5cm}char I\-N\-P\-U\-T\-R\-C\-\_\-\-F\-I\-L\-E\mbox{[}P\-A\-T\-H\-\_\-\-M\-A\-X\mbox{]}}}\label{cle_8c_a2b3f51fec8189b0ed52c3a29b4d7614e}
+
+
+Stores the path of the {\itshape readline} input file. 
+
+\begin{DoxyParagraph}{Description}
+This array stores the path of the {\itshape readline} input file. The input file stores settings that can be used to configure the behavior of {\itshape readline}.
+\end{DoxyParagraph}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{cle_8c_a371915dea0605bdd469053706d93951d}{initialize\-\_\-readline()}, and {\itshape readline}. 
+\end{DoxySeeAlso}
+\hypertarget{cle_8c_a48b5776fb79c56d2584cfa6f109e8f22}{\index{cle.\-c@{cle.\-c}!line\-\_\-buffer@{line\-\_\-buffer}}
+\index{line\-\_\-buffer@{line\-\_\-buffer}!cle.c@{cle.\-c}}
+\subsubsection[{line\-\_\-buffer}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ line\-\_\-buffer = N\-U\-L\-L}}\label{cle_8c_a48b5776fb79c56d2584cfa6f109e8f22}
+
+
+Stores the address of the last {\itshape readline} buffer. 
+
+\begin{DoxyParagraph}{Description}
+This pointer stores the address of the last {\itshape readline} buffer. It is aliased by \hyperlink{main_8c_ae8d7cb95bc48828d10bf3c7a31680ce2}{pipeline\-\_\-list} in \hyperlink{main_8c_af783a9705a73559f4b17ec991bc11f1e}{input\-\_\-loop()}. To avoid a possible double free expection, \hyperlink{main_8c_ae8d7cb95bc48828d10bf3c7a31680ce2}{pipeline\-\_\-list} should never be used to free the {\itshape readline} buffer.
+\end{DoxyParagraph}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{cle_8c_a19bb8493640e845196c4d763f4109b67}{\-\_\-readline()}, {\itshape readline} , and \hyperlink{main_8c_af783a9705a73559f4b17ec991bc11f1e}{input\-\_\-loop()}. 
+\end{DoxySeeAlso}
+\hypertarget{cle_8c_a11b4616ee9e2b6f719a050b70a70b59d}{\index{cle.\-c@{cle.\-c}!M\-A\-X\-\_\-\-N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E@{M\-A\-X\-\_\-\-N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}}
+\index{M\-A\-X\-\_\-\-N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E@{M\-A\-X\-\_\-\-N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}!cle.c@{cle.\-c}}
+\subsubsection[{M\-A\-X\-\_\-\-N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}]{\setlength{\rightskip}{0pt plus 5cm}int M\-A\-X\-\_\-\-N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E = 500}}\label{cle_8c_a11b4616ee9e2b6f719a050b70a70b59d}
+
+
+Stores the maximum number of entries allowed in the command history file. 
+
+\begin{DoxyParagraph}{Description}
+This variable stores the maximum number of entries allowed in the command history file.
+\end{DoxyParagraph}
+\begin{DoxySeeAlso}{See Also}
+{\itshape readline}, {\itshape history}, \hyperlink{cle_8c_a4a65daaf4e44aa02a8fac3ed42ec9f68}{H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}, \hyperlink{cle_8c_a26c966f13355ca7e2a3fb8a6c3fb51c0}{N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}, \hyperlink{cle_8c_acbd58e7ffbca9f6d8d7494a053414e49}{initialize\-\_\-history()}, and \hyperlink{cle_8c_a19bb8493640e845196c4d763f4109b67}{\-\_\-readline()}. 
+\end{DoxySeeAlso}
+\hypertarget{cle_8c_a26c966f13355ca7e2a3fb8a6c3fb51c0}{\index{cle.\-c@{cle.\-c}!N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E@{N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}}
+\index{N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E@{N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}!cle.c@{cle.\-c}}
+\subsubsection[{N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}]{\setlength{\rightskip}{0pt plus 5cm}int N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}}\label{cle_8c_a26c966f13355ca7e2a3fb8a6c3fb51c0}
+
+
+Stores the current number of entries in the command history file. 
+
+\begin{DoxyParagraph}{Description}
+This variable stores the current number of entires in the command history file.
+\end{DoxyParagraph}
+\begin{DoxySeeAlso}{See Also}
+{\itshape history}, {\itshape readline}, \hyperlink{cle_8c_a11b4616ee9e2b6f719a050b70a70b59d}{M\-A\-X\-\_\-\-N\-U\-M\-\_\-\-E\-N\-T\-R\-I\-E\-S\-\_\-\-H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}, \hyperlink{cle_8c_a4a65daaf4e44aa02a8fac3ed42ec9f68}{H\-I\-S\-T\-O\-R\-Y\-\_\-\-F\-I\-L\-E}, and \hyperlink{cle_8c_acbd58e7ffbca9f6d8d7494a053414e49}{initialize\-\_\-history()}. 
+\end{DoxySeeAlso}

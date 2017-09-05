@@ -1,0 +1,5 @@
+<map id="input_loop" name="input_loop">
+<area shape="rect" id="node2" href="$cle_8c.html#a19bb8493640e845196c4d763f4109b67" title="Calls readline() to read input and manages the shell&#39;s command history. " alt="" coords="136,5,211,32"/>
+<area shape="rect" id="node3" href="$cle_8c.html#a31a3775714cbd1b923fa3ec2c5c7fd48" title="Removes lines from a file. " alt="" coords="259,5,415,32"/>
+<area shape="rect" id="node4" href="$err_8c.html#a07dfb9fd24fe41a9f703bd92af2cf646" title="Prints an error message corresponding to the current value of errno. " alt="" coords="464,5,533,32"/>
+</map>

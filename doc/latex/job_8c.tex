@@ -1,0 +1,1812 @@
+\hypertarget{job_8c}{\section{src/job.c File Reference}
+\label{job_8c}\index{src/job.\-c@{src/job.\-c}}
+}
+
+
+Contains the code for the job control sub system.  
+
+
+{\ttfamily \#include $<$stdio.\-h$>$}\\*
+{\ttfamily \#include $<$stdlib.\-h$>$}\\*
+{\ttfamily \#include $<$sys/stat.\-h$>$}\\*
+{\ttfamily \#include $<$fcntl.\-h$>$}\\*
+{\ttfamily \#include $<$unistd.\-h$>$}\\*
+{\ttfamily \#include $<$string.\-h$>$}\\*
+{\ttfamily \#include \char`\"{}job.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}err.\-h\char`\"{}}\\*
+{\ttfamily \#include $<$signal.\-h$>$}\\*
+{\ttfamily \#include $<$errno.\-h$>$}\\*
+Include dependency graph for job.\-c\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{job_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{job_8c_a2c2cfa6591ee05cc5bf0c39f38b9e2ea}{Ash\-\_\-cd} (\hyperlink{struct__process}{Process} $\ast$p, int in\-\_\-file, int out\-\_\-file, int err\-\_\-file)
+\begin{DoxyCompactList}\small\item\em \mbox{[}B\-U\-I\-L\-T\-I\-N\mbox{]}\-: Changes the shell's current working directory. \end{DoxyCompactList}\item 
+int \hyperlink{job_8c_a9fa5abe15df71a688905dc7b29a1389f}{Ash\-\_\-exit} (\hyperlink{struct__process}{Process} $\ast$p, int in\-\_\-file, int out\-\_\-file, int err\-\_\-file)
+\begin{DoxyCompactList}\small\item\em \mbox{[}B\-U\-I\-L\-T\-I\-N\mbox{]}\-: Exits from the shell. \end{DoxyCompactList}\item 
+int \hyperlink{job_8c_ae54ca57ee056e74d8ae32967453e4482}{print\-\_\-job\-\_\-command} (\hyperlink{struct__job}{Job} $\ast$j, int dest\-\_\-fd)
+\begin{DoxyCompactList}\small\item\em Prints the command associated with a job. \end{DoxyCompactList}\item 
+int \hyperlink{job_8c_a8950ee4bf84f8322e0b294d0c448a9e7}{Ash\-\_\-jobs} (\hyperlink{struct__process}{Process} $\ast$p, int in\-\_\-file, int out\-\_\-file, int err\-\_\-file)
+\begin{DoxyCompactList}\small\item\em \mbox{[}B\-U\-I\-L\-T\-I\-N\mbox{]}\-: List the jobs in the shell's active job list. \end{DoxyCompactList}\item 
+int \hyperlink{job_8c_a792fcc9814d020b087911591c5fce10b}{Ash\-\_\-fg} (\hyperlink{struct__process}{Process} $\ast$p, int in\-\_\-file, int out\-\_\-file, int err\-\_\-file)
+\begin{DoxyCompactList}\small\item\em \mbox{[}B\-U\-I\-L\-T\-I\-N\mbox{]}\-: Continues an active job in the foreground. \end{DoxyCompactList}\item 
+int \hyperlink{job_8c_a9bc6f26d0ab14359707a0f367f1a6522}{Ash\-\_\-bg} (\hyperlink{struct__process}{Process} $\ast$p, int in\-\_\-file, int out\-\_\-file, int err\-\_\-file)
+\begin{DoxyCompactList}\small\item\em \mbox{[}B\-U\-I\-L\-T\-I\-N\mbox{]}\-: Continues active jobs in the background. \end{DoxyCompactList}\item 
+int \hyperlink{job_8c_a4242d3cdbc0468d774243dc67b330296}{Ash\-\_\-help} (\hyperlink{struct__process}{Process} $\ast$p, int in\-\_\-file, int out\-\_\-file, int err\-\_\-file)
+\begin{DoxyCompactList}\small\item\em \mbox{[}B\-U\-I\-L\-T\-I\-N\mbox{]}\-: Prints a help message for the shell. \end{DoxyCompactList}\item 
+int \hyperlink{job_8c_a723e6648fca47a139cdff5cf4f1bc4bb}{Ash\-\_\-kill} (\hyperlink{struct__process}{Process} $\ast$p, int in\-\_\-file, int out\-\_\-file, int err\-\_\-file)
+\begin{DoxyCompactList}\small\item\em \mbox{[}B\-U\-I\-L\-T\-I\-N\mbox{]}\-: Sends a signal to active jobs. \end{DoxyCompactList}\item 
+int \hyperlink{job_8c_a07e5c62e1d5e55012cf188dd32b6cf27}{Ash\-\_\-killall} (\hyperlink{struct__process}{Process} $\ast$p, int in\-\_\-file, int out\-\_\-file, int err\-\_\-file)
+\begin{DoxyCompactList}\small\item\em \mbox{[}B\-U\-I\-L\-T\-I\-N\mbox{]}\-: Sends a signal to all active jobs. \end{DoxyCompactList}\item 
+int \hyperlink{job_8c_a028aee0dd87474ee61f6c654efe653a2}{is\-\_\-builtin} (\hyperlink{struct__process}{Process} $\ast$p)
+\begin{DoxyCompactList}\small\item\em \mbox{[}B\-U\-I\-L\-T\-I\-N\mbox{]}\-: Checks if a command refers to a shell builtin. \end{DoxyCompactList}\item 
+void \hyperlink{job_8c_a3a5b33cdd8fb591704c9adfcf908a273}{init\-\_\-shell} ()
+\begin{DoxyCompactList}\small\item\em Initializes the shell. \end{DoxyCompactList}\item 
+\hyperlink{struct__process}{Process} $\ast$ \hyperlink{job_8c_a1af7ca10dbe6b9358262cc18f04bf6f5}{create\-\_\-process} (void)
+\begin{DoxyCompactList}\small\item\em Creates an instance of a process. \end{DoxyCompactList}\item 
+int \hyperlink{job_8c_ad5ee9895c47b901c083c541e8f021abe}{insert\-\_\-arg\-\_\-in\-\_\-process} (\hyperlink{struct__process}{Process} $\ast$p, const char $\ast$arg)
+\begin{DoxyCompactList}\small\item\em Inserts an argument in the argument vector of a process. \end{DoxyCompactList}\item 
+void \hyperlink{job_8c_a8226a1a322fce279b7510ee28c09f40e}{print\-\_\-process} (const \hyperlink{struct__process}{Process} $\ast$p)
+\begin{DoxyCompactList}\small\item\em Prints the command of a process. \end{DoxyCompactList}\item 
+\hyperlink{struct__process}{Process} $\ast$ \hyperlink{job_8c_a9c2d0895268bd3229fc231b00029eb7b}{process\-\_\-dup} (const \hyperlink{struct__process}{Process} $\ast$p)
+\begin{DoxyCompactList}\small\item\em Duplicates an instance of a process. \end{DoxyCompactList}\item 
+void \hyperlink{job_8c_acaa6f75b768f52660498b9fab3898e15}{execute\-\_\-process} (\hyperlink{struct__process}{Process} $\ast$p, pid\-\_\-t pgid, int in\-\_\-file, int out\-\_\-file, int err\-\_\-file, int foreground)
+\begin{DoxyCompactList}\small\item\em Executes a process. \end{DoxyCompactList}\item 
+void \hyperlink{job_8c_a167097d11d4b3ceda7957cb5244de3a8}{destroy\-\_\-process} (\hyperlink{struct__process}{Process} $\ast$p)
+\begin{DoxyCompactList}\small\item\em Destroys a process instance. \end{DoxyCompactList}\item 
+\hyperlink{struct__job}{Job} $\ast$ \hyperlink{job_8c_a18d3d13da14c1f38fa2b0932e8850129}{create\-\_\-job} (void)
+\begin{DoxyCompactList}\small\item\em Creates a new job instance. \end{DoxyCompactList}\item 
+int \hyperlink{job_8c_a78dbe5452200ef69f412085af895096b}{insert\-\_\-process\-\_\-in\-\_\-job} (\hyperlink{struct__job}{Job} $\ast$j, const \hyperlink{struct__process}{Process} $\ast$p)
+\begin{DoxyCompactList}\small\item\em Inserts a process instance in a job instance. \end{DoxyCompactList}\item 
+void \hyperlink{job_8c_a89462129d286d10ccab2bd69e70ac336}{print\-\_\-job} (const \hyperlink{struct__job}{Job} $\ast$j)
+\begin{DoxyCompactList}\small\item\em Prints a job. \end{DoxyCompactList}\item 
+int \hyperlink{job_8c_a8c729ad459ad99d7a0e3c7a549d98383}{destroy\-\_\-job} (\hyperlink{struct__job}{Job} $\ast$j)
+\begin{DoxyCompactList}\small\item\em Destroys a job. \end{DoxyCompactList}\item 
+\hyperlink{struct__job}{Job} $\ast$ \hyperlink{job_8c_abbd710ae6b1b777643ee31ccac51c985}{find\-\_\-job} (pid\-\_\-t pgid)
+\begin{DoxyCompactList}\small\item\em Finds a job with a particular P\-G\-I\-D. \end{DoxyCompactList}\item 
+\hyperlink{struct__job}{Job} $\ast$ \hyperlink{job_8c_a870c6d70cfb180e88d217a0b3501aedb}{find\-\_\-job\-\_\-id} (int id)
+\begin{DoxyCompactList}\small\item\em Finds a job with a particular I\-D. \end{DoxyCompactList}\item 
+int \hyperlink{job_8c_a4b49892bffa5095eb5a0fb7d86659456}{job\-\_\-is\-\_\-stopped} (\hyperlink{struct__job}{Job} $\ast$j)
+\begin{DoxyCompactList}\small\item\em Determines if a job is stopped. \end{DoxyCompactList}\item 
+int \hyperlink{job_8c_a0654ba7330ec47c1e636afe60657651b}{job\-\_\-is\-\_\-completed} (\hyperlink{struct__job}{Job} $\ast$j)
+\begin{DoxyCompactList}\small\item\em Determines if a job is completed. \end{DoxyCompactList}\item 
+void \hyperlink{job_8c_ae7a22fe41ac695db73564a23ce25cf6a}{format\-\_\-job\-\_\-info} (\hyperlink{struct__job}{Job} $\ast$j, const char $\ast$status)
+\begin{DoxyCompactList}\small\item\em Formats and prints info for a job. \end{DoxyCompactList}\item 
+int \hyperlink{job_8c_a5419d481fca1c4c7bb7c89e38b964fa9}{mark\-\_\-process\-\_\-status} (pid\-\_\-t pid, int status)
+\begin{DoxyCompactList}\small\item\em Marks the status of a stopped or terminated child process. \end{DoxyCompactList}\item 
+void \hyperlink{job_8c_ad8e58b77db46018eeb20c68855538f35}{update\-\_\-status} (void)
+\begin{DoxyCompactList}\small\item\em Updates the status of stopped or completed child processes of the shell. \end{DoxyCompactList}\item 
+void \hyperlink{job_8c_aead235b523c076d6346ba285fa98f6d1}{wait\-\_\-for\-\_\-job} (\hyperlink{struct__job}{Job} $\ast$j)
+\begin{DoxyCompactList}\small\item\em waits for a job to stop or complete. \end{DoxyCompactList}\item 
+void \hyperlink{job_8c_a75430387f345a954b011547bf14a56ce}{do\-\_\-job\-\_\-notification} (void)
+\begin{DoxyCompactList}\small\item\em Notifies the user of job status updates. \end{DoxyCompactList}\item 
+void \hyperlink{job_8c_ab3b7803e9a87944a86267abc40fe6c39}{put\-\_\-job\-\_\-in\-\_\-foreground} (\hyperlink{struct__job}{Job} $\ast$j, int cont)
+\begin{DoxyCompactList}\small\item\em Puts a job in the foreground. \end{DoxyCompactList}\item 
+void \hyperlink{job_8c_a095ab07b063dbbc25fd2729125fb530a}{put\-\_\-job\-\_\-in\-\_\-background} (\hyperlink{struct__job}{Job} $\ast$j, int cont)
+\begin{DoxyCompactList}\small\item\em Puts a job in the background. \end{DoxyCompactList}\item 
+void \hyperlink{job_8c_a690fc87028fe2334113ee8d92f8c8f24}{mark\-\_\-job\-\_\-as\-\_\-running} (\hyperlink{struct__job}{Job} $\ast$j)
+\begin{DoxyCompactList}\small\item\em Updates a job's state to {\itshape Running} . \end{DoxyCompactList}\item 
+void \hyperlink{job_8c_ab69ad21398604a048a5a1b4ef7af1320}{continue\-\_\-job} (\hyperlink{struct__job}{Job} $\ast$j, int foreground)
+\begin{DoxyCompactList}\small\item\em Continues a job. \end{DoxyCompactList}\item 
+void \hyperlink{job_8c_aff64d308dd49d9da9f2d6f993346f7ad}{add\-\_\-job\-\_\-to\-\_\-list} (\hyperlink{struct__job}{Job} $\ast$j)
+\begin{DoxyCompactList}\small\item\em Adds a job to the active job list. \end{DoxyCompactList}\item 
+int \hyperlink{job_8c_a328634c49391a29ef1d4e86d6bf0ea7e}{execute\-\_\-job} (\hyperlink{struct__job}{Job} $\ast$j)
+\item 
+void \hyperlink{job_8c_a4ae3063920907216e6ba0bdc83ac5b15}{print\-\_\-job\-\_\-list} (void)
+\begin{DoxyCompactList}\small\item\em Prints the I\-D of jobs in the active job list. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+pid\-\_\-t \hyperlink{job_8c_a9dfc260b67728b41e7120b47d7758053}{Ash\-\_\-pgid}
+\begin{DoxyCompactList}\small\item\em Process group I\-D of the shell. \end{DoxyCompactList}\item 
+struct termios \hyperlink{job_8c_a01959f896d957ce001a3a87fc034a5be}{Ash\-\_\-tmodes}
+\begin{DoxyCompactList}\small\item\em Default terminal modes of the shell. \end{DoxyCompactList}\item 
+int \hyperlink{job_8c_a079811c5e88059665d23821b4a38802a}{Ash\-\_\-terminal}
+\begin{DoxyCompactList}\small\item\em File descriptor to standard input for the shell. \end{DoxyCompactList}\item 
+int \hyperlink{job_8c_af7730a56d05055a70f3c18ee938209f8}{Ash\-\_\-is\-\_\-interactive}
+\begin{DoxyCompactList}\small\item\em Indicates if the shell is running interactively. \end{DoxyCompactList}\item 
+\hyperlink{struct__job}{Job} $\ast$ \hyperlink{job_8c_a4ca397eaae80b0004f61dad81729c06d}{job\-\_\-list\-\_\-head} = N\-U\-L\-L
+\begin{DoxyCompactList}\small\item\em Head of the job list. \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{job_8c_a1a6160b9abc239f381d9ba30d00b4e0d}{job\-\_\-states} \mbox{[}$\,$\mbox{]}
+\begin{DoxyCompactList}\small\item\em Job state strings. \end{DoxyCompactList}\item 
+\hyperlink{job_8h_a165885ac9a829b970ba29594fec5acd7}{Builtin} \hyperlink{job_8c_a2c5551422426f406568d84844b40acb9}{builtins} \mbox{[}$\,$\mbox{]}
+\begin{DoxyCompactList}\small\item\em List of shell builtins an associated function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Contains the code for the job control sub system. \begin{DoxyAuthor}{Author}
+Joe Nathan Abellard \{\href{https://github.com/joenatech7}{\tt https\-://github.\-com/joenatech7}\}
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+September 1, 2017 
+\end{DoxyDate}
+\begin{DoxyParagraph}{Description}
+This file contains contains the code for the job control sub system.
+\end{DoxyParagraph}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{job_8h}{job.\-h} 
+\end{DoxySeeAlso}
+
+
+\subsection{Function Documentation}
+\hypertarget{job_8c_aff64d308dd49d9da9f2d6f993346f7ad}{\index{job.\-c@{job.\-c}!add\-\_\-job\-\_\-to\-\_\-list@{add\-\_\-job\-\_\-to\-\_\-list}}
+\index{add\-\_\-job\-\_\-to\-\_\-list@{add\-\_\-job\-\_\-to\-\_\-list}!job.c@{job.\-c}}
+\subsubsection[{add\-\_\-job\-\_\-to\-\_\-list}]{\setlength{\rightskip}{0pt plus 5cm}void add\-\_\-job\-\_\-to\-\_\-list (
+\begin{DoxyParamCaption}
+\item[{{\bf Job} $\ast$}]{j}
+\end{DoxyParamCaption}
+)}}\label{job_8c_aff64d308dd49d9da9f2d6f993346f7ad}
+
+
+Adds a job to the active job list. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to add a job to the end of the linked list (\hyperlink{job_8c_a4ca397eaae80b0004f61dad81729c06d}{job\-\_\-list\-\_\-head}) used to maintain active job records.
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em j} & The job to add to the active job list.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape void} .
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__job}{\-\_\-job}, \hyperlink{job_8c_a4ca397eaae80b0004f61dad81729c06d}{job\-\_\-list\-\_\-head}, and \hyperlink{job_8h_a328634c49391a29ef1d4e86d6bf0ea7e}{execute\-\_\-job()}. 
+\end{DoxySeeAlso}
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=268pt]{job_8c_aff64d308dd49d9da9f2d6f993346f7ad_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_a9bc6f26d0ab14359707a0f367f1a6522}{\index{job.\-c@{job.\-c}!Ash\-\_\-bg@{Ash\-\_\-bg}}
+\index{Ash\-\_\-bg@{Ash\-\_\-bg}!job.c@{job.\-c}}
+\subsubsection[{Ash\-\_\-bg}]{\setlength{\rightskip}{0pt plus 5cm}int Ash\-\_\-bg (
+\begin{DoxyParamCaption}
+\item[{{\bf Process} $\ast$}]{p, }
+\item[{int}]{in\-\_\-file, }
+\item[{int}]{out\-\_\-file, }
+\item[{int}]{err\-\_\-file}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a9bc6f26d0ab14359707a0f367f1a6522}
+
+
+\mbox{[}B\-U\-I\-L\-T\-I\-N\mbox{]}\-: Continues active jobs in the background. 
+
+\begin{DoxyParagraph}{Description}
+This shell builtin is used to continue active jobs (\hyperlink{struct__job}{\-\_\-job}) in the background. It accepts the following grammar \-: \par
+bg -\/$<$job-\/id$>$ ... \par
+To continue the job(s) in the background, it does the following \-: \begin{DoxyItemize}
+\item Checks if the command grammer is valid. \item If the grammar is valid, then for each job, it calls \hyperlink{job_8h_a870c6d70cfb180e88d217a0b3501aedb}{find\-\_\-job\-\_\-id()} to find the specified jobs on the active job list (job\-\_\-list\-\_\-head) with job I\-D (\-\_\-job\-::id) {\itshape $<$job-\/id$>$} . \item For each job that is found, it calls \hyperlink{job_8h_ab69ad21398604a048a5a1b4ef7af1320}{continue\-\_\-job()} to continue the job in the background.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em p} & This is a process (\hyperlink{struct__process}{\-\_\-process}) . Only its argument vector (\-\_\-process\-::argv) and argument count (\-\_\-process\-::argc) are of interest to this builtin.\\
+\hline
+{\em in\-\_\-file} & File descriptor to the builtin's standard input.\\
+\hline
+{\em out\-\_\-file} & File descriptor to the builtin's standard output.\\
+\hline
+{\em in\-\_\-file} & File descriptor to the builtin's standard error.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape 0} on success, or {\itshape -\/1} on error. Possible reasons for failure are as follows\-: \begin{DoxyItemize}
+\item The grammar of the command is invalid. \item The grammar of the command is valid, but a specified {\itshape $<$job-\/id$>$} does not refer to a job on the active job list.\end{DoxyItemize}
+
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__process}{\-\_\-process}, \-\_\-process\-::argv, \-\_\-process\-::argc, {\itshape dprintf()}, {\itshape atoi()}, \hyperlink{struct__job}{\-\_\-job}, \hyperlink{job_8h_a870c6d70cfb180e88d217a0b3501aedb}{find\-\_\-job\-\_\-id()}, \hyperlink{job_8h_ab69ad21398604a048a5a1b4ef7af1320}{continue\-\_\-job()}, {\itshape strlen()}, (\hyperlink{job_8c_a4ca397eaae80b0004f61dad81729c06d}{job\-\_\-list\-\_\-head}) \hyperlink{job_8h_a2c2cfa6591ee05cc5bf0c39f38b9e2ea}{Ash\-\_\-cd()}, \hyperlink{job_8h_a9fa5abe15df71a688905dc7b29a1389f}{Ash\-\_\-exit()}, \hyperlink{job_8h_a8950ee4bf84f8322e0b294d0c448a9e7}{Ash\-\_\-jobs()}, \hyperlink{job_8h_a9bc6f26d0ab14359707a0f367f1a6522}{Ash\-\_\-bg()}, \hyperlink{job_8h_a4242d3cdbc0468d774243dc67b330296}{Ash\-\_\-help()}, \hyperlink{job_8h_a723e6648fca47a139cdff5cf4f1bc4bb}{Ash\-\_\-kill()}, and \hyperlink{job_8h_a07e5c62e1d5e55012cf188dd32b6cf27}{Ash\-\_\-killall()} 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{job_8c_a9bc6f26d0ab14359707a0f367f1a6522_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_a2c2cfa6591ee05cc5bf0c39f38b9e2ea}{\index{job.\-c@{job.\-c}!Ash\-\_\-cd@{Ash\-\_\-cd}}
+\index{Ash\-\_\-cd@{Ash\-\_\-cd}!job.c@{job.\-c}}
+\subsubsection[{Ash\-\_\-cd}]{\setlength{\rightskip}{0pt plus 5cm}int Ash\-\_\-cd (
+\begin{DoxyParamCaption}
+\item[{{\bf Process} $\ast$}]{p, }
+\item[{int}]{in\-\_\-file, }
+\item[{int}]{out\-\_\-file, }
+\item[{int}]{err\-\_\-file}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a2c2cfa6591ee05cc5bf0c39f38b9e2ea}
+
+
+\mbox{[}B\-U\-I\-L\-T\-I\-N\mbox{]}\-: Changes the shell's current working directory. 
+
+\begin{DoxyParagraph}{Description}
+This shell builtin is used to change the shell's current working directory. It accepts the following grammar \-: \par
+cd $<$path-\/to-\/new-\/direcotry$>$ \par
+To change the current working directory, it does the following \-: \begin{DoxyItemize}
+\item Checks if the grammar of the command is correct. \item If the grammar of the command is correct, the function calls {\itshape chdir()} to change the current working directory.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em p} & This is a process (\hyperlink{struct__process}{\-\_\-process}) . Only its argument vector (\-\_\-process\-::argv) and argument count (\-\_\-process\-::argc) fields are of interest for the builtin.\\
+\hline
+{\em in\-\_\-file} & File descriptor to the builtin's standard input.\\
+\hline
+{\em out\-\_\-file} & File descriptor to the builtin's standard output.\\
+\hline
+{\em in\-\_\-file} & File descriptor to the builtin's standard error.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape 0} on success, or {\itshape -\/1} on failure. Possible reasons for failure are as follows\-: \begin{DoxyItemize}
+\item The grammar passed to the builtin is invalid. \item The call to {\itshape chdir()} fails\end{DoxyItemize}
+
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__process}{\-\_\-process}, \-\_\-process\-::argv, \-\_\-process\-::argc, {\itshape chdir()} , \hyperlink{err_8c_a07dfb9fd24fe41a9f703bd92af2cf646}{err\-\_\-msg()}, {\itshape dprintf()}, \hyperlink{job_8h_a9fa5abe15df71a688905dc7b29a1389f}{Ash\-\_\-exit()}, \hyperlink{job_8h_a8950ee4bf84f8322e0b294d0c448a9e7}{Ash\-\_\-jobs()}, \hyperlink{job_8h_a792fcc9814d020b087911591c5fce10b}{Ash\-\_\-fg()}, \hyperlink{job_8h_a9bc6f26d0ab14359707a0f367f1a6522}{Ash\-\_\-bg()}, \hyperlink{job_8h_a4242d3cdbc0468d774243dc67b330296}{Ash\-\_\-help()}, \hyperlink{job_8h_a723e6648fca47a139cdff5cf4f1bc4bb}{Ash\-\_\-kill()}, and \hyperlink{job_8h_a07e5c62e1d5e55012cf188dd32b6cf27}{Ash\-\_\-killall()}. 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=218pt]{job_8c_a2c2cfa6591ee05cc5bf0c39f38b9e2ea_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_a9fa5abe15df71a688905dc7b29a1389f}{\index{job.\-c@{job.\-c}!Ash\-\_\-exit@{Ash\-\_\-exit}}
+\index{Ash\-\_\-exit@{Ash\-\_\-exit}!job.c@{job.\-c}}
+\subsubsection[{Ash\-\_\-exit}]{\setlength{\rightskip}{0pt plus 5cm}int Ash\-\_\-exit (
+\begin{DoxyParamCaption}
+\item[{{\bf Process} $\ast$}]{p, }
+\item[{int}]{in\-\_\-file, }
+\item[{int}]{out\-\_\-file, }
+\item[{int}]{err\-\_\-file}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a9fa5abe15df71a688905dc7b29a1389f}
+
+
+\mbox{[}B\-U\-I\-L\-T\-I\-N\mbox{]}\-: Exits from the shell. 
+
+\begin{DoxyParagraph}{Description}
+This shell builtin is used exit from the shell. It accepts the following grammar \-: \par
+exit \par
+To exit from the shell, it does the following \-: \begin{DoxyItemize}
+\item calls () with the status E\-X\-I\-T\-\_\-\-S\-U\-C\-C\-E\-S\-S.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em p} & This is a process (\hyperlink{struct__process}{\-\_\-process}) . It is not of interest to this builtin.\\
+\hline
+{\em in\-\_\-file} & File descriptor to the builtin's standard input.\\
+\hline
+{\em out\-\_\-file} & File descriptor to the builtin's standard output.\\
+\hline
+{\em in\-\_\-file} & File descriptor to the builtin's standard error.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Never returns.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__process}{\-\_\-process}, {\itshape exit()}, \hyperlink{job_8h_a2c2cfa6591ee05cc5bf0c39f38b9e2ea}{Ash\-\_\-cd()}, \hyperlink{job_8h_a8950ee4bf84f8322e0b294d0c448a9e7}{Ash\-\_\-jobs()}, \hyperlink{job_8h_a792fcc9814d020b087911591c5fce10b}{Ash\-\_\-fg()}, \hyperlink{job_8h_a9bc6f26d0ab14359707a0f367f1a6522}{Ash\-\_\-bg()}, \hyperlink{job_8h_a4242d3cdbc0468d774243dc67b330296}{Ash\-\_\-help()}, \hyperlink{job_8h_a723e6648fca47a139cdff5cf4f1bc4bb}{Ash\-\_\-kill()}, and \hyperlink{job_8h_a07e5c62e1d5e55012cf188dd32b6cf27}{Ash\-\_\-killall()} 
+\end{DoxySeeAlso}
+\hypertarget{job_8c_a792fcc9814d020b087911591c5fce10b}{\index{job.\-c@{job.\-c}!Ash\-\_\-fg@{Ash\-\_\-fg}}
+\index{Ash\-\_\-fg@{Ash\-\_\-fg}!job.c@{job.\-c}}
+\subsubsection[{Ash\-\_\-fg}]{\setlength{\rightskip}{0pt plus 5cm}int Ash\-\_\-fg (
+\begin{DoxyParamCaption}
+\item[{{\bf Process} $\ast$}]{p, }
+\item[{int}]{in\-\_\-file, }
+\item[{int}]{out\-\_\-file, }
+\item[{int}]{err\-\_\-file}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a792fcc9814d020b087911591c5fce10b}
+
+
+\mbox{[}B\-U\-I\-L\-T\-I\-N\mbox{]}\-: Continues an active job in the foreground. 
+
+\begin{DoxyParagraph}{Description}
+This shell builtin is used to continue an active job (\hyperlink{struct__job}{\-\_\-job}) in the foreground. It accepts the following grammar \-: \par
+fg -\/$<$job-\/id$>$ \par
+To continue the job in the foreground, it does the following \-: \begin{DoxyItemize}
+\item Checks if the command grammer is valid. \item If the grammar is valid, it calls \hyperlink{job_8h_a870c6d70cfb180e88d217a0b3501aedb}{find\-\_\-job\-\_\-id()} to find a job on the active job list (job\-\_\-list\-\_\-head) with job I\-D (\-\_\-job\-::id) {\itshape $<$job-\/id$>$} . \item If it finds the job, it calls \hyperlink{job_8h_ab69ad21398604a048a5a1b4ef7af1320}{continue\-\_\-job()} to continue the job in the foreground.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em p} & This is a process (\hyperlink{struct__process}{\-\_\-process}) . Only its argument vector (\-\_\-process\-::argv) and argument count (\-\_\-process\-::argc) are of interest to this builtin.\\
+\hline
+{\em in\-\_\-file} & File descriptor to the builtin's standard input.\\
+\hline
+{\em out\-\_\-file} & File descriptor to the builtin's standard output.\\
+\hline
+{\em in\-\_\-file} & File descriptor to the builtin's standard error.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape 0} on success, or {\itshape -\/1} on error. Possible reasons for failure are as follows\-: \begin{DoxyItemize}
+\item The grammar of the command is invalid. \item The grammar of the command is valid, but {\itshape $<$job-\/id$>$} does not refer to a job on the active job list.\end{DoxyItemize}
+
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__process}{\-\_\-process}, \-\_\-process\-::argv, \-\_\-process\-::argc, {\itshape dprintf()}, {\itshape atoi()}, \hyperlink{struct__job}{\-\_\-job}, \hyperlink{job_8h_a870c6d70cfb180e88d217a0b3501aedb}{find\-\_\-job\-\_\-id()}, \hyperlink{job_8h_ab69ad21398604a048a5a1b4ef7af1320}{continue\-\_\-job()}, \hyperlink{job_8h_a2c2cfa6591ee05cc5bf0c39f38b9e2ea}{Ash\-\_\-cd()}, \hyperlink{job_8h_a9fa5abe15df71a688905dc7b29a1389f}{Ash\-\_\-exit()}, \hyperlink{job_8h_a8950ee4bf84f8322e0b294d0c448a9e7}{Ash\-\_\-jobs()}, \hyperlink{job_8h_a9bc6f26d0ab14359707a0f367f1a6522}{Ash\-\_\-bg()}, \hyperlink{job_8h_a4242d3cdbc0468d774243dc67b330296}{Ash\-\_\-help()}, \hyperlink{job_8h_a723e6648fca47a139cdff5cf4f1bc4bb}{Ash\-\_\-kill()}, and \hyperlink{job_8h_a07e5c62e1d5e55012cf188dd32b6cf27}{Ash\-\_\-killall()} 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{job_8c_a792fcc9814d020b087911591c5fce10b_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_a4242d3cdbc0468d774243dc67b330296}{\index{job.\-c@{job.\-c}!Ash\-\_\-help@{Ash\-\_\-help}}
+\index{Ash\-\_\-help@{Ash\-\_\-help}!job.c@{job.\-c}}
+\subsubsection[{Ash\-\_\-help}]{\setlength{\rightskip}{0pt plus 5cm}int Ash\-\_\-help (
+\begin{DoxyParamCaption}
+\item[{{\bf Process} $\ast$}]{p, }
+\item[{int}]{in\-\_\-file, }
+\item[{int}]{out\-\_\-file, }
+\item[{int}]{err\-\_\-file}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a4242d3cdbc0468d774243dc67b330296}
+
+
+\mbox{[}B\-U\-I\-L\-T\-I\-N\mbox{]}\-: Prints a help message for the shell. 
+
+\begin{DoxyParagraph}{Description}
+This shell builtin is used print a help message for the shell. It accepts the following grammar \-: \par
+help \par
+ 
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em p} & This is a process (\hyperlink{struct__process}{\-\_\-process}) . It is not of interest to this builtin.\\
+\hline
+{\em in\-\_\-file} & File descriptor to the builtin's standard input.\\
+\hline
+{\em out\-\_\-file} & File descriptor to the builtin's standard output.\\
+\hline
+{\em in\-\_\-file} & File descriptor to the builtin's standard error.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Always returns {\itshape 0}.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__process}{\-\_\-process}, {\itshape dprintf()}, \hyperlink{job_8h_a2c2cfa6591ee05cc5bf0c39f38b9e2ea}{Ash\-\_\-cd()}, \hyperlink{job_8h_a9fa5abe15df71a688905dc7b29a1389f}{Ash\-\_\-exit()}, \hyperlink{job_8h_a8950ee4bf84f8322e0b294d0c448a9e7}{Ash\-\_\-jobs()}, \hyperlink{job_8h_a9bc6f26d0ab14359707a0f367f1a6522}{Ash\-\_\-bg()}, \hyperlink{job_8h_a723e6648fca47a139cdff5cf4f1bc4bb}{Ash\-\_\-kill()}, and \hyperlink{job_8h_a07e5c62e1d5e55012cf188dd32b6cf27}{Ash\-\_\-killall()} 
+\end{DoxySeeAlso}
+\hypertarget{job_8c_a8950ee4bf84f8322e0b294d0c448a9e7}{\index{job.\-c@{job.\-c}!Ash\-\_\-jobs@{Ash\-\_\-jobs}}
+\index{Ash\-\_\-jobs@{Ash\-\_\-jobs}!job.c@{job.\-c}}
+\subsubsection[{Ash\-\_\-jobs}]{\setlength{\rightskip}{0pt plus 5cm}int Ash\-\_\-jobs (
+\begin{DoxyParamCaption}
+\item[{{\bf Process} $\ast$}]{p, }
+\item[{int}]{in\-\_\-file, }
+\item[{int}]{out\-\_\-file, }
+\item[{int}]{err\-\_\-file}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a8950ee4bf84f8322e0b294d0c448a9e7}
+
+
+\mbox{[}B\-U\-I\-L\-T\-I\-N\mbox{]}\-: List the jobs in the shell's active job list. 
+
+\begin{DoxyParagraph}{Description}
+This shell builtin is used list the jobs (\hyperlink{struct__job}{\-\_\-job}) in the shell's active job list (\hyperlink{job_8c_a4ca397eaae80b0004f61dad81729c06d}{job\-\_\-list\-\_\-head}). It accepts the following grammar \-: \par
+jobs \par
+To list the jobs, it does the following \-: \begin{DoxyItemize}
+\item Calls update() status to update the status of child processes (\hyperlink{struct__process}{\-\_\-process}) of the shell. \item Traverses the active job list, and for each job on the list, it prints its status and then calls \hyperlink{job_8h_ae54ca57ee056e74d8ae32967453e4482}{print\-\_\-job\-\_\-command()} to print the command that started the job. An active job can be in one of three states\-: (1) {\itshape Running} , (2) {\itshape Stopped} , or (3) {\itshape Done} . The function calls \hyperlink{job_8h_a0654ba7330ec47c1e636afe60657651b}{job\-\_\-is\-\_\-completed()}, and \hyperlink{job_8h_a4b49892bffa5095eb5a0fb7d86659456}{job\-\_\-is\-\_\-stopped()} to determine if an active job is either completed, or stopped, respectively.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em p} & This is a process (\hyperlink{struct__process}{\-\_\-process}) . It is not of interest to this builtin.\\
+\hline
+{\em in\-\_\-file} & File descriptor to the builtin's standard input.\\
+\hline
+{\em out\-\_\-file} & File descriptor to the builtin's standard output.\\
+\hline
+{\em in\-\_\-file} & File descriptor to the builtin's standard error.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape 0} .
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__process}{\-\_\-process}, \hyperlink{job_8h_ad8e58b77db46018eeb20c68855538f35}{update\-\_\-status()}, \hyperlink{struct__job}{\-\_\-job}, \hyperlink{job_8c_a4ca397eaae80b0004f61dad81729c06d}{job\-\_\-list\-\_\-head}, \hyperlink{job_8h_a0654ba7330ec47c1e636afe60657651b}{job\-\_\-is\-\_\-completed()}, \hyperlink{job_8h_a4b49892bffa5095eb5a0fb7d86659456}{job\-\_\-is\-\_\-stopped()}, {\itshape dprintf()}, \hyperlink{job_8h_ae54ca57ee056e74d8ae32967453e4482}{print\-\_\-job\-\_\-command()}, \hyperlink{job_8h_abd1ac77dca84a11371146d61dbe2c35d}{\-\_\-job\-\_\-state}, \hyperlink{job_8c_a1a6160b9abc239f381d9ba30d00b4e0d}{job\-\_\-states}, \hyperlink{job_8h_a2c2cfa6591ee05cc5bf0c39f38b9e2ea}{Ash\-\_\-cd()}, \hyperlink{job_8h_a9fa5abe15df71a688905dc7b29a1389f}{Ash\-\_\-exit()}, \hyperlink{job_8h_a792fcc9814d020b087911591c5fce10b}{Ash\-\_\-fg()}, \hyperlink{job_8h_a9bc6f26d0ab14359707a0f367f1a6522}{Ash\-\_\-bg()}, \hyperlink{job_8h_a4242d3cdbc0468d774243dc67b330296}{Ash\-\_\-help()}, \hyperlink{job_8h_a723e6648fca47a139cdff5cf4f1bc4bb}{Ash\-\_\-kill()}, and \hyperlink{job_8h_a07e5c62e1d5e55012cf188dd32b6cf27}{Ash\-\_\-killall()} 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{job_8c_a8950ee4bf84f8322e0b294d0c448a9e7_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_a723e6648fca47a139cdff5cf4f1bc4bb}{\index{job.\-c@{job.\-c}!Ash\-\_\-kill@{Ash\-\_\-kill}}
+\index{Ash\-\_\-kill@{Ash\-\_\-kill}!job.c@{job.\-c}}
+\subsubsection[{Ash\-\_\-kill}]{\setlength{\rightskip}{0pt plus 5cm}int Ash\-\_\-kill (
+\begin{DoxyParamCaption}
+\item[{{\bf Process} $\ast$}]{p, }
+\item[{int}]{in\-\_\-file, }
+\item[{int}]{out\-\_\-file, }
+\item[{int}]{err\-\_\-file}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a723e6648fca47a139cdff5cf4f1bc4bb}
+
+
+\mbox{[}B\-U\-I\-L\-T\-I\-N\mbox{]}\-: Sends a signal to active jobs. 
+
+\begin{DoxyParagraph}{Description}
+This shell builtin is used to send a signal to active jobs. It accepts the following grammar \-: \par
+kill l $\vert$ s$<$signal-\/name$>$ $\vert$ n$<$signal-\/number$>$ -\/$<$job-\/id$>$ ... \par
+The signal to be sent can be specief by using either the {\itshape s} option, or the \par
+ option. The  option is used to specified a signal using its symbolic name. The symbolic name must be a case-\/insensitive string of one of the following patterns\-: \par
+\begin{DoxyItemize}
+\item S\-I\-Gxxx or S\-I\-Gxxxx (e.\-g., S\-I\-G\-H\-U\-P or S\-I\-G\-K\-I\-L\-L, respectively) \item xxx or xxxx (e.\-g., H\-U\-P or K\-I\-L\-L, respectively)\end{DoxyItemize}
+The {\itshape n} option is used to specified the signal number to be sent (e.\-g., {\itshape n9} sends signal number 9). The {\itshape l} option is used to list the signals that can be sent. To send the signal, the function does the following \-: \begin{DoxyItemize}
+\item Checks if the command grammer is valid. \item If the grammar is valid, then for each specified job, it calls \hyperlink{job_8h_a870c6d70cfb180e88d217a0b3501aedb}{find\-\_\-job\-\_\-id()} to find the job on the active job list (job\-\_\-list\-\_\-head) \item For each job that is found, it calls {\itshape kill()} to send the signal to the job.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em p} & This is a process (\hyperlink{struct__process}{\-\_\-process}) . Only its argument vector (\-\_\-process\-::argv) and argument count (\-\_\-process\-::argc) are of interest to this builtin.\\
+\hline
+{\em in\-\_\-file} & File descriptor to the builtin's standard input.\\
+\hline
+{\em out\-\_\-file} & File descriptor to the builtin's standard output.\\
+\hline
+{\em in\-\_\-file} & File descriptor to the builtin's standard error.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape 0} on success, or {\itshape -\/1} on error. Possible reasons for failure are as follows\-: \begin{DoxyItemize}
+\item The grammar of the command is invalid. \item The grammar of the command is valid, but a specified {\itshape $<$job-\/id$>$} does not refer to a job on the active job list.\end{DoxyItemize}
+
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__process}{\-\_\-process}, \-\_\-process\-::argv, \-\_\-process\-::argc, {\itshape dprintf()}, {\itshape atoi()}, \hyperlink{struct__job}{\-\_\-job}, \hyperlink{job_8h_a870c6d70cfb180e88d217a0b3501aedb}{find\-\_\-job\-\_\-id()}, {\itshape kill()}, \-\_\-job\-::id \hyperlink{job_8h_a2c2cfa6591ee05cc5bf0c39f38b9e2ea}{Ash\-\_\-cd()}, \hyperlink{job_8h_a9fa5abe15df71a688905dc7b29a1389f}{Ash\-\_\-exit()}, \hyperlink{job_8h_a8950ee4bf84f8322e0b294d0c448a9e7}{Ash\-\_\-jobs()}, \hyperlink{job_8h_a9bc6f26d0ab14359707a0f367f1a6522}{Ash\-\_\-bg()}, \hyperlink{job_8h_a4242d3cdbc0468d774243dc67b330296}{Ash\-\_\-help()}, \hyperlink{job_8h_a723e6648fca47a139cdff5cf4f1bc4bb}{Ash\-\_\-kill()}, and \hyperlink{job_8h_a07e5c62e1d5e55012cf188dd32b6cf27}{Ash\-\_\-killall()}
+\end{DoxySeeAlso}
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000002}{Todo}]implement more signals, build an array of signal names\end{DoxyRefDesc}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=232pt]{job_8c_a723e6648fca47a139cdff5cf4f1bc4bb_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_a07e5c62e1d5e55012cf188dd32b6cf27}{\index{job.\-c@{job.\-c}!Ash\-\_\-killall@{Ash\-\_\-killall}}
+\index{Ash\-\_\-killall@{Ash\-\_\-killall}!job.c@{job.\-c}}
+\subsubsection[{Ash\-\_\-killall}]{\setlength{\rightskip}{0pt plus 5cm}int Ash\-\_\-killall (
+\begin{DoxyParamCaption}
+\item[{{\bf Process} $\ast$}]{p, }
+\item[{int}]{in\-\_\-file, }
+\item[{int}]{out\-\_\-file, }
+\item[{int}]{err\-\_\-file}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a07e5c62e1d5e55012cf188dd32b6cf27}
+
+
+\mbox{[}B\-U\-I\-L\-T\-I\-N\mbox{]}\-: Sends a signal to all active jobs. 
+
+\begin{DoxyParagraph}{Description}
+This shell builtin is used to send a signal to all jobs on the active job list (\hyperlink{job_8c_a4ca397eaae80b0004f61dad81729c06d}{job\-\_\-list\-\_\-head}). It accepts the following grammar \-: \par
+killall l or killall s$<$signal-\/name$>$ $\vert$ n$<$signal-\/number$>$ \par
+The signal to be sent can be specief by using either the {\itshape s} option, or the \par
+ option. The  option is used to specified a signal using its symbolic name. The symbolic name must be a case-\/insensitive string of one of the following patterns\-: \par
+\begin{DoxyItemize}
+\item S\-I\-Gxxx or S\-I\-Gxxxx (e.\-g., S\-I\-G\-H\-U\-P or S\-I\-G\-K\-I\-L\-L, respectively) \item xxx or xxxx (e.\-g., H\-U\-P or K\-I\-L\-L, respectively)\end{DoxyItemize}
+The {\itshape n} option is used to specified the signal number to be sent (e.\-g., {\itshape n9} sends signal number 9). The {\itshape l} option is used to list the signals that can be sent. To send the signal, the function does the following \-: \begin{DoxyItemize}
+\item Checks if the command grammer is valid. \item If the grammar is valid, then it calls () to send the singal to all active jobs.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em p} & This is a process (\hyperlink{struct__process}{\-\_\-process}) . Only its argument vector (\-\_\-process\-::argv) and argument count (\-\_\-process\-::argc) are of interest to this builtin.\\
+\hline
+{\em in\-\_\-file} & File descriptor to the builtin's standard input.\\
+\hline
+{\em out\-\_\-file} & File descriptor to the builtin's standard output.\\
+\hline
+{\em in\-\_\-file} & File descriptor to the builtin's standard error.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape 0} on success, or {\itshape -\/1} on error. Possible reasons for failure are as follows\-: \begin{DoxyItemize}
+\item The grammar of the command is invalid.\end{DoxyItemize}
+
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__process}{\-\_\-process}, \-\_\-process\-::argv, \-\_\-process\-::argc, {\itshape dprintf()}, {\itshape kill()}, \hyperlink{job_8h_a2c2cfa6591ee05cc5bf0c39f38b9e2ea}{Ash\-\_\-cd()}, \hyperlink{job_8h_a9fa5abe15df71a688905dc7b29a1389f}{Ash\-\_\-exit()}, \hyperlink{job_8h_a8950ee4bf84f8322e0b294d0c448a9e7}{Ash\-\_\-jobs()}, \hyperlink{job_8h_a9bc6f26d0ab14359707a0f367f1a6522}{Ash\-\_\-bg()}, \hyperlink{job_8h_a4242d3cdbc0468d774243dc67b330296}{Ash\-\_\-help()}, and \hyperlink{job_8h_a723e6648fca47a139cdff5cf4f1bc4bb}{Ash\-\_\-kill}. 
+\end{DoxySeeAlso}
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000003}{Todo}]implement more signals, build an array of signal names\end{DoxyRefDesc}
+\hypertarget{job_8c_ab69ad21398604a048a5a1b4ef7af1320}{\index{job.\-c@{job.\-c}!continue\-\_\-job@{continue\-\_\-job}}
+\index{continue\-\_\-job@{continue\-\_\-job}!job.c@{job.\-c}}
+\subsubsection[{continue\-\_\-job}]{\setlength{\rightskip}{0pt plus 5cm}void continue\-\_\-job (
+\begin{DoxyParamCaption}
+\item[{{\bf Job} $\ast$}]{j, }
+\item[{int}]{foreground}
+\end{DoxyParamCaption}
+)}}\label{job_8c_ab69ad21398604a048a5a1b4ef7af1320}
+
+
+Continues a job. 
+
+This function is used to continue a job either in the foreground or in the background. It does the following\-: \begin{DoxyItemize}
+\item Calls \hyperlink{job_8h_a690fc87028fe2334113ee8d92f8c8f24}{mark\-\_\-job\-\_\-as\-\_\-running()} to update the job's state. \item If {\itshape foreground} is non-\/zero (i.\-e., true), it calls \hyperlink{job_8h_ab3b7803e9a87944a86267abc40fe6c39}{put\-\_\-job\-\_\-in\-\_\-foreground()} to put the job in the foreground. Otherwise, it calls \hyperlink{job_8h_a095ab07b063dbbc25fd2729125fb530a}{put\-\_\-job\-\_\-in\-\_\-background()} to put the job in the background.\end{DoxyItemize}
+
+\begin{DoxyParams}{Parameters}
+{\em j} & The job to continue.\\
+\hline
+{\em foreground} & Determines if the job is to be continued in the foreground or in the background. If this value is non-\/zero (i.\-e., true), then the job is continued in the foreground. Otherwise, it is continued in the background.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape void} .
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__job}{\-\_\-job}, \hyperlink{job_8h_a690fc87028fe2334113ee8d92f8c8f24}{mark\-\_\-job\-\_\-as\-\_\-running()}, \hyperlink{job_8h_ab3b7803e9a87944a86267abc40fe6c39}{put\-\_\-job\-\_\-in\-\_\-foreground()}, \hyperlink{job_8h_a095ab07b063dbbc25fd2729125fb530a}{put\-\_\-job\-\_\-in\-\_\-background()}, \hyperlink{job_8h_a9bc6f26d0ab14359707a0f367f1a6522}{Ash\-\_\-bg()}, \hyperlink{job_8h_abd1ac77dca84a11371146d61dbe2c35d}{\-\_\-job\-\_\-state}, \hyperlink{job_8c_a1a6160b9abc239f381d9ba30d00b4e0d}{job\-\_\-states}, and \hyperlink{job_8h_a792fcc9814d020b087911591c5fce10b}{Ash\-\_\-fg()}. 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{job_8c_ab69ad21398604a048a5a1b4ef7af1320_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=238pt]{job_8c_ab69ad21398604a048a5a1b4ef7af1320_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_a18d3d13da14c1f38fa2b0932e8850129}{\index{job.\-c@{job.\-c}!create\-\_\-job@{create\-\_\-job}}
+\index{create\-\_\-job@{create\-\_\-job}!job.c@{job.\-c}}
+\subsubsection[{create\-\_\-job}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Job}$\ast$ create\-\_\-job (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a18d3d13da14c1f38fa2b0932e8850129}
+
+
+Creates a new job instance. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to create a new job (\hyperlink{struct__job}{\-\_\-job}) instance. It does the following\-: \begin{DoxyItemize}
+\item Dynamically allocate memory for a job instance. \item Assign default values to all the fields in the job instance.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+\begin{DoxyReturn}{Returns}
+Returns a pointer to the newly create job instance on success, or N\-U\-L\-L on failure.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__job}{\-\_\-job}, \#\-M\-A\-X\-\_\-\-P\-R\-O\-C\-E\-S\-S\-E\-S, and {\itshape malloc()}. 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=230pt]{job_8c_a18d3d13da14c1f38fa2b0932e8850129_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_a1af7ca10dbe6b9358262cc18f04bf6f5}{\index{job.\-c@{job.\-c}!create\-\_\-process@{create\-\_\-process}}
+\index{create\-\_\-process@{create\-\_\-process}!job.c@{job.\-c}}
+\subsubsection[{create\-\_\-process}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Process}$\ast$ create\-\_\-process (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a1af7ca10dbe6b9358262cc18f04bf6f5}
+
+
+Creates an instance of a process. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to create an instance of a process (\hyperlink{struct__process}{\-\_\-process}). It does the following \-: \begin{DoxyItemize}
+\item Dynamically allocate memory for an instance of a process. \item Assigns default values to all fields of the process instance.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+\begin{DoxyReturn}{Returns}
+Returns N\-U\-L\-L on failure, or a pointer to the allocated memory on success.
+\end{DoxyReturn}
+@ sa \hyperlink{struct__process}{\-\_\-process}, Process, \#\-Max\-\_\-\-A\-R\-G\-S, and \hyperlink{job_8h_a9c2d0895268bd3229fc231b00029eb7b}{process\-\_\-dup()}. 
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=252pt]{job_8c_a1af7ca10dbe6b9358262cc18f04bf6f5_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{job_8c_a1af7ca10dbe6b9358262cc18f04bf6f5_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_a8c729ad459ad99d7a0e3c7a549d98383}{\index{job.\-c@{job.\-c}!destroy\-\_\-job@{destroy\-\_\-job}}
+\index{destroy\-\_\-job@{destroy\-\_\-job}!job.c@{job.\-c}}
+\subsubsection[{destroy\-\_\-job}]{\setlength{\rightskip}{0pt plus 5cm}int destroy\-\_\-job (
+\begin{DoxyParamCaption}
+\item[{{\bf Job} $\ast$}]{j}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a8c729ad459ad99d7a0e3c7a549d98383}
+
+
+Destroys a job. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to destroy a job (\hyperlink{struct__job}{\-\_\-job}). It does the following\-: \begin{DoxyItemize}
+\item Calls \hyperlink{job_8h_a167097d11d4b3ceda7957cb5244de3a8}{destroy\-\_\-process()} to destroy all of the process (\-\_\-job\-::num\-\_\-processes) currently stored in the job's process list (\-\_\-job\-::processes). \item Calls \hyperlink{err_8h_a40bd4201ea3cf1b6f8e7fef01362bf67}{sfree()} to free the pathnames of the job's I/\-O redirection files (\-\_\-job\-::in\-\_\-file, \-\_\-job\-::out\-\_\-file, and \-\_\-job\-::err\-\_\-file). \item Calls \hyperlink{err_8h_a40bd4201ea3cf1b6f8e7fef01362bf67}{sfree()} to free the job instance itself.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em j} & The job to destroy.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape -\/1} on failure, or {\itshape 0} on success.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__job}{\-\_\-job}, \-\_\-job\-::num\-\_\-processes, \hyperlink{job_8h_a167097d11d4b3ceda7957cb5244de3a8}{destroy\-\_\-process()}, \-\_\-job\-::processes, \-\_\-job\-::in\-\_\-file, \-\_\-job\-::out\-\_\-file, and \-\_\-job\-::err\-\_\-file. 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=274pt]{job_8c_a8c729ad459ad99d7a0e3c7a549d98383_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=282pt]{job_8c_a8c729ad459ad99d7a0e3c7a549d98383_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_a167097d11d4b3ceda7957cb5244de3a8}{\index{job.\-c@{job.\-c}!destroy\-\_\-process@{destroy\-\_\-process}}
+\index{destroy\-\_\-process@{destroy\-\_\-process}!job.c@{job.\-c}}
+\subsubsection[{destroy\-\_\-process}]{\setlength{\rightskip}{0pt plus 5cm}void destroy\-\_\-process (
+\begin{DoxyParamCaption}
+\item[{{\bf Process} $\ast$}]{p}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a167097d11d4b3ceda7957cb5244de3a8}
+
+
+Destroys a process instance. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to destroy a process (\hyperlink{struct__process}{\-\_\-process}) instance. It does the following \-: \begin{DoxyItemize}
+\item Calls \hyperlink{err_8h_a40bd4201ea3cf1b6f8e7fef01362bf67}{sfree()} to free the arguments (\-\_\-process\-::argc) currently stored in the argument vector (\hyperlink{struct__process}{\-\_\-process}\-:argv) of the process. \item Calls \hyperlink{err_8h_a40bd4201ea3cf1b6f8e7fef01362bf67}{sfree()} to free the process instance itself.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape void} .
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__process}{\-\_\-process}, \-\_\-process\-::argv, \-\_\-process\-::argc, \hyperlink{err_8h_a40bd4201ea3cf1b6f8e7fef01362bf67}{sfree()}, and \hyperlink{job_8h_a8c729ad459ad99d7a0e3c7a549d98383}{destroy\-\_\-job()}. 
+\end{DoxySeeAlso}
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{job_8c_a167097d11d4b3ceda7957cb5244de3a8_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_a75430387f345a954b011547bf14a56ce}{\index{job.\-c@{job.\-c}!do\-\_\-job\-\_\-notification@{do\-\_\-job\-\_\-notification}}
+\index{do\-\_\-job\-\_\-notification@{do\-\_\-job\-\_\-notification}!job.c@{job.\-c}}
+\subsubsection[{do\-\_\-job\-\_\-notification}]{\setlength{\rightskip}{0pt plus 5cm}void do\-\_\-job\-\_\-notification (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a75430387f345a954b011547bf14a56ce}
+
+
+Notifies the user of job status updates. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to notify the user of job (\hyperlink{struct__job}{\-\_\-job}) status updates. It does the following\-: \begin{DoxyItemize}
+\item Calls \hyperlink{job_8h_ad8e58b77db46018eeb20c68855538f35}{update\-\_\-status()} to update the status of stopped or completed processes (\hyperlink{struct__process}{\-\_\-process}). \item For each job in the active job list (\hyperlink{job_8c_a4ca397eaae80b0004f61dad81729c06d}{job\-\_\-list\-\_\-head}), it checks if the job has either completed (by calling \hyperlink{job_8h_a4b49892bffa5095eb5a0fb7d86659456}{job\-\_\-is\-\_\-stopped()} or stopped ( by calling \hyperlink{job_8h_a0654ba7330ec47c1e636afe60657651b}{job\-\_\-is\-\_\-completed()}). If a job is completed and is not a foreground job, it notifies the user (by calling \hyperlink{job_8h_ae7a22fe41ac695db73564a23ce25cf6a}{format\-\_\-job\-\_\-info()}), and then removes the job from the active job list by calling \hyperlink{job_8h_a8c729ad459ad99d7a0e3c7a549d98383}{destroy\-\_\-job()}. If a job is stopped, and its changed status has not yet been reported, the function reports its status by calling format\-\_\-job\-\_\-status(), and then set its \-\_\-job\-::notified field to {\itshape 1}.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+\begin{DoxyReturn}{Returns}
+Returns void.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{job_8h_ad8e58b77db46018eeb20c68855538f35}{update\-\_\-status()}, \hyperlink{job_8c_a4ca397eaae80b0004f61dad81729c06d}{job\-\_\-list\-\_\-head}, \hyperlink{job_8h_a0654ba7330ec47c1e636afe60657651b}{job\-\_\-is\-\_\-completed()}, \hyperlink{job_8h_a4b49892bffa5095eb5a0fb7d86659456}{job\-\_\-is\-\_\-stopped()}, \hyperlink{job_8h_ae7a22fe41ac695db73564a23ce25cf6a}{format\-\_\-job\-\_\-info()}, and \-\_\-job\-::notified. 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{job_8c_a75430387f345a954b011547bf14a56ce_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_a328634c49391a29ef1d4e86d6bf0ea7e}{\index{job.\-c@{job.\-c}!execute\-\_\-job@{execute\-\_\-job}}
+\index{execute\-\_\-job@{execute\-\_\-job}!job.c@{job.\-c}}
+\subsubsection[{execute\-\_\-job}]{\setlength{\rightskip}{0pt plus 5cm}int execute\-\_\-job (
+\begin{DoxyParamCaption}
+\item[{{\bf Job} $\ast$}]{j}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a328634c49391a29ef1d4e86d6bf0ea7e}
+
+\begin{DoxyParams}{Parameters}
+{\em Executes} & a job.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyParagraph}{Description}
+This function is used to execute a job (\hyperlink{struct__job}{\-\_\-job}). It does the following \-: \begin{DoxyItemize}
+\item Performs I/\-O redirections for the job, if nessasary. \item Sets up pipes, if nessasary. \item For each process (\hyperlink{struct__process}{\-\_\-process}) in the job, the function checks if it refers to a shell builtin via \hyperlink{job_8h_a028aee0dd87474ee61f6c654efe653a2}{is\-\_\-builtin()}. If the process refers to a builtin, the builtin is launched. Otherwise, the function forks a child, and the child then calls \hyperlink{job_8h_acaa6f75b768f52660498b9fab3898e15}{execute\-\_\-process()} to {\itshape exec} a new program. \item Cleans up after pipes. \item After all processes in the job have been launched or executed, the function adds the job to the active job list via \hyperlink{job_8h_aff64d308dd49d9da9f2d6f993346f7ad}{add\-\_\-job\-\_\-to\-\_\-list()}. In additiion, if \hyperlink{job_8c_af7730a56d05055a70f3c18ee938209f8}{Ash\-\_\-is\-\_\-interactive} is non-\/zero, it calls \hyperlink{job_8h_aead235b523c076d6346ba285fa98f6d1}{wait\-\_\-for\-\_\-job()} to wait for the job. If \hyperlink{job_8c_af7730a56d05055a70f3c18ee938209f8}{Ash\-\_\-is\-\_\-interactive} is {\itshape 0} and the job's foreground field (\-\_\-job\-::foreground) is non-\/zero, the function calls \hyperlink{job_8h_ab3b7803e9a87944a86267abc40fe6c39}{put\-\_\-job\-\_\-in\-\_\-foreground()} to put the job in the foreground. Otherwise, it calls \hyperlink{job_8h_a095ab07b063dbbc25fd2729125fb530a}{put\-\_\-job\-\_\-in\-\_\-background()} to put the job in the background.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em j} & The job to execute.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape 0} on success, or {\itshape -\/1} on failure. Possible reasons for failure are as follows\-: \begin{DoxyItemize}
+\item Performing I/\-O redirection for the job failed. \item Setting up pipes failed. \item A shell builtin failed. \item Forking a child failed. \item Cleaning up after pipes (i.\-e., closing file descriptors) failed.\end{DoxyItemize}
+when any of the events above occurs, the function returns immidiately, and the job is never added to the active job list.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+{\itshape job, \hyperlink{struct__process}{\-\_\-process}, \-\_\-job\-::in\-\_\-file, \-\_\-job\-::out\-\_\-file, \-\_\-job\-::err\-\_\-file, \-\_\-job\-::stdin}, {\itshape job\-::stdout}, {\itshape job\-::stderr}, {\itshape open()}, \-\_\-job\-::num\-\_\-processes, \-\_\-job\-::processes, {\itshape pipe()}, \hyperlink{job_8h_a028aee0dd87474ee61f6c654efe653a2}{is\-\_\-builtin()}, \hyperlink{job_8c_a2c5551422426f406568d84844b40acb9}{builtins}, {\itshape fork()}, \hyperlink{job_8h_acaa6f75b768f52660498b9fab3898e15}{execute\-\_\-process()}, \hyperlink{err_8c_a07dfb9fd24fe41a9f703bd92af2cf646}{err\-\_\-msg()}, \hyperlink{job_8c_af7730a56d05055a70f3c18ee938209f8}{Ash\-\_\-is\-\_\-interactive}, {\itshape setpgid()}, {\itshape close()}, \hyperlink{job_8h_aff64d308dd49d9da9f2d6f993346f7ad}{add\-\_\-job\-\_\-to\-\_\-list()}, \hyperlink{job_8h_aead235b523c076d6346ba285fa98f6d1}{wait\-\_\-for\-\_\-job()}, \-\_\-job\-::foreground, \hyperlink{job_8h_ab3b7803e9a87944a86267abc40fe6c39}{put\-\_\-job\-\_\-in\-\_\-foreground()}, \hyperlink{job_8h_a095ab07b063dbbc25fd2729125fb530a}{put\-\_\-job\-\_\-in\-\_\-background()}, and \hyperlink{job_8h_ae7a22fe41ac695db73564a23ce25cf6a}{format\-\_\-job\-\_\-info()}.
+\end{DoxySeeAlso}
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000001}{Todo}]Find a way for a forked child to inform the function if it calling {\itshape exec()} fails.\end{DoxyRefDesc}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{job_8c_a328634c49391a29ef1d4e86d6bf0ea7e_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_acaa6f75b768f52660498b9fab3898e15}{\index{job.\-c@{job.\-c}!execute\-\_\-process@{execute\-\_\-process}}
+\index{execute\-\_\-process@{execute\-\_\-process}!job.c@{job.\-c}}
+\subsubsection[{execute\-\_\-process}]{\setlength{\rightskip}{0pt plus 5cm}void execute\-\_\-process (
+\begin{DoxyParamCaption}
+\item[{{\bf Process} $\ast$}]{p, }
+\item[{pid\-\_\-t}]{pgid, }
+\item[{int}]{in\-\_\-file, }
+\item[{int}]{out\-\_\-file, }
+\item[{int}]{err\-\_\-file, }
+\item[{int}]{foreground}
+\end{DoxyParamCaption}
+)}}\label{job_8c_acaa6f75b768f52660498b9fab3898e15}
+
+
+Executes a process. 
+
+\begin{DoxyParagraph}{Description }
+This function is used to execute a process (\hyperlink{struct__process}{\-\_\-process}). It does the following\-: \begin{DoxyItemize}
+\item If the shell is running interactively (i.\-e. \hyperlink{job_8c_af7730a56d05055a70f3c18ee938209f8}{Ash\-\_\-is\-\_\-interactive} is non-\/zero), then this function puts the process in the same process group of the job (\hyperlink{struct__job}{\-\_\-job}, \-\_\-job\-::pgid) to which it belongs. If the process is the first in the job, then it becomes the group leader of the job. \item If the shell is running interactively, and {\itshape foreground} is non-\/zero, then this function makes the group to which the process belong the foreground process group for the session and the controlling terminal (\hyperlink{job_8c_a079811c5e88059665d23821b4a38802a}{Ash\-\_\-terminal}). \item When the shell initializes itself via \hyperlink{job_8h_a3a5b33cdd8fb591704c9adfcf908a273}{init\-\_\-shell()} , it sets the disposition of all job control stop signals to S\-I\-G\-\_\-\-I\-G\-N (i.\-e., it ignores those signals). Consequently, each child it creates inherits those signal dispostions. If the shell is running interactively, then this function resets the disposition of those signals to S\-I\-G\-\_\-\-D\-F\-L (i.\-e. default) . \item Performs I\-O redirection, if nessasary. \item execs the process.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em p} & The process to be executed.\\
+\hline
+{\em pgid} & If this parameter is {\itshape 0} , then this process becomes the group leader of the job to which it belongs. This happens when the process is the first one in the job.\\
+\hline
+{\em in\-\_\-file} & The file descriptor of the file to which standard input for this process should point. If it is not equal to S\-T\-D\-I\-N\-\_\-\-F\-I\-L\-E\-N\-O, then standard input for this process is redirected to the file reffered to by this file descriptor.\\
+\hline
+{\em out\-\_\-file} & The file descriptor of the file to which standard output for this process should point. If it is not equal to S\-T\-D\-O\-U\-T\-\_\-\-F\-I\-L\-E\-N\-O, then standard output for this process is redirected to the file reffered to by this file descriptor.\\
+\hline
+{\em err\-\_\-file} & The file descriptor of the file to which standard error for this process should point. If it is not equal to S\-T\-D\-\_\-\-F\-I\-L\-E\-N\-O, then standard error for this process is redirected to the file reffered to by this file descriptor.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This function is prototyped to return {\itshape void} , but never returns . If execution of the process (i.\-e., calling {\itshape exec()}) fails, then the process terminates with \hyperlink{err_8c_ab24204e73fd5cdd4d62dc30f4794da23}{err\-\_\-exit()}.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+{\itshape process, \hyperlink{struct__job}{\-\_\-job}, \-::\-\_\-job\-::foreground, \hyperlink{job_8c_af7730a56d05055a70f3c18ee938209f8}{Ash\-\_\-is\-\_\-interactive}, \hyperlink{job_8c_a079811c5e88059665d23821b4a38802a}{Ash\-\_\-terminal}, \-\_\-job\-::in\-\_\-file, \-\_\-job\-::out\-\_\-file, \-\_\-job\-::err\-\_\-file, \-\_\-job\-::stdin}, {\itshape job\-::stdout}, {\itshape job\-::stderr}, getpid(), setpgid(), tcsetpgrp(), signal(), S\-T\-D\-I\-N\-\_\-\-F\-I\-L\-E\-N\-O, S\-T\-D\-O\-U\-T\-\_\-\-F\-I\-L\-E\-N\-O, S\-T\-D\-E\-R\-R\-\_\-\-F\-I\-L\-E\-N\-O, dup2(), execvp(), \hyperlink{err_8c_ab24204e73fd5cdd4d62dc30f4794da23}{err\-\_\-exit()}, and \hyperlink{job_8h_a328634c49391a29ef1d4e86d6bf0ea7e}{execute\-\_\-job()}. 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{job_8c_acaa6f75b768f52660498b9fab3898e15_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=278pt]{job_8c_acaa6f75b768f52660498b9fab3898e15_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_abbd710ae6b1b777643ee31ccac51c985}{\index{job.\-c@{job.\-c}!find\-\_\-job@{find\-\_\-job}}
+\index{find\-\_\-job@{find\-\_\-job}!job.c@{job.\-c}}
+\subsubsection[{find\-\_\-job}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Job}$\ast$ find\-\_\-job (
+\begin{DoxyParamCaption}
+\item[{pid\-\_\-t}]{pgid}
+\end{DoxyParamCaption}
+)}}\label{job_8c_abbd710ae6b1b777643ee31ccac51c985}
+
+
+Finds a job with a particular P\-G\-I\-D. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to find a job (\hyperlink{struct__job}{\-\_\-job}) with a particular process group I\-D (\-\_\-job\-::pgid). It does the following\-: \begin{DoxyItemize}
+\item Traverses the active job list (\hyperlink{job_8c_a4ca397eaae80b0004f61dad81729c06d}{job\-\_\-list\-\_\-head}) and checks if there is a job on the list whose process group I\-D is {\itshape pgid} . If a job is found, the function returns a pointer to it.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em pgid} & The process group I\-D of the job to find.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a pointer to a job on success (i.\-e., a job is found), or N\-U\-L\-L on failure (i.\-e., no job with process group I\-D {\itshape pgid} was found on the job list).
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__job}{\-\_\-job}, \hyperlink{job_8c_a4ca397eaae80b0004f61dad81729c06d}{job\-\_\-list\-\_\-head}, and \-\_\-job\-::pgid. 
+\end{DoxySeeAlso}
+\hypertarget{job_8c_a870c6d70cfb180e88d217a0b3501aedb}{\index{job.\-c@{job.\-c}!find\-\_\-job\-\_\-id@{find\-\_\-job\-\_\-id}}
+\index{find\-\_\-job\-\_\-id@{find\-\_\-job\-\_\-id}!job.c@{job.\-c}}
+\subsubsection[{find\-\_\-job\-\_\-id}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Job}$\ast$ find\-\_\-job\-\_\-id (
+\begin{DoxyParamCaption}
+\item[{int}]{id}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a870c6d70cfb180e88d217a0b3501aedb}
+
+
+Finds a job with a particular I\-D. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to find a job (\hyperlink{struct__job}{\-\_\-job}) with a particular job I\-D (\-\_\-job\-::id). It does the following\-: \begin{DoxyItemize}
+\item Traverses the active job list (\hyperlink{job_8c_a4ca397eaae80b0004f61dad81729c06d}{job\-\_\-list\-\_\-head}) and checks if there is a job on the list whose I\-D is {\itshape id} . If a job is found, the function returns a pointer to it.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em id} & The I\-D of the job to find.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a pointer to a job on success (i.\-e., a job is found), or N\-U\-L\-L on failure (i.\-e., no job with I\-D {\itshape id} was found on the job list).
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__job}{\-\_\-job}, \-\_\-job\-::id, \hyperlink{job_8c_a4ca397eaae80b0004f61dad81729c06d}{job\-\_\-list\-\_\-head}, \hyperlink{job_8h_a792fcc9814d020b087911591c5fce10b}{Ash\-\_\-fg()}, \hyperlink{job_8h_a723e6648fca47a139cdff5cf4f1bc4bb}{Ash\-\_\-kill()}, and \hyperlink{job_8h_a9bc6f26d0ab14359707a0f367f1a6522}{Ash\-\_\-bg()}. 
+\end{DoxySeeAlso}
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=232pt]{job_8c_a870c6d70cfb180e88d217a0b3501aedb_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_ae7a22fe41ac695db73564a23ce25cf6a}{\index{job.\-c@{job.\-c}!format\-\_\-job\-\_\-info@{format\-\_\-job\-\_\-info}}
+\index{format\-\_\-job\-\_\-info@{format\-\_\-job\-\_\-info}!job.c@{job.\-c}}
+\subsubsection[{format\-\_\-job\-\_\-info}]{\setlength{\rightskip}{0pt plus 5cm}void format\-\_\-job\-\_\-info (
+\begin{DoxyParamCaption}
+\item[{{\bf Job} $\ast$}]{j, }
+\item[{const char $\ast$}]{status}
+\end{DoxyParamCaption}
+)}}\label{job_8c_ae7a22fe41ac695db73564a23ce25cf6a}
+
+
+Formats and prints info for a job. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to format and print information for a job (\hyperlink{struct__job}{\-\_\-job}). It does the following \-: \begin{DoxyItemize}
+\item Formats the information. \item Prints the information to standard output.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em j} & The job whose information is to be printed.\\
+\hline
+{\em status} & Status information for the job. This string is included in the formated information.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape void}.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__job}{\-\_\-job}, \hyperlink{job_8h_a75430387f345a954b011547bf14a56ce}{do\-\_\-job\-\_\-notification()}, and \hyperlink{job_8h_a328634c49391a29ef1d4e86d6bf0ea7e}{execute\-\_\-job()}. 
+\end{DoxySeeAlso}
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=298pt]{job_8c_ae7a22fe41ac695db73564a23ce25cf6a_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_a3a5b33cdd8fb591704c9adfcf908a273}{\index{job.\-c@{job.\-c}!init\-\_\-shell@{init\-\_\-shell}}
+\index{init\-\_\-shell@{init\-\_\-shell}!job.c@{job.\-c}}
+\subsubsection[{init\-\_\-shell}]{\setlength{\rightskip}{0pt plus 5cm}void init\-\_\-shell (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a3a5b33cdd8fb591704c9adfcf908a273}
+
+
+Initializes the shell. 
+
+\begin{DoxyParagraph}{Description}
+The shell calls this function to initialize itself. The function does the following\-: \begin{DoxyItemize}
+\item Assigns S\-T\-D\-I\-N\-\_\-\-F\-I\-L\-E\-N\-O to the file descriptor for the shell's terminal (\hyperlink{job_8c_a079811c5e88059665d23821b4a38802a}{Ash\-\_\-terminal}). \item Checks if \hyperlink{job_8c_a079811c5e88059665d23821b4a38802a}{Ash\-\_\-terminal} refers to a terminal devide. If it does, then \hyperlink{job_8c_af7730a56d05055a70f3c18ee938209f8}{Ash\-\_\-is\-\_\-interactive} is set to a non-\/zero value. Otherwise it is set to {\itshape 0} . \item If \hyperlink{job_8c_af7730a56d05055a70f3c18ee938209f8}{Ash\-\_\-is\-\_\-interactive} is non-\/zero, then the function waits until the shell is in the foreground process group for the session and the controlling terminal (\hyperlink{job_8c_a079811c5e88059665d23821b4a38802a}{Ash\-\_\-terminal}). \item Once in the foreground process group of the session, it ignores all job control stop signals by setting thier disposition to S\-I\-G\-\_\-\-I\-G\-N. \item Puts the shell in its own process group. \item Makes the shell's process group the foreground process group for the session and controlling terminal. \item Saves the default terminal modes for the shell in \hyperlink{job_8c_a01959f896d957ce001a3a87fc034a5be}{Ash\-\_\-tmodes}\end{DoxyItemize}
+
+\end{DoxyParagraph}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape void} .
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{job_8c_a079811c5e88059665d23821b4a38802a}{Ash\-\_\-terminal}, \hyperlink{job_8c_a01959f896d957ce001a3a87fc034a5be}{Ash\-\_\-tmodes}, \hyperlink{job_8c_af7730a56d05055a70f3c18ee938209f8}{Ash\-\_\-is\-\_\-interactive}, \hyperlink{job_8c_a9dfc260b67728b41e7120b47d7758053}{Ash\-\_\-pgid}, S\-T\-D\-I\-N\-\_\-\-F\-I\-L\-E\-N\-O, {\itshape isatty()}, {\itshape tcgetpgrp}, {\itshape kill()}, {\itshape signal()}, getpid(), setpgid(), \hyperlink{err_8c_a07dfb9fd24fe41a9f703bd92af2cf646}{err\-\_\-msg()}, and {\itshape tcgetattr()}. 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=224pt]{job_8c_a3a5b33cdd8fb591704c9adfcf908a273_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=210pt]{job_8c_a3a5b33cdd8fb591704c9adfcf908a273_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_ad5ee9895c47b901c083c541e8f021abe}{\index{job.\-c@{job.\-c}!insert\-\_\-arg\-\_\-in\-\_\-process@{insert\-\_\-arg\-\_\-in\-\_\-process}}
+\index{insert\-\_\-arg\-\_\-in\-\_\-process@{insert\-\_\-arg\-\_\-in\-\_\-process}!job.c@{job.\-c}}
+\subsubsection[{insert\-\_\-arg\-\_\-in\-\_\-process}]{\setlength{\rightskip}{0pt plus 5cm}int insert\-\_\-arg\-\_\-in\-\_\-process (
+\begin{DoxyParamCaption}
+\item[{{\bf Process} $\ast$}]{p, }
+\item[{const char $\ast$}]{arg}
+\end{DoxyParamCaption}
+)}}\label{job_8c_ad5ee9895c47b901c083c541e8f021abe}
+
+
+Inserts an argument in the argument vector of a process. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to insert an argument in the argument vector (\-\_\-process\-::argv) of a process (\hyperlink{struct__process}{\-\_\-process}).
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em p} & The process in which to perform the insertion.\\
+\hline
+{\em arg} & The argument to insert in the argument vector of the process.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+If the current number of arguments (\-\_\-process\-::argc) in the process is less than \#\-M\-A\-X\-\_\-\-A\-R\-G\-S, the function inserts the argument in the argument vector of the process, and returns {\itshape 0}. Otherwise, it prints an error message, and returns {\itshape -\/1}.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__process}{\-\_\-process}, \-\_\-process\-::argc, \-\_\-process\-::argv, and \#\-M\-A\-X\-\_\-\-A\-R\-G\-S. 
+\end{DoxySeeAlso}
+\hypertarget{job_8c_a78dbe5452200ef69f412085af895096b}{\index{job.\-c@{job.\-c}!insert\-\_\-process\-\_\-in\-\_\-job@{insert\-\_\-process\-\_\-in\-\_\-job}}
+\index{insert\-\_\-process\-\_\-in\-\_\-job@{insert\-\_\-process\-\_\-in\-\_\-job}!job.c@{job.\-c}}
+\subsubsection[{insert\-\_\-process\-\_\-in\-\_\-job}]{\setlength{\rightskip}{0pt plus 5cm}int insert\-\_\-process\-\_\-in\-\_\-job (
+\begin{DoxyParamCaption}
+\item[{{\bf Job} $\ast$}]{j, }
+\item[{const {\bf Process} $\ast$}]{p}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a78dbe5452200ef69f412085af895096b}
+
+
+Inserts a process instance in a job instance. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to insert a process (\hyperlink{struct__process}{\-\_\-process}) in a job (\hyperlink{struct__job}{\-\_\-job}) . It does the following\-: \begin{DoxyItemize}
+\item Checks if the current number of processes (\-\_\-job\-::num\-\_\-processes) in the job's process list (\-\_\-job\-::processes) is less than the maximum number of processes allowed per job (\#\-M\-A\-X\-\_\-\-P\-R\-O\-C\-E\-S\-S\-E\-S). If that's the case, its calls \hyperlink{job_8h_a9c2d0895268bd3229fc231b00029eb7b}{process\-\_\-dup()} to make a dupicate of the process, inserts the duplicate in the job's process list, increment the current number of processes in the job, and returns {\itshape 0} . Otherwise, it prints an error message, and returns {\itshape -\/1} .\end{DoxyItemize}
+
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em j} & The job in which the process is to be inserted.\\
+\hline
+{\em p} & The process to insert in the job's process list (\-\_\-job\-::processes).\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+If the current number of processes in the job is less than the maximum number processes allowed per job, the function returns {\itshape 0} to indicate success. Otherwise, it returns {\itshape -\/1} to indicate failure.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__job}{\-\_\-job}, \hyperlink{struct__process}{\-\_\-process}, \-\_\-job\-::num\-\_\-processes, \#\-M\-A\-X\-\_\-\-P\-R\-O\-C\-E\-S\-S\-E\-S, and \hyperlink{job_8h_a9c2d0895268bd3229fc231b00029eb7b}{process\-\_\-dup()}. 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{job_8c_a78dbe5452200ef69f412085af895096b_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_a028aee0dd87474ee61f6c654efe653a2}{\index{job.\-c@{job.\-c}!is\-\_\-builtin@{is\-\_\-builtin}}
+\index{is\-\_\-builtin@{is\-\_\-builtin}!job.c@{job.\-c}}
+\subsubsection[{is\-\_\-builtin}]{\setlength{\rightskip}{0pt plus 5cm}int is\-\_\-builtin (
+\begin{DoxyParamCaption}
+\item[{{\bf Process} $\ast$}]{p}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a028aee0dd87474ee61f6c654efe653a2}
+
+
+\mbox{[}B\-U\-I\-L\-T\-I\-N\mbox{]}\-: Checks if a command refers to a shell builtin. 
+
+\begin{DoxyParagraph}{Description}
+This shell builtin is used to check if a the command assaociated with process (\hyperlink{struct__process}{\-\_\-process}) {\itshape p} refers to a shell builtin.
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em p} & This is a process. Only its argument vector (\-\_\-process\-::argv) and argument count (\-\_\-process\-::argc) fields are of interest to this builtin.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns -\/1 if the command associated with process {\itshape p} does not refer to a shell builtin, or a non-\/negative value referring to an index in the \hyperlink{job_8c_a2c5551422426f406568d84844b40acb9}{builtins} array. This index is the location of the record for a shell builtin in the array.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__process}{\-\_\-process}, \-\_\-process\-::argv, \-\_\-process\-::argc, \hyperlink{job_8c_a2c5551422426f406568d84844b40acb9}{builtins} \hyperlink{job_8h_a2c2cfa6591ee05cc5bf0c39f38b9e2ea}{Ash\-\_\-cd()}, \hyperlink{job_8h_a9fa5abe15df71a688905dc7b29a1389f}{Ash\-\_\-exit()}, \hyperlink{job_8h_a8950ee4bf84f8322e0b294d0c448a9e7}{Ash\-\_\-jobs()}, \hyperlink{job_8h_a792fcc9814d020b087911591c5fce10b}{Ash\-\_\-fg()}, \hyperlink{job_8h_a9bc6f26d0ab14359707a0f367f1a6522}{Ash\-\_\-bg()}, \hyperlink{job_8h_a4242d3cdbc0468d774243dc67b330296}{Ash\-\_\-help()}, \hyperlink{job_8h_a723e6648fca47a139cdff5cf4f1bc4bb}{Ash\-\_\-kill()}, and \hyperlink{job_8h_a07e5c62e1d5e55012cf188dd32b6cf27}{Ash\-\_\-killall()}. 
+\end{DoxySeeAlso}
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=242pt]{job_8c_a028aee0dd87474ee61f6c654efe653a2_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_a0654ba7330ec47c1e636afe60657651b}{\index{job.\-c@{job.\-c}!job\-\_\-is\-\_\-completed@{job\-\_\-is\-\_\-completed}}
+\index{job\-\_\-is\-\_\-completed@{job\-\_\-is\-\_\-completed}!job.c@{job.\-c}}
+\subsubsection[{job\-\_\-is\-\_\-completed}]{\setlength{\rightskip}{0pt plus 5cm}int job\-\_\-is\-\_\-completed (
+\begin{DoxyParamCaption}
+\item[{{\bf Job} $\ast$}]{j}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a0654ba7330ec47c1e636afe60657651b}
+
+
+Determines if a job is completed. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to determine if a job (\hyperlink{struct__job}{\-\_\-job}) has completed. A job has completed if all of its processes (\hyperlink{struct__process}{\-\_\-process}) have completed.
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em j} & The job whose status is to be checked.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape 1} (i.\-e., true) if the job has completed, or {\itshape 0} (i.\-e., false) if the job has not completed.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\-\_\-process\-::completed, \-\_\-process\-::stopped, \hyperlink{struct__job}{\-\_\-job}, \hyperlink{struct__process}{\-\_\-process}, \hyperlink{job_8h_a4b49892bffa5095eb5a0fb7d86659456}{job\-\_\-is\-\_\-stopped()}, \hyperlink{job_8h_a8950ee4bf84f8322e0b294d0c448a9e7}{Ash\-\_\-jobs()}, \hyperlink{job_8h_aead235b523c076d6346ba285fa98f6d1}{wait\-\_\-for\-\_\-job()}, and \hyperlink{job_8h_a75430387f345a954b011547bf14a56ce}{do\-\_\-job\-\_\-notification()}. 
+\end{DoxySeeAlso}
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{job_8c_a0654ba7330ec47c1e636afe60657651b_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_a4b49892bffa5095eb5a0fb7d86659456}{\index{job.\-c@{job.\-c}!job\-\_\-is\-\_\-stopped@{job\-\_\-is\-\_\-stopped}}
+\index{job\-\_\-is\-\_\-stopped@{job\-\_\-is\-\_\-stopped}!job.c@{job.\-c}}
+\subsubsection[{job\-\_\-is\-\_\-stopped}]{\setlength{\rightskip}{0pt plus 5cm}int job\-\_\-is\-\_\-stopped (
+\begin{DoxyParamCaption}
+\item[{{\bf Job} $\ast$}]{j}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a4b49892bffa5095eb5a0fb7d86659456}
+
+
+Determines if a job is stopped. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to determine if a job (\hyperlink{struct__job}{\-\_\-job}) is stopped. A job is stopped if all of its processes (\hyperlink{struct__process}{\-\_\-process}) have either stopped or completed.
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em j} & The job whose status is to be checked.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape 1} (i.\-e., true) if the job is stopped, or {\itshape 0} (i.\-e., false) if the job is not stopped.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\-\_\-process\-::stopped, \-\_\-process\-::completed, \hyperlink{struct__job}{\-\_\-job}, \hyperlink{struct__process}{\-\_\-process}, \hyperlink{job_8h_a8950ee4bf84f8322e0b294d0c448a9e7}{Ash\-\_\-jobs()}, \hyperlink{job_8h_aead235b523c076d6346ba285fa98f6d1}{wait\-\_\-for\-\_\-job()}, and \hyperlink{job_8h_a75430387f345a954b011547bf14a56ce}{do\-\_\-job\-\_\-notification()}. 
+\end{DoxySeeAlso}
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{job_8c_a4b49892bffa5095eb5a0fb7d86659456_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_a690fc87028fe2334113ee8d92f8c8f24}{\index{job.\-c@{job.\-c}!mark\-\_\-job\-\_\-as\-\_\-running@{mark\-\_\-job\-\_\-as\-\_\-running}}
+\index{mark\-\_\-job\-\_\-as\-\_\-running@{mark\-\_\-job\-\_\-as\-\_\-running}!job.c@{job.\-c}}
+\subsubsection[{mark\-\_\-job\-\_\-as\-\_\-running}]{\setlength{\rightskip}{0pt plus 5cm}void mark\-\_\-job\-\_\-as\-\_\-running (
+\begin{DoxyParamCaption}
+\item[{{\bf Job} $\ast$}]{j}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a690fc87028fe2334113ee8d92f8c8f24}
+
+
+Updates a job's state to {\itshape Running} . 
+
+\begin{DoxyParagraph}{Description}
+This function is used to update a job's state to {\itshape Running} (\-\_\-job\-\_\-state\-::\-R) . It does the following\-: \begin{DoxyItemize}
+\item Sets the \-\_\-process\-::stopped field of each process in the job's process list (\-\_\-job\-::processes) to {\itshape 0}. \item Sets the job's \-\_\-job\-::notified field to {\itshape 0}.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em j} & The job who's state is to be changed.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape void} .
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__job}{\-\_\-job}, \-\_\-job\-::num\-\_\-processes, \hyperlink{struct__process}{\-\_\-process}, \-\_\-process\-::stopped, \-\_\-job\-::notified, \hyperlink{job_8h_abd1ac77dca84a11371146d61dbe2c35d}{\-\_\-job\-\_\-state}, \-\_\-job\-\_\-state\-::\-R, \hyperlink{job_8c_a1a6160b9abc239f381d9ba30d00b4e0d}{job\-\_\-states}, and \hyperlink{job_8h_ab69ad21398604a048a5a1b4ef7af1320}{continue\-\_\-job()}. 
+\end{DoxySeeAlso}
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{job_8c_a690fc87028fe2334113ee8d92f8c8f24_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_a5419d481fca1c4c7bb7c89e38b964fa9}{\index{job.\-c@{job.\-c}!mark\-\_\-process\-\_\-status@{mark\-\_\-process\-\_\-status}}
+\index{mark\-\_\-process\-\_\-status@{mark\-\_\-process\-\_\-status}!job.c@{job.\-c}}
+\subsubsection[{mark\-\_\-process\-\_\-status}]{\setlength{\rightskip}{0pt plus 5cm}int mark\-\_\-process\-\_\-status (
+\begin{DoxyParamCaption}
+\item[{pid\-\_\-t}]{pid, }
+\item[{int}]{status}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a5419d481fca1c4c7bb7c89e38b964fa9}
+
+
+Marks the status of a stopped or terminated child process. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to mark the status of a stopped or terminated child process (\hyperlink{struct__process}{\-\_\-process}). It does the following\-: \begin{DoxyItemize}
+\item Traverses the list of active jobs (\hyperlink{job_8c_a4ca397eaae80b0004f61dad81729c06d}{job\-\_\-list\-\_\-head}), and for each job, the function checks its list of processes (\#\-\_\-job\-::processes) to see if {\itshape pid} matches that of one of its processes. If a match if found, it updates the \-\_\-process\-::status field of the correspoinding process.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em pid} & The process I\-D of the stopped or terminated child process, as returned by {\itshape waitpid()}.\\
+\hline
+{\em status} & The status of the stopped or terminated child process, as returned by {\itshape waitpid()}.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Return 0 on success (i.\-e., the function successfully marked the status of a process), or -\/1 on error. The reasons for returning -\/1 are as follows\-: \begin{DoxyItemize}
+\item {\itshape pid} did not refer to any process in the process list of any job on the active job list. \item No child process of the shell reported a stopped or termination status (i.\-e., {\itshape pid} is {\itshape 0} and {\itshape errno} is E\-C\-H\-I\-L\-D). \item Some other error.\end{DoxyItemize}
+
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__job}{\-\_\-job}, \hyperlink{struct__process}{\-\_\-process}, \-\_\-process\-::pid, \-\_\-process\-::completed, \-\_\-process\-::stopped, {\itshape waitpid()}, \-\_\-job\-::processes, \hyperlink{job_8c_a4ca397eaae80b0004f61dad81729c06d}{job\-\_\-list\-\_\-head}, \-\_\-process\-::status, and \hyperlink{job_8h_ad8e58b77db46018eeb20c68855538f35}{update\-\_\-status()}. 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=278pt]{job_8c_a5419d481fca1c4c7bb7c89e38b964fa9_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{job_8c_a5419d481fca1c4c7bb7c89e38b964fa9_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_a89462129d286d10ccab2bd69e70ac336}{\index{job.\-c@{job.\-c}!print\-\_\-job@{print\-\_\-job}}
+\index{print\-\_\-job@{print\-\_\-job}!job.c@{job.\-c}}
+\subsubsection[{print\-\_\-job}]{\setlength{\rightskip}{0pt plus 5cm}void print\-\_\-job (
+\begin{DoxyParamCaption}
+\item[{const {\bf Job} $\ast$}]{j}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a89462129d286d10ccab2bd69e70ac336}
+
+
+Prints a job. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to print a job (\hyperlink{struct__job}{\-\_\-job}). It does the following\-: \begin{DoxyItemize}
+\item Prints the job's I\-D (\-\_\-job\-::id). \item Calls \hyperlink{job_8h_a8226a1a322fce279b7510ee28c09f40e}{print\-\_\-process()} to print all the processes (\-\_\-job\-::num\-\_\-processes) in the job's process list (\-\_\-job\-::processes).\end{DoxyItemize}
+
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em j} & The job to print.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape void} .
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__job}{\-\_\-job}, \-\_\-job\-::id, \-\_\-job\-::num\-\_\-processes, \hyperlink{job_8h_a8226a1a322fce279b7510ee28c09f40e}{print\-\_\-process()}, \-\_\-job\-::processes, and {\itshape printf()}. 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{job_8c_a89462129d286d10ccab2bd69e70ac336_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_ae54ca57ee056e74d8ae32967453e4482}{\index{job.\-c@{job.\-c}!print\-\_\-job\-\_\-command@{print\-\_\-job\-\_\-command}}
+\index{print\-\_\-job\-\_\-command@{print\-\_\-job\-\_\-command}!job.c@{job.\-c}}
+\subsubsection[{print\-\_\-job\-\_\-command}]{\setlength{\rightskip}{0pt plus 5cm}int print\-\_\-job\-\_\-command (
+\begin{DoxyParamCaption}
+\item[{{\bf Job} $\ast$}]{j, }
+\item[{int}]{dest\-\_\-fd}
+\end{DoxyParamCaption}
+)}}\label{job_8c_ae54ca57ee056e74d8ae32967453e4482}
+
+
+Prints the command associated with a job. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to print the command associated with a job (\hyperlink{struct__job}{\-\_\-job}).
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em j} & The job whose command is to be printed.\\
+\hline
+{\em dest\-\_\-fd} & A file descriptor to a file to which the command output is sent.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape void} .
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__job}{\-\_\-job}, \-\_\-job\-::num\-\_\-processes, \-\_\-job\-::processes, \-\_\-process\-::argc, \-\_\-process\-::argv, and \hyperlink{job_8h_a8950ee4bf84f8322e0b294d0c448a9e7}{Ash\-\_\-jobs()}. 
+\end{DoxySeeAlso}
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=276pt]{job_8c_ae54ca57ee056e74d8ae32967453e4482_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_a4ae3063920907216e6ba0bdc83ac5b15}{\index{job.\-c@{job.\-c}!print\-\_\-job\-\_\-list@{print\-\_\-job\-\_\-list}}
+\index{print\-\_\-job\-\_\-list@{print\-\_\-job\-\_\-list}!job.c@{job.\-c}}
+\subsubsection[{print\-\_\-job\-\_\-list}]{\setlength{\rightskip}{0pt plus 5cm}void print\-\_\-job\-\_\-list (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a4ae3063920907216e6ba0bdc83ac5b15}
+
+
+Prints the I\-D of jobs in the active job list. 
+
+\begin{DoxyParagraph}{Description}
+This function prints the I\-D (\-\_\-job\-::id) of the jobs (\hyperlink{struct__job}{\-\_\-job}) in the active job list (\hyperlink{job_8c_a4ca397eaae80b0004f61dad81729c06d}{job\-\_\-list\-\_\-head}).
+\end{DoxyParagraph}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape void} .
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__job}{\-\_\-job}, \hyperlink{job_8c_a4ca397eaae80b0004f61dad81729c06d}{job\-\_\-list\-\_\-head}, and \-\_\-job\-::id. 
+\end{DoxySeeAlso}
+\hypertarget{job_8c_a8226a1a322fce279b7510ee28c09f40e}{\index{job.\-c@{job.\-c}!print\-\_\-process@{print\-\_\-process}}
+\index{print\-\_\-process@{print\-\_\-process}!job.c@{job.\-c}}
+\subsubsection[{print\-\_\-process}]{\setlength{\rightskip}{0pt plus 5cm}void print\-\_\-process (
+\begin{DoxyParamCaption}
+\item[{const {\bf Process} $\ast$}]{p}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a8226a1a322fce279b7510ee28c09f40e}
+
+
+Prints the command of a process. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to print the command of a process (\hyperlink{struct__process}{\-\_\-process}).
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em p} & The process whose command is to be printed.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape void} .
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__process}{\-\_\-process}, \-\_\-process\-::argv, and \-\_\-process\-::argc. 
+\end{DoxySeeAlso}
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{job_8c_a8226a1a322fce279b7510ee28c09f40e_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_a9c2d0895268bd3229fc231b00029eb7b}{\index{job.\-c@{job.\-c}!process\-\_\-dup@{process\-\_\-dup}}
+\index{process\-\_\-dup@{process\-\_\-dup}!job.c@{job.\-c}}
+\subsubsection[{process\-\_\-dup}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Process}$\ast$ process\-\_\-dup (
+\begin{DoxyParamCaption}
+\item[{const {\bf Process} $\ast$}]{p}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a9c2d0895268bd3229fc231b00029eb7b}
+
+
+Duplicates an instance of a process. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to duplicate and instance of a process (\hyperlink{struct__process}{\-\_\-process}). It does the following \-: \begin{DoxyItemize}
+\item Call \hyperlink{job_8h_a1af7ca10dbe6b9358262cc18f04bf6f5}{create\-\_\-process()} to create an instance of a process. \item Transfers values from the process to be duplicated to the new process instance.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em p} & The process instance to be duplicated.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a pointer to the new duplicated process on success, or N\-U\-L\-L on error.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__process}{\-\_\-process}, \hyperlink{job_8h_a1af7ca10dbe6b9358262cc18f04bf6f5}{create\-\_\-process()}, \-\_\-process\-::argc, \hyperlink{job_8h_a78dbe5452200ef69f412085af895096b}{insert\-\_\-process\-\_\-in\-\_\-job()}, \-\_\-process\-::argc, and {\itshape strdup()}. 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{job_8c_a9c2d0895268bd3229fc231b00029eb7b_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=300pt]{job_8c_a9c2d0895268bd3229fc231b00029eb7b_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_a095ab07b063dbbc25fd2729125fb530a}{\index{job.\-c@{job.\-c}!put\-\_\-job\-\_\-in\-\_\-background@{put\-\_\-job\-\_\-in\-\_\-background}}
+\index{put\-\_\-job\-\_\-in\-\_\-background@{put\-\_\-job\-\_\-in\-\_\-background}!job.c@{job.\-c}}
+\subsubsection[{put\-\_\-job\-\_\-in\-\_\-background}]{\setlength{\rightskip}{0pt plus 5cm}void put\-\_\-job\-\_\-in\-\_\-background (
+\begin{DoxyParamCaption}
+\item[{{\bf Job} $\ast$}]{j, }
+\item[{int}]{cont}
+\end{DoxyParamCaption}
+)}}\label{job_8c_a095ab07b063dbbc25fd2729125fb530a}
+
+
+Puts a job in the background. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to put a job (\hyperlink{struct__job}{\-\_\-job}) in the background. It does the following\-: \begin{DoxyItemize}
+\item Sets the job's \-\_\-job\-::foreground field to {\itshape 0}. \item Sends the S\-I\-G\-C\-O\-N\-T signal to the all processes (\hyperlink{struct__process}{\-\_\-process}) in the job's process list (\-\_\-job\-::processes) if the value of {\itshape cont} is non-\/zero.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em j} & The job to be put in the background.\\
+\hline
+{\em cont} & Determines if the S\-I\-G\-C\-O\-N\-T signal is sent to the job. If this value is non-\/zero, then the S\-I\-G\-C\-O\-N\-T signal is sent to all processes in the job's process list.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape void} .
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__job}{\-\_\-job}, \-\_\-job\-::foreground, \-\_\-job\-::pgid, \hyperlink{job_8h_ab3b7803e9a87944a86267abc40fe6c39}{put\-\_\-job\-\_\-in\-\_\-foreground()}, \hyperlink{job_8h_ab69ad21398604a048a5a1b4ef7af1320}{continue\-\_\-job()}, \hyperlink{struct__process}{\-\_\-process}, \-\_\-job\-::processes, and \hyperlink{job_8h_a328634c49391a29ef1d4e86d6bf0ea7e}{execute\-\_\-job()}. 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=284pt]{job_8c_a095ab07b063dbbc25fd2729125fb530a_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{job_8c_a095ab07b063dbbc25fd2729125fb530a_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_ab3b7803e9a87944a86267abc40fe6c39}{\index{job.\-c@{job.\-c}!put\-\_\-job\-\_\-in\-\_\-foreground@{put\-\_\-job\-\_\-in\-\_\-foreground}}
+\index{put\-\_\-job\-\_\-in\-\_\-foreground@{put\-\_\-job\-\_\-in\-\_\-foreground}!job.c@{job.\-c}}
+\subsubsection[{put\-\_\-job\-\_\-in\-\_\-foreground}]{\setlength{\rightskip}{0pt plus 5cm}void put\-\_\-job\-\_\-in\-\_\-foreground (
+\begin{DoxyParamCaption}
+\item[{{\bf Job} $\ast$}]{j, }
+\item[{int}]{cont}
+\end{DoxyParamCaption}
+)}}\label{job_8c_ab3b7803e9a87944a86267abc40fe6c39}
+
+
+Puts a job in the foreground. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to put a job in the foreground. It does the following\-: \begin{DoxyItemize}
+\item Sets the job's \-\_\-job\-::foreground field to {\itshape 1}. \item Makes the job the foreground job for the session and the controlling terminal (\hyperlink{job_8c_a079811c5e88059665d23821b4a38802a}{Ash\-\_\-terminal}). \item If the {\itshape cont} parameter is non-\/zero, it restores the job's saved terminal modes (\-\_\-job\-::saved\-\_\-tmodes), and sends the job the S\-I\-G\-C\-O\-N\-T signal. \item wait for the job to stop or complete by calling \hyperlink{job_8h_aead235b523c076d6346ba285fa98f6d1}{wait\-\_\-for\-\_\-job()}. \item Puts the shell back in the foreground. \item Saves the current terminal mode in the job's \-\_\-job\-::saved\-\_\-tmodes field. \item Restores the shell's terminal modes(\hyperlink{job_8c_a01959f896d957ce001a3a87fc034a5be}{Ash\-\_\-tmodes}).\end{DoxyItemize}
+
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em j} & The job to put in the foreground.\\
+\hline
+{\em cont} & If the parameter if true, the function does the following\-: \begin{DoxyItemize}
+\item Restores the job's saved terminal modes (\-\_\-job\-::saved\-\_\-tmodes). \item Sends the job the S\-I\-G\-C\-O\-N\-T signal.\end{DoxyItemize}
+\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape void} .
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__job}{\-\_\-job}, \-\_\-job\-::foreground, \hyperlink{job_8c_a079811c5e88059665d23821b4a38802a}{Ash\-\_\-terminal}, \hyperlink{job_8c_a01959f896d957ce001a3a87fc034a5be}{Ash\-\_\-tmodes}, \-\_\-job\-::pgid, \-\_\-job\-::saved\-\_\-tmodes, \hyperlink{job_8h_aead235b523c076d6346ba285fa98f6d1}{wait\-\_\-for\-\_\-job()}, \hyperlink{job_8c_a9dfc260b67728b41e7120b47d7758053}{Ash\-\_\-pgid}, \hyperlink{job_8h_ab69ad21398604a048a5a1b4ef7af1320}{continue\-\_\-job()}, tcsetpgrp(), tcsetattr(), tcgetattr(), kill(), and \hyperlink{job_8h_a328634c49391a29ef1d4e86d6bf0ea7e}{execute\-\_\-job()}. 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{job_8c_ab3b7803e9a87944a86267abc40fe6c39_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{job_8c_ab3b7803e9a87944a86267abc40fe6c39_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_ad8e58b77db46018eeb20c68855538f35}{\index{job.\-c@{job.\-c}!update\-\_\-status@{update\-\_\-status}}
+\index{update\-\_\-status@{update\-\_\-status}!job.c@{job.\-c}}
+\subsubsection[{update\-\_\-status}]{\setlength{\rightskip}{0pt plus 5cm}void update\-\_\-status (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{job_8c_ad8e58b77db46018eeb20c68855538f35}
+
+
+Updates the status of stopped or completed child processes of the shell. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to update the status of stopped or completed child processes (\hyperlink{struct__process}{\-\_\-process}) of the shell. It does the following\-: \begin{DoxyItemize}
+\item Performs a non-\/blocking call to {\itshape waitpid()} in a loop to collect the status of stopped or completed children of the shell. \item Calls \hyperlink{job_8h_a5419d481fca1c4c7bb7c89e38b964fa9}{mark\-\_\-process\-\_\-status()} to mark the status of those children.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+\begin{DoxyReturn}{Returns}
+Returns void.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__process}{\-\_\-process}, \-\_\-process\-::pid, \-\_\-process\-::completed, \-\_\-process\-::stopped, {\itshape waitpid()}, \-\_\-process\-::status, \hyperlink{job_8h_a8950ee4bf84f8322e0b294d0c448a9e7}{Ash\-\_\-jobs()}, \hyperlink{job_8h_a75430387f345a954b011547bf14a56ce}{do\-\_\-job\-\_\-notification()}, and \hyperlink{job_8h_a5419d481fca1c4c7bb7c89e38b964fa9}{mark\-\_\-process\-\_\-status()}. 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{job_8c_ad8e58b77db46018eeb20c68855538f35_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=292pt]{job_8c_ad8e58b77db46018eeb20c68855538f35_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{job_8c_aead235b523c076d6346ba285fa98f6d1}{\index{job.\-c@{job.\-c}!wait\-\_\-for\-\_\-job@{wait\-\_\-for\-\_\-job}}
+\index{wait\-\_\-for\-\_\-job@{wait\-\_\-for\-\_\-job}!job.c@{job.\-c}}
+\subsubsection[{wait\-\_\-for\-\_\-job}]{\setlength{\rightskip}{0pt plus 5cm}void wait\-\_\-for\-\_\-job (
+\begin{DoxyParamCaption}
+\item[{{\bf Job} $\ast$}]{j}
+\end{DoxyParamCaption}
+)}}\label{job_8c_aead235b523c076d6346ba285fa98f6d1}
+
+
+waits for a job to stop or complete. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to wait for a job (\hyperlink{struct__job}{\-\_\-job}) to stop or complete. It does the following \-: \begin{DoxyItemize}
+\item Calls waitpid() to wait for all processes who's P\-G\-I\-D is the same as the job's \-\_\-job\-::pgid field (i.\-e., all processes belonging to this job) to stop or complete.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em j} & The job to wait for.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape void} .
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__job}{\-\_\-job}, \-\_\-job\-::pgid, waitpid(), \hyperlink{job_8h_a5419d481fca1c4c7bb7c89e38b964fa9}{mark\-\_\-process\-\_\-status()}, \hyperlink{job_8h_a4b49892bffa5095eb5a0fb7d86659456}{job\-\_\-is\-\_\-stopped()}, \hyperlink{job_8h_a0654ba7330ec47c1e636afe60657651b}{job\-\_\-is\-\_\-completed()}, and \hyperlink{job_8h_ab3b7803e9a87944a86267abc40fe6c39}{put\-\_\-job\-\_\-in\-\_\-foreground()}. 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{job_8c_aead235b523c076d6346ba285fa98f6d1_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{job_8c_aead235b523c076d6346ba285fa98f6d1_icgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Variable Documentation}
+\hypertarget{job_8c_af7730a56d05055a70f3c18ee938209f8}{\index{job.\-c@{job.\-c}!Ash\-\_\-is\-\_\-interactive@{Ash\-\_\-is\-\_\-interactive}}
+\index{Ash\-\_\-is\-\_\-interactive@{Ash\-\_\-is\-\_\-interactive}!job.c@{job.\-c}}
+\subsubsection[{Ash\-\_\-is\-\_\-interactive}]{\setlength{\rightskip}{0pt plus 5cm}int Ash\-\_\-is\-\_\-interactive}}\label{job_8c_af7730a56d05055a70f3c18ee938209f8}
+
+
+Indicates if the shell is running interactively. 
+
+\begin{DoxyParagraph}{Description}
+This variable indicates if the shell is running interactively. If its value is non-\/zero value (i.\-e. true) , then the shell is running interactively. Otherwise, the shell is not running interactively. Its value is set when the shell calls \hyperlink{job_8c_a3a5b33cdd8fb591704c9adfcf908a273}{init\-\_\-shell()} to initialize itself.
+\end{DoxyParagraph}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{job_8c_a3a5b33cdd8fb591704c9adfcf908a273}{init\-\_\-shell()}, {\itshape isatty()}, \hyperlink{job_8c_acaa6f75b768f52660498b9fab3898e15}{execute\-\_\-process()}, execute\-\_\-shell(), \hyperlink{job_8c_a01959f896d957ce001a3a87fc034a5be}{Ash\-\_\-tmodes}, and \hyperlink{job_8c_af7730a56d05055a70f3c18ee938209f8}{Ash\-\_\-is\-\_\-interactive}. 
+\end{DoxySeeAlso}
+\hypertarget{job_8c_a9dfc260b67728b41e7120b47d7758053}{\index{job.\-c@{job.\-c}!Ash\-\_\-pgid@{Ash\-\_\-pgid}}
+\index{Ash\-\_\-pgid@{Ash\-\_\-pgid}!job.c@{job.\-c}}
+\subsubsection[{Ash\-\_\-pgid}]{\setlength{\rightskip}{0pt plus 5cm}pid\-\_\-t Ash\-\_\-pgid}}\label{job_8c_a9dfc260b67728b41e7120b47d7758053}
+
+
+Process group I\-D of the shell. 
+
+\begin{DoxyParagraph}{Description}
+The process group I\-D of the shell. This variable is set the shell calls \hyperlink{job_8c_a3a5b33cdd8fb591704c9adfcf908a273}{init\-\_\-shell()} to initialize itself.
+\end{DoxyParagraph}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{job_8c_a3a5b33cdd8fb591704c9adfcf908a273}{init\-\_\-shell()}, \hyperlink{job_8c_a095ab07b063dbbc25fd2729125fb530a}{put\-\_\-job\-\_\-in\-\_\-background()}, getpgrp(), kill(), getpid(), setpgid(), and tcsetpgrp(). 
+\end{DoxySeeAlso}
+\hypertarget{job_8c_a079811c5e88059665d23821b4a38802a}{\index{job.\-c@{job.\-c}!Ash\-\_\-terminal@{Ash\-\_\-terminal}}
+\index{Ash\-\_\-terminal@{Ash\-\_\-terminal}!job.c@{job.\-c}}
+\subsubsection[{Ash\-\_\-terminal}]{\setlength{\rightskip}{0pt plus 5cm}int Ash\-\_\-terminal}}\label{job_8c_a079811c5e88059665d23821b4a38802a}
+
+
+File descriptor to standard input for the shell. 
+
+File descriptor to standard input for the shell. This variable is set when the shell calls \hyperlink{job_8c_a3a5b33cdd8fb591704c9adfcf908a273}{init\-\_\-shell()} to initialize itself. It refers to a terminal device if the shell is running interactively.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{job_8c_a3a5b33cdd8fb591704c9adfcf908a273}{init\-\_\-shell()}, {\itshape isatty()}, {\itshape tcgetpgrp()}, tcgetattr(), tcsetpgrp(), tcsetattr(), execute\-\_\-shell(), and \hyperlink{job_8c_a01959f896d957ce001a3a87fc034a5be}{Ash\-\_\-tmodes}, and \hyperlink{job_8c_af7730a56d05055a70f3c18ee938209f8}{Ash\-\_\-is\-\_\-interactive} . 
+\end{DoxySeeAlso}
+\hypertarget{job_8c_a01959f896d957ce001a3a87fc034a5be}{\index{job.\-c@{job.\-c}!Ash\-\_\-tmodes@{Ash\-\_\-tmodes}}
+\index{Ash\-\_\-tmodes@{Ash\-\_\-tmodes}!job.c@{job.\-c}}
+\subsubsection[{Ash\-\_\-tmodes}]{\setlength{\rightskip}{0pt plus 5cm}struct termios Ash\-\_\-tmodes}}\label{job_8c_a01959f896d957ce001a3a87fc034a5be}
+
+
+Default terminal modes of the shell. 
+
+This variable stores the default terminal modes of the shell. It is set when the shell calls \hyperlink{job_8c_a3a5b33cdd8fb591704c9adfcf908a273}{init\-\_\-shell()} to initialize itself.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{job_8c_a079811c5e88059665d23821b4a38802a}{Ash\-\_\-terminal}, \hyperlink{job_8c_af7730a56d05055a70f3c18ee938209f8}{Ash\-\_\-is\-\_\-interactive}, \hyperlink{job_8c_a3a5b33cdd8fb591704c9adfcf908a273}{init\-\_\-shell()}, tcgetattr(), tcsetattr(), and \hyperlink{job_8c_ab3b7803e9a87944a86267abc40fe6c39}{put\-\_\-job\-\_\-in\-\_\-foreground()}. 
+\end{DoxySeeAlso}
+\hypertarget{job_8c_a2c5551422426f406568d84844b40acb9}{\index{job.\-c@{job.\-c}!builtins@{builtins}}
+\index{builtins@{builtins}!job.c@{job.\-c}}
+\subsubsection[{builtins}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Builtin} builtins\mbox{[}$\,$\mbox{]}}}\label{job_8c_a2c5551422426f406568d84844b40acb9}
+{\bfseries Initial value\-:}
+\begin{DoxyCode}
+= 
+\{
+
+    \{\textcolor{stringliteral}{"cd"}, &\hyperlink{job_8c_a2c2cfa6591ee05cc5bf0c39f38b9e2ea}{Ash\_cd}\},
+    \{\textcolor{stringliteral}{"exit"}, &\hyperlink{job_8c_a9fa5abe15df71a688905dc7b29a1389f}{Ash\_exit}\},
+    \{\textcolor{stringliteral}{"jobs"}, &\hyperlink{job_8c_a8950ee4bf84f8322e0b294d0c448a9e7}{Ash\_jobs}\},
+    \{\textcolor{stringliteral}{"fg"}, &\hyperlink{job_8c_a792fcc9814d020b087911591c5fce10b}{Ash\_fg}\},
+    \{\textcolor{stringliteral}{"bg"}, &\hyperlink{job_8c_a9bc6f26d0ab14359707a0f367f1a6522}{Ash\_bg}\},
+    \{\textcolor{stringliteral}{"help"}, &\hyperlink{job_8c_a4242d3cdbc0468d774243dc67b330296}{Ash\_help}\},
+    \{\textcolor{stringliteral}{"kill"}, &\hyperlink{job_8c_a723e6648fca47a139cdff5cf4f1bc4bb}{Ash\_kill}\},
+    \{\textcolor{stringliteral}{"killall"}, &\hyperlink{job_8c_a07e5c62e1d5e55012cf188dd32b6cf27}{Ash\_killall}\},
+    \{NULL, NULL\}
+\}
+\end{DoxyCode}
+
+
+List of shell builtins an associated function. 
+
+\begin{DoxyParagraph}{Description}
+This array stores the list of shell builtins and associated functions.
+\end{DoxyParagraph}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__builtin}{\-\_\-builtin}, \hyperlink{job_8h_a165885ac9a829b970ba29594fec5acd7}{Builtin}, \hyperlink{job_8c_a028aee0dd87474ee61f6c654efe653a2}{is\-\_\-builtin()}, \hyperlink{cle_8c_ade079408c61657dc7bbd2142a78e0e8a}{command\-\_\-completion\-\_\-generator()}, and and \hyperlink{job_8c_a328634c49391a29ef1d4e86d6bf0ea7e}{execute\-\_\-job()}. 
+\end{DoxySeeAlso}
+\hypertarget{job_8c_a4ca397eaae80b0004f61dad81729c06d}{\index{job.\-c@{job.\-c}!job\-\_\-list\-\_\-head@{job\-\_\-list\-\_\-head}}
+\index{job\-\_\-list\-\_\-head@{job\-\_\-list\-\_\-head}!job.c@{job.\-c}}
+\subsubsection[{job\-\_\-list\-\_\-head}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Job}$\ast$ job\-\_\-list\-\_\-head = N\-U\-L\-L}}\label{job_8c_a4ca397eaae80b0004f61dad81729c06d}
+
+
+Head of the job list. 
+
+\begin{DoxyParagraph}{Description}
+The shell uses a linked list to maintain a record of each active job (\hyperlink{struct__job}{\-\_\-job}). This pointer points to the head of that list.
+\end{DoxyParagraph}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{struct__job}{\-\_\-job}, \-\_\-job\-::next, \hyperlink{job_8c_a8950ee4bf84f8322e0b294d0c448a9e7}{Ash\-\_\-jobs()}, \hyperlink{job_8c_a07e5c62e1d5e55012cf188dd32b6cf27}{Ash\-\_\-killall()}, \hyperlink{job_8c_abbd710ae6b1b777643ee31ccac51c985}{find\-\_\-job()}, \hyperlink{job_8c_a870c6d70cfb180e88d217a0b3501aedb}{find\-\_\-job\-\_\-id()}, \hyperlink{job_8c_a5419d481fca1c4c7bb7c89e38b964fa9}{mark\-\_\-process\-\_\-status()}, \hyperlink{job_8c_a75430387f345a954b011547bf14a56ce}{do\-\_\-job\-\_\-notification()}, \hyperlink{job_8c_aff64d308dd49d9da9f2d6f993346f7ad}{add\-\_\-job\-\_\-to\-\_\-list()}, and \hyperlink{job_8c_a4ae3063920907216e6ba0bdc83ac5b15}{print\-\_\-job\-\_\-list()}. 
+\end{DoxySeeAlso}
+\hypertarget{job_8c_a1a6160b9abc239f381d9ba30d00b4e0d}{\index{job.\-c@{job.\-c}!job\-\_\-states@{job\-\_\-states}}
+\index{job\-\_\-states@{job\-\_\-states}!job.c@{job.\-c}}
+\subsubsection[{job\-\_\-states}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ job\-\_\-states\mbox{[}$\,$\mbox{]}}}\label{job_8c_a1a6160b9abc239f381d9ba30d00b4e0d}
+{\bfseries Initial value\-:}
+\begin{DoxyCode}
+=
+\{
+    \textcolor{stringliteral}{"Running"},
+    \textcolor{stringliteral}{"Stopped"},
+    \textcolor{stringliteral}{"Completed"}
+\}
+\end{DoxyCode}
+
+
+Job state strings. 
+
+\begin{DoxyParagraph}{Description}
+This array stores job state strings.
+\end{DoxyParagraph}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{job_8h_abd1ac77dca84a11371146d61dbe2c35d}{\-\_\-job\-\_\-state}, \hyperlink{job_8c_a8950ee4bf84f8322e0b294d0c448a9e7}{Ash\-\_\-jobs()}, \hyperlink{job_8c_a75430387f345a954b011547bf14a56ce}{do\-\_\-job\-\_\-notification()}, \hyperlink{struct__job}{\-\_\-job}, \-\_\-job\-::notified, \-\_\-process\-::stopped, \-\_\-process\-::completed, \hyperlink{job_8c_ae7a22fe41ac695db73564a23ce25cf6a}{format\-\_\-job\-\_\-info()}, and \hyperlink{job_8c_ad8e58b77db46018eeb20c68855538f35}{update\-\_\-status()}. 
+\end{DoxySeeAlso}

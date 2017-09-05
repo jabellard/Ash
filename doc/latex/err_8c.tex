@@ -1,0 +1,238 @@
+\hypertarget{err_8c}{\section{src/err.c File Reference}
+\label{err_8c}\index{src/err.\-c@{src/err.\-c}}
+}
+
+
+Contains code for the error handling subsystem.  
+
+
+{\ttfamily \#include $<$stdio.\-h$>$}\\*
+{\ttfamily \#include $<$stdlib.\-h$>$}\\*
+{\ttfamily \#include $<$errno.\-h$>$}\\*
+{\ttfamily \#include $<$unistd.\-h$>$}\\*
+{\ttfamily \#include $<$string.\-h$>$}\\*
+{\ttfamily \#include \char`\"{}err.\-h\char`\"{}}\\*
+Include dependency graph for err.\-c\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{err_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{err_8c_a95fc89eab89c62fc880a852fa1fe969f}{\#define {\bfseries M\-A\-X\-\_\-\-E\-N\-A\-M\-E}~133}\label{err_8c_a95fc89eab89c62fc880a852fa1fe969f}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{err_8c_a7a249a2d9b54b1c4c9a43a9d302d637e}{safe\-\_\-free} (void $\ast$$\ast$pp)
+\begin{DoxyCompactList}\small\item\em Safer version of free. \end{DoxyCompactList}\item 
+void \hyperlink{err_8c_a07dfb9fd24fe41a9f703bd92af2cf646}{err\-\_\-msg} (const char $\ast$user\-\_\-msg)
+\begin{DoxyCompactList}\small\item\em Prints an error message corresponding to the current value of {\itshape errno}. \end{DoxyCompactList}\item 
+void \hyperlink{err_8c_a8e8952208174427fc9de79dfed72b043}{terminate} (int use\-\_\-exit3)
+\begin{DoxyCompactList}\small\item\em Terminates the calling process. \end{DoxyCompactList}\item 
+void \hyperlink{err_8c_ab24204e73fd5cdd4d62dc30f4794da23}{err\-\_\-exit} (const char $\ast$user\-\_\-msg)
+\begin{DoxyCompactList}\small\item\em Prints and error message, and terminates the calling process. \end{DoxyCompactList}\item 
+void \hyperlink{err_8c_ad8feb10c9562b2de6dd93677d4d326af}{err\-\_\-\-\_\-exit} (const char $\ast$user\-\_\-msg)
+\begin{DoxyCompactList}\small\item\em Prints and error message, and terminates the calling process. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Contains code for the error handling subsystem. \begin{DoxyAuthor}{Author}
+Joe Nathan Abellard \{\href{https://github.com/joenatech7}{\tt https\-://github.\-com/joenatech7}\}
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+September 1, 2017 
+\end{DoxyDate}
+\begin{DoxyParagraph}{Description}
+This file contains contains code for the error handling sub system.
+\end{DoxyParagraph}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{err_8h}{err.\-h} 
+\end{DoxySeeAlso}
+
+
+\subsection{Function Documentation}
+\hypertarget{err_8c_ad8feb10c9562b2de6dd93677d4d326af}{\index{err.\-c@{err.\-c}!err\-\_\-\-\_\-exit@{err\-\_\-\-\_\-exit}}
+\index{err\-\_\-\-\_\-exit@{err\-\_\-\-\_\-exit}!err.c@{err.\-c}}
+\subsubsection[{err\-\_\-\-\_\-exit}]{\setlength{\rightskip}{0pt plus 5cm}void err\-\_\-\-\_\-exit (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{user\-\_\-msg}
+\end{DoxyParamCaption}
+)}}\label{err_8c_ad8feb10c9562b2de6dd93677d4d326af}
+
+
+Prints and error message, and terminates the calling process. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to print an error message and then terminate the calling process. It prints the error message by calling \hyperlink{err_8h_a07dfb9fd24fe41a9f703bd92af2cf646}{err\-\_\-msg()}, and then terminates the process by calling \hyperlink{err_8h_a8e8952208174427fc9de79dfed72b043}{terminate()} wiht the value {\itshape 1} .
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em user\-\_\-msg} & This string is passed to \hyperlink{err_8h_a07dfb9fd24fe41a9f703bd92af2cf646}{err\-\_\-msg()}.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape void}.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{err_8h_a07dfb9fd24fe41a9f703bd92af2cf646}{err\-\_\-msg()}, \hyperlink{err_8h_a8e8952208174427fc9de79dfed72b043}{terminate()}, and \hyperlink{err_8h_abdf2524e566eb527094c786e60c4e15a}{err\-\_\-exit()}. 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=228pt]{err_8c_ad8feb10c9562b2de6dd93677d4d326af_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{err_8c_ab24204e73fd5cdd4d62dc30f4794da23}{\index{err.\-c@{err.\-c}!err\-\_\-exit@{err\-\_\-exit}}
+\index{err\-\_\-exit@{err\-\_\-exit}!err.c@{err.\-c}}
+\subsubsection[{err\-\_\-exit}]{\setlength{\rightskip}{0pt plus 5cm}void err\-\_\-exit (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{user\-\_\-msg}
+\end{DoxyParamCaption}
+)}}\label{err_8c_ab24204e73fd5cdd4d62dc30f4794da23}
+
+
+Prints and error message, and terminates the calling process. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to print an error message and then terminate the calling process. It prints the error message by calling \hyperlink{err_8h_a07dfb9fd24fe41a9f703bd92af2cf646}{err\-\_\-msg()}, and then terminates the process by calling \hyperlink{err_8h_a8e8952208174427fc9de79dfed72b043}{terminate()} wiht the value {\itshape 0} .
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em user\-\_\-msg} & This string is passed to \hyperlink{err_8h_a07dfb9fd24fe41a9f703bd92af2cf646}{err\-\_\-msg()}.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape void}.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{err_8h_a07dfb9fd24fe41a9f703bd92af2cf646}{err\-\_\-msg()}, \hyperlink{err_8h_a8e8952208174427fc9de79dfed72b043}{terminate()}, and \hyperlink{err_8h_a30a51bd316b9e22534d7d2c50c110e9e}{err\-\_\-\-\_\-exit()}. 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=224pt]{err_8c_ab24204e73fd5cdd4d62dc30f4794da23_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{err_8c_ab24204e73fd5cdd4d62dc30f4794da23_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{err_8c_a07dfb9fd24fe41a9f703bd92af2cf646}{\index{err.\-c@{err.\-c}!err\-\_\-msg@{err\-\_\-msg}}
+\index{err\-\_\-msg@{err\-\_\-msg}!err.c@{err.\-c}}
+\subsubsection[{err\-\_\-msg}]{\setlength{\rightskip}{0pt plus 5cm}void err\-\_\-msg (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{user\-\_\-msg}
+\end{DoxyParamCaption}
+)}}\label{err_8c_a07dfb9fd24fe41a9f703bd92af2cf646}
+
+
+Prints an error message corresponding to the current value of {\itshape errno}. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to print an error message coresponding to the current value of . It is a more verbose version of the standard {\itshape perror()} function.
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em user\-\_\-msg} & This string prefixes the error message that will be printed.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape void}.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+{\itshape perror()}, {\itshape errno}, {\itshape malloc()}, {\itshape sprintf()}, {\itshape fflush()}, \hyperlink{err_8h_a8e8952208174427fc9de79dfed72b043}{terminate()}, \hyperlink{err_8h_abdf2524e566eb527094c786e60c4e15a}{err\-\_\-exit()}, {\itshape fputs()}, \hyperlink{err_8h_a40bd4201ea3cf1b6f8e7fef01362bf67}{sfree()}, and \hyperlink{err_8h_a30a51bd316b9e22534d7d2c50c110e9e}{err\-\_\-\-\_\-exit()}. 
+\end{DoxySeeAlso}
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{err_8c_a07dfb9fd24fe41a9f703bd92af2cf646_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{err_8c_a7a249a2d9b54b1c4c9a43a9d302d637e}{\index{err.\-c@{err.\-c}!safe\-\_\-free@{safe\-\_\-free}}
+\index{safe\-\_\-free@{safe\-\_\-free}!err.c@{err.\-c}}
+\subsubsection[{safe\-\_\-free}]{\setlength{\rightskip}{0pt plus 5cm}void safe\-\_\-free (
+\begin{DoxyParamCaption}
+\item[{void $\ast$$\ast$}]{pp}
+\end{DoxyParamCaption}
+)}}\label{err_8c_a7a249a2d9b54b1c4c9a43a9d302d637e}
+
+
+Safer version of free. 
+
+\begin{DoxyParagraph}{Description}
+This function is a safer version of {\itshape free()}, which is used for de-\/allocating memory from the heap. The are two potential pillfalls when using the standard {\itshape free()} function\-: (1) passing it a N\-U\-L\-L pointer, which results in a run-\/time exeption, and (2) passing it a pointer to a memory block that has already been previously de-\/allocated, resulting in a double free exeption. It is good practice to ensure that (1) a pointer that is to be passed is {\itshape free()} is non-\/\-N\-U\-L\-L, and (2) and to assign N\-U\-L\-L to a pointer right after the memory block it points to has been de-\/allocated with {\itshape free()} . Doing (1) can be inconvinient, and since a pointer is only passed by value to {\itshape free()}, {\itshape free()} can not do (2) on behalf of the programmer. \hyperlink{err_8h_a7a249a2d9b54b1c4c9a43a9d302d637e}{safe\-\_\-free()} seeks to eliminate these inconveniences. It calls {\itshape free()} internally to de-\/allocate memory, but does some things differently than {\itshape free()}. Before calling {\itshape free()} \hyperlink{err_8h_a7a249a2d9b54b1c4c9a43a9d302d637e}{safe\-\_\-free()} checks if the pointer to the momory block is N\-U\-L\-L, and if that is the case, does nothing. Otherwise, it calls {\itshape free()} to de-\/allocate the memory block. It's argument is a pointer to pointer pointing to memory block to be de-\/allocated (i.\-e, a double pointer). Accepting a double pointer allows it to assign N\-U\-L\-L to the pointer after the memory de-\/allocation.
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em pp} & Pointer to the pointer pointing to the memory block to be de-\/allocated.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns {\itshape void} 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{err_8h_a40bd4201ea3cf1b6f8e7fef01362bf67}{sfree(p)}, and {\itshape free()} 
+\end{DoxySeeAlso}
+\hypertarget{err_8c_a8e8952208174427fc9de79dfed72b043}{\index{err.\-c@{err.\-c}!terminate@{terminate}}
+\index{terminate@{terminate}!err.c@{err.\-c}}
+\subsubsection[{terminate}]{\setlength{\rightskip}{0pt plus 5cm}void terminate (
+\begin{DoxyParamCaption}
+\item[{int}]{use\-\_\-exit3}
+\end{DoxyParamCaption}
+)}}\label{err_8c_a8e8952208174427fc9de79dfed72b043}
+
+
+Terminates the calling process. 
+
+\begin{DoxyParagraph}{Description}
+This function is used to terminate the calling process. It does that by calling either {\itshape abort()} , {\itshape exit()} , or {\itshape \-\_\-exit()} . If the environment variable E\-F\-\_\-\-D\-U\-M\-P\-C\-O\-R\-E is defined, and is a non-\/empty string, it ends the process by calling {\itshape abort()}. Otherwise the function ends the process by calling either {\itshape exit()} , or {\itshape \-\_\-exit()} .
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em use\-\_\-exit3} & This interger determines whether the function calls {\itshape exit()} , or {\itshape \-\_\-exit()} . If it is non-\/zero, it calls {\itshape exit()} with the value E\-X\-I\-T\-\_\-\-F\-A\-I\-L\-U\-R\-E, otherwise it calls {\itshape \-\_\-exit()} with the value E\-X\-I\-T\-\_\-\-F\-A\-I\-L\-U\-R\-E.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\itshape void}.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+E\-F\-\_\-\-D\-U\-M\-P\-C\-O\-R\-E, {\itshape exit()}, {\itshape \-\_\-exit()}, {\itshape abort()}, \hyperlink{err_8h_a07dfb9fd24fe41a9f703bd92af2cf646}{err\-\_\-msg()}, \hyperlink{err_8h_abdf2524e566eb527094c786e60c4e15a}{err\-\_\-exit()}, E\-X\-I\-T\-\_\-\-F\-A\-I\-L\-U\-R\-E, and \hyperlink{err_8h_a30a51bd316b9e22534d7d2c50c110e9e}{err\-\_\-\-\_\-exit()}. 
+\end{DoxySeeAlso}
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{err_8c_a8e8952208174427fc9de79dfed72b043_icgraph}
+\end{center}
+\end{figure}
+
+

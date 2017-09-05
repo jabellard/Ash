@@ -1,0 +1,154 @@
+\hypertarget{main_8c}{\section{src/main.c File Reference}
+\label{main_8c}\index{src/main.\-c@{src/main.\-c}}
+}
+
+
+Contains \hyperlink{main_8c_a3c04138a5bfe5d72780bb7e82a18e627}{main()}.  
+
+
+{\ttfamily \#include $<$sys/wait.\-h$>$}\\*
+{\ttfamily \#include $<$unistd.\-h$>$}\\*
+{\ttfamily \#include $<$stdlib.\-h$>$}\\*
+{\ttfamily \#include $<$stdio.\-h$>$}\\*
+{\ttfamily \#include $<$string.\-h$>$}\\*
+{\ttfamily \#include \char`\"{}cle.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}err.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}job.\-h\char`\"{}}\\*
+{\ttfamily \#include $<$setjmp.\-h$>$}\\*
+Include dependency graph for main.\-c\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{main_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{main_8c_af783a9705a73559f4b17ec991bc11f1e}{input\-\_\-loop} ()
+\begin{DoxyCompactList}\small\item\em The shell's input loop. \end{DoxyCompactList}\item 
+int \hyperlink{main_8c_a3c04138a5bfe5d72780bb7e82a18e627}{main} (int argc, char $\ast$$\ast$argv)
+\begin{DoxyCompactList}\small\item\em The {\itshape main} function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+char $\ast$ \hyperlink{main_8c_ae8d7cb95bc48828d10bf3c7a31680ce2}{pipeline\-\_\-list} = N\-U\-L\-L
+\begin{DoxyCompactList}\small\item\em Points to the {\itshape readline} buffer. \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{main_8c_a5b769ff51538c10c1c6095245f1eb9db}{pipeline\-\_\-list\-\_\-} = N\-U\-L\-L
+\begin{DoxyCompactList}\small\item\em Makes sure the {\itshape readline} buffer end with \char`\"{}\textbackslash{}n\textbackslash{}0\char`\"{}. I am unsure if the buffer returned by \hyperlink{cle_8c_a19bb8493640e845196c4d763f4109b67}{\-\_\-readline()} ends with \char`\"{}\textbackslash{}n\textbackslash{}0\char`\"{}. There I use this pointer to allocate enough memory to to store the buffer returned by \hyperlink{cle_8c_a19bb8493640e845196c4d763f4109b67}{\-\_\-readline()} and \char`\"{}\textbackslash{}n\textbackslash{}0\char`\"{}. This new buffer is the input source for {\itshape yacc}. \end{DoxyCompactList}\item 
+\hypertarget{main_8c_aadcd4b473d721070947b6102408340fa}{jmp\-\_\-buf {\bfseries input\-\_\-prompt}}\label{main_8c_aadcd4b473d721070947b6102408340fa}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Contains \hyperlink{main_8c_a3c04138a5bfe5d72780bb7e82a18e627}{main()}. \begin{DoxyAuthor}{Author}
+Joe Nathan Abellard \{\href{https://github.com/joenatech7}{\tt https\-://github.\-com/joenatech7}\}
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+September 1, 2017 
+\end{DoxyDate}
+\begin{DoxyParagraph}{Description}
+Contains \hyperlink{main_8c_a3c04138a5bfe5d72780bb7e82a18e627}{main()}. 
+\end{DoxyParagraph}
+
+
+\subsection{Function Documentation}
+\hypertarget{main_8c_af783a9705a73559f4b17ec991bc11f1e}{\index{main.\-c@{main.\-c}!input\-\_\-loop@{input\-\_\-loop}}
+\index{input\-\_\-loop@{input\-\_\-loop}!main.c@{main.\-c}}
+\subsubsection[{input\-\_\-loop}]{\setlength{\rightskip}{0pt plus 5cm}void input\-\_\-loop (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{main_8c_af783a9705a73559f4b17ec991bc11f1e}
+
+
+The shell's input loop. 
+
+This function runs the shell's main input loop. In an infinite loop, it does the following\-: \begin{DoxyItemize}
+\item Calls \hyperlink{cle_8c_a19bb8493640e845196c4d763f4109b67}{\-\_\-readline()} to read input from the user. \item Sets up {\itshape yacc} to read input from the {\itshape readline} buffer. \item Calls {\itshape yyparse()} (i.\-e., the parser) to parse the input read. \item Cleans up buffers\end{DoxyItemize}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{main_8c_a3c04138a5bfe5d72780bb7e82a18e627}{main()}, \hyperlink{cle_8c_a19bb8493640e845196c4d763f4109b67}{\-\_\-readline()}, {\itshape yacc}, {\itshape bison}, {\itshape yyparse()}, and \hyperlink{err_8h_a40bd4201ea3cf1b6f8e7fef01362bf67}{sfree()}. 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{main_8c_af783a9705a73559f4b17ec991bc11f1e_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{main_8c_af783a9705a73559f4b17ec991bc11f1e_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{main_8c_a3c04138a5bfe5d72780bb7e82a18e627}{\index{main.\-c@{main.\-c}!main@{main}}
+\index{main@{main}!main.c@{main.\-c}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{int}]{argc, }
+\item[{char $\ast$$\ast$}]{argv}
+\end{DoxyParamCaption}
+)}}\label{main_8c_a3c04138a5bfe5d72780bb7e82a18e627}
+
+
+The {\itshape main} function. 
+
+\begin{DoxyParagraph}{Description}
+This is the main function. It does the following\-: \begin{DoxyItemize}
+\item Calls \hyperlink{job_8c_a3a5b33cdd8fb591704c9adfcf908a273}{init\-\_\-shell()} to initialize the shell. \item Calls \hyperlink{cle_8c_a371915dea0605bdd469053706d93951d}{initialize\-\_\-readline()} to initialize the shell's command line editing facilities. \item Calls \hyperlink{main_8c_af783a9705a73559f4b17ec991bc11f1e}{input\-\_\-loop()} to run the shell's input loop.\end{DoxyItemize}
+
+\end{DoxyParagraph}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{main_8c_af783a9705a73559f4b17ec991bc11f1e}{input\-\_\-loop()}, \hyperlink{cle_8c_a371915dea0605bdd469053706d93951d}{initialize\-\_\-readline()}, and \hyperlink{job_8c_a3a5b33cdd8fb591704c9adfcf908a273}{init\-\_\-shell()}. 
+\end{DoxySeeAlso}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{main_8c_a3c04138a5bfe5d72780bb7e82a18e627_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Variable Documentation}
+\hypertarget{main_8c_ae8d7cb95bc48828d10bf3c7a31680ce2}{\index{main.\-c@{main.\-c}!pipeline\-\_\-list@{pipeline\-\_\-list}}
+\index{pipeline\-\_\-list@{pipeline\-\_\-list}!main.c@{main.\-c}}
+\subsubsection[{pipeline\-\_\-list}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ pipeline\-\_\-list = N\-U\-L\-L}}\label{main_8c_ae8d7cb95bc48828d10bf3c7a31680ce2}
+
+
+Points to the {\itshape readline} buffer. 
+
+This pointer points to the {\itshape readline} buffer returned by \hyperlink{cle_8c_a19bb8493640e845196c4d763f4109b67}{\-\_\-readline()}. It aliases \hyperlink{cle_8c_a48b5776fb79c56d2584cfa6f109e8f22}{line\-\_\-buffer}. To avoid a possible double free exeption, this pointer should never be used to free the {\itshape readline} buffer.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{cle_8c_a19bb8493640e845196c4d763f4109b67}{\-\_\-readline()}, {\itshape readline}, \hyperlink{cle_8c_a48b5776fb79c56d2584cfa6f109e8f22}{line\-\_\-buffer}, and \hyperlink{main_8c_a5b769ff51538c10c1c6095245f1eb9db}{pipeline\-\_\-list\-\_\-}.
+\end{DoxySeeAlso}
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000004}{Todo}]Check if the buffer returned by \hyperlink{cle_8c_a19bb8493640e845196c4d763f4109b67}{\-\_\-readline()} ends with \char`\"{}\textbackslash{}n\textbackslash{}0\char`\"{}.\end{DoxyRefDesc}
+\hypertarget{main_8c_a5b769ff51538c10c1c6095245f1eb9db}{\index{main.\-c@{main.\-c}!pipeline\-\_\-list\-\_\-@{pipeline\-\_\-list\-\_\-}}
+\index{pipeline\-\_\-list\-\_\-@{pipeline\-\_\-list\-\_\-}!main.c@{main.\-c}}
+\subsubsection[{pipeline\-\_\-list\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ pipeline\-\_\-list\-\_\- = N\-U\-L\-L}}\label{main_8c_a5b769ff51538c10c1c6095245f1eb9db}
+
+
+Makes sure the {\itshape readline} buffer end with \char`\"{}\textbackslash{}n\textbackslash{}0\char`\"{}. I am unsure if the buffer returned by \hyperlink{cle_8c_a19bb8493640e845196c4d763f4109b67}{\-\_\-readline()} ends with \char`\"{}\textbackslash{}n\textbackslash{}0\char`\"{}. There I use this pointer to allocate enough memory to to store the buffer returned by \hyperlink{cle_8c_a19bb8493640e845196c4d763f4109b67}{\-\_\-readline()} and \char`\"{}\textbackslash{}n\textbackslash{}0\char`\"{}. This new buffer is the input source for {\itshape yacc}. 
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{cle_8c_a19bb8493640e845196c4d763f4109b67}{\-\_\-readline()}, {\itshape readline}, \hyperlink{cle_8c_a48b5776fb79c56d2584cfa6f109e8f22}{line\-\_\-buffer}, and \hyperlink{main_8c_a5b769ff51538c10c1c6095245f1eb9db}{pipeline\-\_\-list\-\_\-}.
+\end{DoxySeeAlso}
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000005}{Todo}]Check if the buffer returned by \hyperlink{cle_8c_a19bb8493640e845196c4d763f4109b67}{\-\_\-readline()} ends with \char`\"{}\textbackslash{}n\textbackslash{}0\char`\"{}.\end{DoxyRefDesc}
