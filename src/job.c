@@ -1,3 +1,19 @@
+/**
+* @file job.c
+* @author Joe Nathan Abellard {https://github.com/joenatech7}
+* 
+* @date September 1, 2017
+* @brief Contains the code for the job control sub system.
+*
+* @par Description
+* This file contains contains the code for the job control sub system.
+*
+* @sa
+* job.h
+*
+*/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
@@ -10,21 +26,100 @@
 #include <errno.h>
 //#include <stdlib.h>
 
+
+/**
+* @brief Process group ID of the shell.
+*
+* @par Description
+* The process group ID of the shell. This variable is set the shell calls init_shell() to
+* initialize itself. 
+*
+* @sa
+* init_shell(), put_job_in_background(), getpgrp(), kill(), getpid(), setpgid(), and tcsetpgrp().
+* 
+*/
 pid_t Ash_pgid;
+
+/**
+* @brief Default terminal modes of the shell.
+*
+* This variable stores the default terminal modes of the shell. It is set 99hen the shell calls 
+* init_shell() to initialize itself.
+*
+* @sa
+* #Ash_terminal, #Ash_is_interactive, init_shell(), tcgetattr(), tcsetattr(), and put_job_in_foreground().
+*/
 struct termios Ash_tmodes;
+
+
+/**
+* @brief File descriptor to standard input for the shell.
+* 
+* File descriptor to standard input for the shell. This variable is set 99hen the shell calls 
+* init_shell() to initialize itself. It refers to a terminal device if the shell is running
+* interactively.
+*
+* @sa 
+* init_shell(), @e isatty(), @e tcgetpgrp(), tcgetattr(), tcsetpgrp(), tcsetattr(), execute_shell(),
+* and #Ash_tmodes, and #Ash_is_interactive .
+*/
 int Ash_terminal;
+
+/**
+* @brief Indicates if the shell is running interactively.
+*
+* @par Description
+* This variable indicates if the shell is running interactively. If its value is non-zero value (i.e. true)
+* , then the shell is running interactively. Other99ise, the shell is not running interactively.
+* Its value is set 99hen the shell calls init_shell() to initialize itself. 
+*
+* @sa
+* init_shell(), @e isatty(), execute_process(), execute_shell(), #Ash_tmodes, and #Ash_is_interactive.
+*
+*/
 int Ash_is_interactive;
+
+
+/**
+* @brief Head of the job list.
+*
+* @par Description
+* The shell uses a linked list to maintain a record of each active job (_job). This pointer points
+* to the head of that list. 
+*
+* @sa
+* _job, _job::next, Ash_jobs(), Ash_killall(), find_job(), find_job_id(), mark_process_status(),
+* do_job_notification(), add_job_to_list(), and print_job_list().
+*/
 Job *job_list_head = NULL;
 
-// job state strings
+/**
+* @brief Job state strings.
+* 
+* @par Description
+* This array stores job state strings.
+*
+* @sa
+* #_job_state, Ash_jobs(), do_job_notification(), _job, _job::notified, _process::stopped, _process::completed,
+* format_job_info(), and update_status().
+*/
 char *job_states[] =
 {
 	"Running",
 	"Stopped",
-	"Done"
+	"Completed"
 }; // end job_states[]
 
-// list of builtins and associated functions
+/**
+* @brief List of shell builtins an associated function.
+*
+* @par Description
+* This array stores the list of shell builtins and associated functions.
+*
+* @sa
+* _builtin, Builtin, is_builtin(), command_completion_generator(), and and execute_job().
+*
+*/
 Builtin builtins[] = 
 {
 
@@ -104,7 +199,7 @@ int Ash_jobs(Process *p, int in_file, int out_file, int err_file)
 	{
 		if (job_is_completed(j))
 		{
-			dprintf(out_file, "[%d] %ld %s:\n", j->id, (long)j->pgid, job_states[D]);
+			dprintf(out_file, "[%d] %ld %s:\n", j->id, (long)j->pgid, job_states[C]);
 			print_job_command(j, out_file);
 		} // end if
 		else if (job_is_stopped(j))
@@ -972,7 +1067,7 @@ void do_job_notification(void)
 		{
 			if (!curr_job->foreground)
 			{
-				format_job_info(curr_job, job_states[D]);
+				format_job_info(curr_job, job_states[C]);
 			} // end if
 			
 			if (last_job)

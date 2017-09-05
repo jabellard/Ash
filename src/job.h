@@ -50,24 +50,111 @@ typedef struct _job
 
 } Job; // end struct _job
 
-// function pointer to a shell buitin
+/**
+* @brief Type definition of pointer to shell builtin function.
+*
+* @par Description
+* This is a type definition of a pointer to a shell builtin function. A shell builtin function is used to 
+* launch a shell builtin.
+*
+* @sa
+* #builtins, _builtin, Ash_cd(), Ash_exit(), Ash_jobs(), Ash_fg(), Ash_bg(), Ash_help(),
+* Ash_kill(), Ash_killall(), is_builtin(), command_completion(), command_completion_generator(),
+* and execute_job().
+*
+*/
  typedef int (*b_func)(Process *p, int in_file, int out_file, int err_file);
  
  
+ /**
+ *  @brief Maps a shell builtin to a function.
+ *
+ * @par Description
+ * This structure is used to map a shell builtin to the function that is used to launch it.
+ *
+ * @sa
+* #builtins, Ash_cd(), Ash_exit(), Ash_jobs(), Ash_fg(), Ash_bg(), Ash_help(), b_func
+* Ash_kill(), Ash_killall(), is_builtin(), command_completion(), command_completion_generator(),
+* and execute_job().
+*
+*/
  typedef struct _builtin
 {
-	// the builtin name
+	/**
+	* @brief The name of the shell builtin.
+	*
+	* @par Description
+	* The name of the shell builtin.
+	*
+	* @sa #builtins, Ash_cd(), Ash_exit(), Ash_jobs(), Ash_fg(), Ash_help(), Ash_kill(),
+	*  Ash_killall(), is_builtin(), command_completion(), command_completion_generator(),
+	* b_func, _builtin::func, and execute_job().
+	*/
 	char *name;
 	
-	// the function to invoke the builtin
+	/**
+	* @brief Pointer to the function used to launch the shell builtin.
+	*
+	* @par Description
+	* The pointer to the function used to launch the shell builtin.
+	*
+	* @sa #builtins, Ash_cd(), Ash_exit(), Ash_jobs(), Ash_fg(), Ash_help(), Ash_kill(),
+	*  Ash_killall(), is_builtin(), command_completion(), command_completion_generator(),
+	* b_func, _builtin::name, and execute_job().
+	*/
 	b_func func;
 }Builtin; //end struct _builtin
 
-// job states
+
+/**
+* @brief Job states.
+*
+* @par Description
+* This enum represents the possible states of a job (_job).
+*
+* @sa
+* #job_states, _job, _job::notified, _process::stopped, _process::completed, Ash_jobs(), update_status(),
+* format_job_info(), and do_job_notification() 
+*
+*/
 typedef enum _job_state
 {
-	R, S, D
-}job_state;
+	/**
+	* @brief Running.
+	*
+	* @par Description
+	* A job in this state is runnning.
+	*
+	* @sa
+	* #job_states, _job, _job::notified, _process::stopped, _process::completed, update_status(), 
+	* Ash_jobs(), _job_state::S, _job_state::C, format_job_info(), and do_job_notification().
+	*/
+	R, 
+	
+	/**
+	* @brief Stopped.
+	*
+	* @par Description
+	* A job in this state is stopped.
+	*
+	* @sa
+	* #job_states, _job, _job::notified, _process::stopped, _process::completed,update_status(), 
+	* Ash_jobs(), _job_state::R, _job_state::C, format_job_info(), and do_job_notification().
+	*/	
+	S, 
+	
+	/**
+	* @brief Completed.
+	*
+	* @par Description
+	* A job in this state is completed.
+	*
+	* @sa
+	* #job_states, _job, _job::notified, _process::stopped, _process::completed, update_status(), 
+	* Ash_jobs(), _job_state::S, _job_state::R, format_job_info(), and do_job_notification().
+	*/	
+	C
+}job_state; // end enum _job_state
 
 //----------------------------------function prototypes
 int print_job_command(Job *j, int dest_fd);
