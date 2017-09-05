@@ -173,7 +173,31 @@ typedef enum _job_state
 	C
 }job_state; // end enum _job_state
 
-//----------------------------------function prototypes
+//----------------------------------function prototypes-----------------------------------------------------
+
+
+
+
+/**
+* @brief Dispalys help for a shell builtin.
+*
+* @par Description
+* This function is used to display help for a shell builtin.
+*
+* @param dest_fd
+* File descriptor refering to the file to 99hich output is sent.
+*
+* @param 
+* The name of the help file that contains the documentation for the shell builtin.
+*
+* @return
+* Returns @e 0 on success, or @e -1 on failure.
+* @sa 
+* Ash_cd(), Ash_exit(), Ash_jobs(), Ash_fg(), Ash_bg(), Ash_help(), Ash_kill(),
+* Ash_killall(), is_builtin(), and #builtins.
+*
+*/
+int display_builtin_help(int dest_fd, const char *help_file);
 
 
 /**

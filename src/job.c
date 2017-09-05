@@ -24,7 +24,7 @@
 #include "err.h"
 #include <signal.h>
 #include <errno.h>
-//#include <stdlib.h>
+#include <limits.h>
 
 
 /**
@@ -135,12 +135,104 @@ Builtin builtins[] =
 }; // end builtins[]
 
 
+
+/**
+* @brief Stores the path of a help file for a shell builtin.
+*
+* @par Description
+* This array stores the path of a help file for a shell builtin.
+*
+* @sa
+* Ash_cd(), Ash_exit(), Ash_jobs(), Ash_fg(), Ash_bg(), Ash_help(), Ash_kill(), Ash_killall(),
+* display_builtin_help(), is_builtin(), and #builtins.
+*
+* @todo
+* clarify, and also look at dis_help help doc (add return, param)
+*/
+char BUILTIN_HELP_PATH[PATH_MAX];
+
+
+int display_builtin_help(int dest_fd, const char *help_file)
+{
+	// find the path of the directory that contains help files for the shell builtins
+	char *home_dir = getenv("HOME");
+	strcpy(BUILTIN_HELP_PATH, home_dir);
+	strcat(BUILTIN_HELP_PATH, "/.Ash/b-help/");
+	strcat(BUILTIN_HELP_PATH, help_file);
+	strcat(BUILTIN_HELP_PATH, "\0");
+	
+	// open the help file
+	int help_fd = open(BUILTIN_HELP_PATH, O_RDONLY);
+	
+	// check for errors
+	if (help_fd == -1)
+	{
+		err_msg("display_builtin_help(): open()");
+		return -1;
+	} // end if
+	
+	// find the file size
+	int file_size = lseek(help_fd, 0, SEEK_END);
+	if (file_size == -1)
+	{
+		err_msg("display_builtin_help(): lseek()");
+		return -1;
+	} // end if	
+	
+	// seek back to the beginning of the file
+	int result = lseek(help_fd, 0, SEEK_SET);
+	if (result == -1)
+	{
+		err_msg("display_builtin_help(): lseek()");
+		return -1;
+	} // end if
+	
+	// allocate a string buffer
+	char *buf = malloc(file_size);
+	if (!buf)
+	{
+		err_msg("display_builtin_help(): malloc()");
+		return -1;
+	} // end if
+	
+	// read data into the buffer
+	result = read(help_fd, buf, file_size);
+	if (result == -1 || result != file_size)
+	{
+		err_msg("display_builtin_help(): read()");
+		return -1;
+	} // end if
+	
+	// close the file descriptor
+	result = close(help_fd);
+	if (result == -1)
+	{
+		err_msg("display_builtin_help(): close()");
+		return -1;
+	} // end if
+	
+	// 99rite the help to the destination file
+	result = write(dest_fd, buf, file_size);
+	if (result == -1 || result != file_size)
+	{
+		err_msg("display_builtin_help(): write()");
+		return -1;
+	} // end if
+	
+	// free the buffer
+	sfree(buf);
+	
+	// return
+	return 0;
+	
+	
+
+} // end display_builtin_help()
 int Ash_cd(Process *p, int in_file, int out_file, int err_file)
 {
 	if (p->argc == 2 && (strcmp(p->argv[1], "h") == 0))
 	{
-		dprintf(out_file, "--------------------------------------------------------------------------------\n");
-		return 0;
+		return display_builtin_help(out_file, "cd");
 	} // end if
 	else if (p->argv[1] == NULL)
 	{
@@ -171,8 +263,7 @@ int Ash_exit(Process *p, int in_file, int out_file, int err_file)
 {
 	if (p->argc == 2 && (strcmp(p->argv[1], "h") == 0))
 	{
-		dprintf(out_file, "the help...\n");
-		return 0;
+		return display_builtin_help(out_file, "exit");
 	} // end if
 	else if (p->argc >= 2)
 	{
@@ -208,8 +299,7 @@ int Ash_jobs(Process *p, int in_file, int out_file, int err_file)
 {
 	if (p->argc == 2 && (strcmp(p->argv[1], "h") == 0))
 	{
-		dprintf(out_file, "the help...\n");
-		return 0;
+		return display_builtin_help(out_file, "jobs");
 	} // end if	
 	else
 	{
@@ -244,8 +334,7 @@ int Ash_fg(Process *p, int in_file, int out_file, int err_file)
 	
 	if (p->argc == 2 && (strcmp(p->argv[1], "h") == 0))
 	{
-		dprintf(out_file, "the help...\n");
-		return 0;
+		return display_builtin_help(out_file, "fg");
 	} // end if	
 	else if (p->argc == 2)
 	{
@@ -303,8 +392,7 @@ int Ash_bg(Process *p, int in_file, int out_file, int err_file)
 	
 	if (p->argc == 2 && (strcmp(p->argv[1], "h") == 0))
 	{
-		dprintf(out_file, "the help...\n");
-		return 0;
+		return display_builtin_help(out_file, "bg");
 	} // end if	
 	else if (p->argc < 2)
 	{
@@ -384,8 +472,7 @@ int Ash_kill(Process *p, int in_file, int out_file, int err_file)
 	//check if there are enough arguments
 	if (p->argc == 2 && (strcmp(p->argv[1], "h") == 0))
 	{
-		dprintf(out_file, "the help...\n");
-		return 0;
+		return display_builtin_help(out_file, "kill");
 	} // end if	
 	else if (p->argc == 2 || p->argc >= 3)
 	{
@@ -552,8 +639,7 @@ int Ash_killall(Process *p, int in_file, int out_file, int err_file)
 	//check if there are enough arguments
 	if (p->argc == 2 && (strcmp(p->argv[1], "h") == 0))
 	{
-		dprintf(out_file, "the help...\n");
-		return 0;
+		return display_builtin_help(out_file, "killall");
 	} // end if	
 	else if (p->argc == 2)
 	{

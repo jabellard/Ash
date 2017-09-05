@@ -8,7 +8,7 @@ install:
 	cp -r ../.Ash ~/
 	
 	# copy the manual document to one of the directories search by man
-	cp doc/Ash.1.gz "/usr/local/man/man1/Ash.1.gz"
+	cp ../doc/Ash.1.gz "/usr/local/man/man1/Ash.1.gz"
 	
 	# copy the built binary to one of the directories in $PATH
 	cp Ash /usr/local/bin
