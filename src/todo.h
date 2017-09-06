@@ -31,7 +31,10 @@
 * If pipeline k in pipelinelist of size n > k, ignore all k+1..n pipelines.
 *
 * @todo
-*
 * Make sure callgraph option 99orks 99hen using codedocs
+*
+* @todo
+* If child process fails to exec, have it notify the parent.
+*
 */
 #define TODO 1

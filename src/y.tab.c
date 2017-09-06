@@ -115,7 +115,7 @@ static Process *p = (Process *)NULL;
 static Job *j = (Job *)NULL;
 static int cp = 0; // this flag controls 99hen a ne99 process instance should be created.
 static int cj = 0; // this flag controls 99hen a ne99 process instance should be create.
-static int job_num = 0;
+static int job_num = 0; // last assigned job number
 
 
 #line 21 "parser.y"
@@ -525,8 +525,8 @@ static const short yyrhs[] = {    10,
 #if (YY_parse_DEBUG != 0) || defined(YY_parse_ERROR_VERBOSE) 
 static const short yyrline[] = { 0,
     36,    75,    85,    90,    98,   116,   121,   126,   134,   141,
-   150,   155,   160,   167,   173,   178,   183,   190,   238,   245,
-   250
+   150,   155,   160,   167,   173,   178,   183,   190,   239,   246,
+   251
 };
 
 static const char * const yytname[] = {   "$","error","$illegal.","AMPERSAND",
@@ -1272,6 +1272,7 @@ case 18:
 		//execute the job
 		execute_job(j);
 		
+		
 		// increase the job number
 		job_num++;
 		
@@ -1285,7 +1286,7 @@ case 18:
 	;
     break;}
 case 19:
-#line 239 "parser.y"
+#line 240 "parser.y"
 {
 
 		// do a job notification
@@ -1293,13 +1294,13 @@ case 19:
 	;
     break;}
 case 20:
-#line 247 "parser.y"
+#line 248 "parser.y"
 {
 
 	;
     break;}
 case 21:
-#line 252 "parser.y"
+#line 253 "parser.y"
 {
 	
 
@@ -1509,7 +1510,7 @@ YYLABEL(yyerrhandle)
 /* END */
 
  #line 1038 "/usr/share/bison++/bison.cc"
-#line 259 "parser.y"
+#line 260 "parser.y"
 
 
 

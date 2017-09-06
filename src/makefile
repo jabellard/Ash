@@ -7,7 +7,10 @@ install:
 	# copy configuration files in the user's home directory
 	cp -r ../.Ash ~/
 	
-	# copy the manual document to one of the directories search by man
+	# compress the man page
+	gzip -k ../doc/Ash.1.gz ../doc/Ash.1
+	
+	# copy the man page to one of the directories search by man
 	cp ../doc/Ash.1.gz "/usr/local/man/man1/Ash.1.gz"
 	
 	# copy the built binary to one of the directories in $PATH
@@ -17,4 +20,5 @@ install:
 clean:
 	# remove the built binary file
 	rm Ash
+	rm ../doc/Ash.1.gz
 
