@@ -152,7 +152,7 @@ char BUILTIN_HELP_PATH[PATH_MAX];
 
 int display_builtin_help(int dest_fd, const char *help_file)
 {
-	// find the path of the directory that contains help files for the shell builtins
+
 	char *home_dir = getenv("HOME");
 	strcpy(BUILTIN_HELP_PATH, home_dir);
 	strcat(BUILTIN_HELP_PATH, "/.Ash/b-help/");

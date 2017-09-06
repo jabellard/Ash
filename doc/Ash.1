@@ -9,9 +9,9 @@ Ash is a bash-like shell.
 
 
 .SH GRAMMAR \"--------------------------------------
-<identifier> ::= any sequence of the following character classes:
+<identifier> ::= any sequence of characters from the foll99ing character class:
 .br
-	[a-z], [A-Z], [0-9], and [-_/.]
+	[-_/.a-zA-Z0-9]
 
 <cmd> ::= <identifier>
 .br
@@ -49,11 +49,11 @@ Ash is a bash-like shell.
 	| 
 .br
 
-<pipeline_terminator> ::= '\n'
+<pipeline_terminator> ::= '\\n'
 .br
 	| ';'
 .br
-	| ';' '\n'
+	| ';' '\\n'
 .br
 
 <pipeline> ::= <simple_command_list> <redirection_list> <background> <pipeline_terminator>
@@ -67,11 +67,67 @@ Ash is a bash-like shell.
 .SH BUILTINS \"--------------------------------------
 The following are the shell builtins:
 .br
-(1) help : display help for the shell.
+(1) cd - Change the shell's current working directory.
 .br
-(2) cd <path-name> : change the current working directory to <path-name>.
+    Expected grammar:
 .br
-(3) exit : exit from the shell.
+        cd <path-to-new-directory> or cd h
+.br
+    Execute "cd h" for more details.
+.br
+(2) exit - Exit from the shell.
+.br
+    Expected grammar:
+.br
+        exit or exit h
+.br
+    Execute "exit h" for more details.
+.br
+(3) jobs - List the jobs in the shell's active job list.
+.br
+    Expected grammar:
+.br
+        jobs or jobs h
+.br
+    Execute "jobs h" for more details.
+.br
+(4) fg - Continue an active job in the foreground.
+.br
+    Expected grammar:
+.br
+        fg <job-ID> or fg h
+.br
+    Execute "fg h" for more details.
+.br
+(5) bg - Continue one or more active job(s) in the background.
+.br
+    Expected grammar:
+.br
+        bg -<job-ID> ... or bg h
+.br
+    Execute "bg h" for more details.
+.br
+(6) kill - Sends a signal to one or more active job(s). 
+.br
+    Expected grammar:
+.br
+        kill l, kill s<signal-name> -<job-ID> ...,
+.br
+        kill n<signal-number> -<job-ID> ... , or kill h       
+.br
+    Execute "kill h" for more details.
+.br
+(7) killall - Sends a signal to all active jobs of the shell.
+.br
+    Expected grammar:
+.br
+        killall l, killall s<signal-name> ,
+.br
+        killall n<signal-number> , or killall h        
+.br
+    Execute "killall h" for more details.
+.br
+
 .SH FILES \"--------------------------------------
 The following files are stored in the ~/.Ash_config directory: 
 .br
