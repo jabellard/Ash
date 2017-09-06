@@ -18,7 +18,7 @@ install:
 	
 
 clean:
-	# remove the built binary file
+	# clean up
 	rm Ash
 	rm ../doc/Ash.1.gz
 

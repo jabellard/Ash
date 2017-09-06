@@ -1,8 +1,8 @@
 
-# Ash (Alpha shell) -- version 2.1
+# Ash (Alpha shell) -- version 2.0
 ## I. Shell Features
 
-### This version of the shell has the following features:
+### This version of the shell supports the following features:
 #### 1. Command Line Editing
     1. auto-completion of shell builtin commands
     2. custom command line editing features implemented via the readline library, and
@@ -20,27 +20,30 @@
 	
 #### 5. Builtin Commands
     The following builtins are currently implemented:
-    1. help : display help for the shell.
-    2. cd <path-name> : change the current working directory to <path-name>.
-    3. exit : exit from the shell.
-#### 6. Documentation
-    1. man-page-style documentation
+    1. cd - Change the shell's current working directory.
+    2. exit - Exit from the shell.
+    3. jobs - List the jobs in the shell's active job list.
+    4. fg - Continue an active job in the foreground.
+    5. bg - Continue one or more active job(s) in the background.
+    6. kill - Sends a signal to one or more active job(s).
+    7. killall - Sends a signal to all active jobs of the shell.
+#### 6. Job Control
+    1. Job control features similar to that of bash.
 
 ## II. Instalation Guide
 
 ### To install on Linux, run the following commands:
 ``` 
+	cd src
 	make
 	sudo make install
+	[OPTIONAL] make clean
 ```
 
-## III. Coming Soon
-
-### The following will be implemented in future versions of the shell:
- - [ ] Job Control Sub-system
- - [ ] Program Configuration Sub-system
- - [ ] Globbing, Substitution, and Expansion
- - [x] Error Handling Sub-system
- - [ ] Signal Handling Sub-system
-
+## III. Documentation
+### 1. Man-page Documentation
+    After installation, a man page for the shell is avialable.
+### 2. Source Code Documentation
+    The source of the shell is fully documented with doxygen. The documentation 
+    is avialable at the following link: 
 
