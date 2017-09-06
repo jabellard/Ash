@@ -8,12 +8,12 @@ install:
 	cp -r ../.Ash ~/
 	
 	# compress the man page
-	gzip -k ../doc/Ash.1.gz ../doc/Ash.1
+	gzip -k  ../doc/Ash.1
 	
 	# copy the man page to one of the directories search by man
 	cp ../doc/Ash.1.gz "/usr/local/man/man1/Ash.1.gz"
 	
-	# copy the built binary to one of the directories in $PATH
+	# copy the built binary to one of the directories in PATH
 	cp Ash /usr/local/bin
 	
 
