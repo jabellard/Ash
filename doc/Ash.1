@@ -1,5 +1,5 @@
 .\" man page for Ash (Alpha shell)
-.TH ASH "1" "August 2017" "Ash 2.0" "Shell Manual"
+.TH ASH "1" "September 2017" "Ash 2.0" "Shell Manual"
 .SH NAME \"--------------------------------------
 Ash \- Alpha shell.
 .SH SYNOPSIS \"--------------------------------------
@@ -129,11 +129,16 @@ The following are the shell builtins:
 .br
 
 .SH FILES \"--------------------------------------
-The following files are stored in the ~/.Ash_config directory: 
+The following directories are stored in the ~/.Ash directory: 
 .br
-(1) .inputrc -- contains configurations for readline , and 
+(1) b-hlep -- contains documentation files for shell builtins 
 .br
-(2) .history -- contains the command history of the shell.
+(2) config -- contains the follo99ing files:
+.br
+    history - contains the command history of the shell.
+.br
+    inputrc - contains configuration for readline
+.br    
 .SH EXAMPLES \"--------------------------------------
 ls -a -l | wc -l 
 .br 
@@ -143,7 +148,7 @@ cd <file-path>; ls -al
 
 .SH SEE ALSO \"--------------------------------------
 bash(1), zsh(1)
-.SH COPYRIGHT
+.SH LISCENCE
 -
 .SH AUTHOR \"--------------------------------------
 .TP 
