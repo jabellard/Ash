@@ -267,6 +267,7 @@ int Ash_exit(Process *p, int in_file, int out_file, int err_file)
 	{
 		dprintf(err_file, "Ash: exit: invalid argument(s).\n");
 		dprintf(err_file, "Ash: exit: execute \"exit h\" for help.\n");
+		return -1;
 	} // end else if
 	else
 	{	
@@ -320,9 +321,8 @@ int Ash_jobs(Process *p, int in_file, int out_file, int err_file)
 			dprintf(out_file, "[%d] %ld %s:\n", j->id, (long)j->pgid, job_states[R]);
 			print_job_command(j, out_file);
 		} // end else
-		return 0;
 	} // end for
-
+	return 0;
 	} // end else
 } // end Ash_jobs()
 
