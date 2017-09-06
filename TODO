@@ -1,8 +1,0 @@
-
-2. HANDLE ERROR CAUSED BY C-D
-3. ADD MORE SIGNALS TO KILL/KILLALL (POSSIBLY BUILD ARRAY FROM SCRIPT)
-4. IF pipeline k in pipelinelist of size n > k, ignore all k+1..n pipelines
-5. add help option for shell builins
-6. add doc to html home page
-7. modify man page
-8. modify github page info
