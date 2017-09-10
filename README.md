@@ -34,16 +34,15 @@
 
 ### To install on Linux, run the following commands:
 ``` 
-	cd src
+	cd src 
 	make
 	sudo make install
 	[OPTIONAL] make clean
 ```
 
-## III. Documentation
+## III. Documentation 
 ### 1. Man-page Documentation
     After installation, a man page for the shell is avialable.
-### 2. Source Code Documentation
+### 2. [Source Code Documentation](https://codedocs.xyz/ashrepo/Ash/index.html)
     The source of the shell is fully documented with doxygen. The documentation 
-    is avialable at the following link: 
-
+    is avialable at the link above.
