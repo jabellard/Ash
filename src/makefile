@@ -13,7 +13,7 @@ REBUILDABLES = ${OBJS}
 
 all: ${TARGET}
 
-${TARGET}: ${OBJS}
+${TARGET}: ${OBJS} ${LIBS}
 	@echo "Building..."
 	${CC} ${FLAGS} -o $@ $^ ${LIBS}
 
