@@ -33,7 +33,6 @@
 
 ### To install on Linux, run the following commands:
 ``` 
-	cd src 
 	make
 	sudo make install
 	[OPTIONAL] make clean
