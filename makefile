@@ -71,17 +71,17 @@ ${lex_source}: ${yacc_source}
 	@${ECHO} "Generating Lex file \"$*.c\"..."
 	${LEX} -o$@ $<
 	@${ECHO} "Done generating generating \"$*.c\"."
-	
-
-# automatically manage include dependencies for the source files
-include_dependency_files = $(subst .c,.d,${core_source})
-include ${include_dependency_files}
-rebuildables += ${include_dependency_files}
 
 %.d: %.c
 	@${ECHO} "Generating include dependency file \"$@\"..."
 	$(CCD) -M  ${CCD_FLAGS} $< > $@
 	@${ECHO} "Done generating \"$@\"."
+	
+# automatically manage include dependencies for the source files
+include_dependency_files := $(subst .c,.d,${core_source})
+include ${include_dependency_files}
+rebuildables += ${include_dependency_files}
+
 .PHONY: install
 install:
 	@${ECHO} "Copying configuration files to home directory..."
