@@ -1,4 +1,3 @@
-
 # Ash (Alpha shell) -- version 2.0
 ## I. Shell Features
 
@@ -46,3 +45,4 @@
 ### 2. [Source Code Documentation](https://codedocs.xyz/ashrepo/Ash/index.html)
     The source of the shell is fully documented with doxygen. The documentation 
     is avialable at the link above.
+
