@@ -1,32 +1,34 @@
 TARGET_OBJECT := Ash
 rebuildables = ${TARGET_OBJECT}
 
-# compilation driver variables
-CCD := gcc
-CCD_FLAGS := -g -Iinclude -Isrc
-LIBS := -lreadline
-
+ # source and include tree locations
 SOURCE_TREE := src
 INCLUDE_TREE := include
 
-vpath %.c src
-vpath %.y src
-vpath %.l src
-vpath %.h include src
+vpath %.c ${SOURCE_TREE}
+vpath %.y ${SOURCE_TREE}
+vpath %.l ${SOURCE_TREE}
+vpath %.h ${INCLUDE_TREE} ${SOURCE_TREE}
+
+# compilation driver variables
+CCD := gcc
+CCD_FLAGS := -g -I${INCLUDE_TREE} -I${SOURCE_TREE}
+LIBS := -lreadline
 
 # list of source files
-sources = $(wildcard ${SOURCE_TREE}/*.c)
+source = $(wildcard ${SOURCE_TREE}/*.c)
+core_source := ${source}
 yacc_source = $(subst .y,.c,$(wildcard ${SOURCE_TREE}/*.y))
-sources += ${yacc_source}
-#yacc_source += $(subst .y,.h,$(wildcard ${SOURCE_TREE}/*.y))
+source += ${yacc_source}
+yacc_source += $(subst .y,.h,$(wildcard ${SOURCE_TREE}/*.y))
 rebuildables += ${yacc_source}
 lex_source = $(subst .l,.c,$(wildcard ${SOURCE_TREE}/*.l))
 rebuildables += ${lex_source}
-sources += ${lex_source}
+source += ${lex_source}
 
 
 # list of object files
-objects = $(subst .c,.o,${sources})
+objects = $(subst .c,.o,${source})
 rebuildables += ${objects}
 
 # list of external programs
@@ -45,26 +47,34 @@ PR := pr
 .PHONY: all
 all: ${TARGET_OBJECT}
 
+$(subst .c,.o,${lex_source}): $(subst .c,.o,$(sort $(subst .h,.c,${yacc_source})))
+
 ${TARGET_OBJECT}: ${objects} ${LIBS}
 	@${ECHO} "Linking executable object \"${TARGET_OBJECT}\"..."
 	${CCD} ${CCD_FLAGS}  -o $@ $^
 	@${ECHO} "Done linking \"${TARGET_OBJECT}\"."	
-%.o: %.cc
+	
+%.o: %.c
 	@${ECHO} "Building \"$@\" object..."
 	${CCD} -c ${CCD_FLAGS}  -o $@ $<
 	@${ECHO} "Done building \"$@\"."
-	
-%.c: %.y
+
+%.c %.h: %.y
 	@${ECHO} "Generating Yacc files \"$*.c\" & \"$*.h\"..."
 	${YACC} -d -o $@ $<	
 	@${ECHO} "Done generating \"$*.c\" & \"$*.h\"."
+
+#${lex_source}: $(sort $(subst .h,.c,${yacc_source}))
+${lex_source}: ${yacc_source}
+
 %.c: %.l
 	@${ECHO} "Generating Lex file \"$*.c\"..."
 	${LEX} -o$@ $<
 	@${ECHO} "Done generating generating \"$*.c\"."
+	
 
 # automatically manage include dependencies for the source files
-include_dependency_files = $(subst .c,.d,${sources})
+include_dependency_files = $(subst .c,.d,${core_source})
 include ${include_dependency_files}
 rebuildables += ${include_dependency_files}
 
@@ -106,6 +116,7 @@ endef
 
 .PHONY: help
 help:
-	@${ECHO} "List of targets:\n"	
+	@${ECHO} "List of targets:"	
 	@${display-help}
+
 
